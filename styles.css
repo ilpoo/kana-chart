@@ -1,0 +1,320 @@
+/*@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300';*/
+
+*{
+	box-sizing: border-box;
+	position: relative;
+}
+
+body{
+	font-family: Arial;
+	font-size: 22px;
+	margin: 0;
+	overflow: hidden;
+	-ms-content-zooming: none;
+}
+
+
+
+
+
+
+
+/* Loading */
+
+#loading{
+	margin: 50px auto;
+	font-size:35px;
+	font-weight: 200;
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.loadingIcon{
+	height: 20px;
+	width: 20px;
+	position: relative;
+	animation: revolve 600ms infinite linear;
+	display:inline-block;
+	margin: 0 10px;
+}
+
+.loadingIcon::after{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 15%;
+	height: 15%;
+	content: '';
+	background-color:black;
+	border-radius: 50%;
+}
+
+@keyframes revolve{
+	from{transform:rotate(0deg);}
+	to{transform:rotate(360deg);}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+header{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	background: #C70025;
+	color: white;
+	z-index: 90;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.menuTitle{
+	position: absolute;
+	left: 0;
+	top: 0;
+	vertical-align: middle;
+	height: 50px;
+	line-height: 50px;
+}
+
+.menuTitle h1{
+	margin: 0;
+	display: inline-block;
+	font-size: 25px;
+	font-weight: normal;
+	transform: translateY(-1px);
+	font-family: 'Open Sans', sans-serif;
+}
+
+.menuTitle label[for=menubutton]{
+	display: inline-block;
+	width: 44px;
+	height: 44px;
+	line-height: 44px;
+	text-align: center;
+	font-size: 30px;
+	border-radius: 50%;
+	margin: 3px 5px;
+}
+
+.menuTitle label[for=menubutton]:hover{
+	cursor: pointer;
+	background: rgba(0,0,0,.2);
+}
+
+#menubutton{
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* options */
+
+nav{
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	width: 300px;
+	height: 100vh;
+	padding: 10px;
+
+	/*background: #b30021; */
+	background: #C70025;
+	color: white;
+	font-size: 16px;
+
+	z-index: 100;
+	transform: translateX(-100%);
+	padding-top: 60px;
+	transition: transform .4s, box-shadow .4s;
+	line-height: 40px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#menubutton:checked ~ nav{
+	transform: translateX(0);
+	box-shadow: 0 0 70px rgba(0,0,0,1);
+}
+
+#clickOutsideNav{
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	cursor: pointer;
+	display: none;
+}
+#menubutton:checked ~ #clickOutsideNav{
+	display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* content */
+
+article{
+	position: fixed;
+	top: 50px;
+	right: 0;
+	width: 100vw;
+	height: calc(100vh - 50px);
+	padding: 5px;
+	overflow-x: auto;
+}
+
+
+
+
+
+
+
+
+@media (min-width: 800px){
+	header .menuTitle{
+		margin-left: calc(50vw - 800px / 2);
+	}
+
+	nav{
+		position: absolute;
+		top: 50px;
+		left: calc(50vw - 800px / 2);
+		transform: translateX(0);
+		background-color: transparent;
+		color: black;
+		box-shadow: none !important;
+		padding-top: 80px;
+	}
+
+	nav .menuTitle{
+		top: 30px;
+	}
+
+	article{
+		position: absolute;
+		width: calc(100vw - (50vw - 800px / 2 + 300px));
+	}
+
+	article table{
+		margin: 0 10px;
+	}
+
+	.menuTitle label[for=menubutton]{
+		display: none;
+	}
+
+	#menubutton ~ #clickOutsideNav{
+		display: none !important;
+	}
+}
+
+
+
+
+
+
+
+
+/* Table */
+
+table{
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: calc(100% - 16px);
+	max-width: 550px;
+	table-layout: fixed;
+	transform-origin: top;
+	font-size: 22px;
+}
+
+table, td{
+	border: 1px solid black;
+}
+
+td{
+	padding: 5px;
+	padding: 0.25em;
+	text-align: center;
+	position: static;
+	overflow: hidden;
+}
+
+td > div{
+	white-space: nowrap;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.highlightCurrent{
+	font-weight: bold;
+	background-color: hsl(120,73%,80%) !important;
+}
+
+.highlightRomanji{
+	background-color: hsl(120,73%,90%) !important;
+}
+
+.highlightHiragana{
+}
+.highlightHiragana .hiragana{
+	font-weight: bold;
+	color: red;
+}
+
+.highlightKatakana .katakana{
+	font-weight: bold;
+	color: red;
+}
+
+.highlightExceptions .romanji{
+	font-weight: bold;
+}
+
+.romanji{
+	font-size: 75%;
+}
+
+.pronunciation{
+	font-size: 75%;
+}
+
+.hide{
+	display: none;
+}

@@ -1,2 +1,2 @@
-# japane-sesyllabary
+# Japanese Syllabary
 An interactive syllabary chart for Japanese

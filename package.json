@@ -1,9 +1,11 @@
 {
-  "name": "japanese-syllabarý",
+  "name": "japanese-syllabary",
   "version": "1.0.0",
   "description": "Hiragana and katagana tables",
   "main": "webpack.config.js",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.22.1",
     "babel-loader": "^6.2.0",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-react-html-attrs": "^2.0.0",
@@ -20,13 +22,14 @@
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.15.2"
   },
-  "devDependencies": {},
   "scripts": {
-    "dev": "./node_modules/.bin/webpack-dev-server --port 8000 --inline --hot",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/webpack-dev-server --port 8000",
+    "build": "./node_modules/.bin/webpack --progress --colors",
     "local": "start cmd /c call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd /c webpack --watch & start chrome.exe http://localhost:8001",
     "windows": "start cmd /c call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd webpack --watch & start chrome.exe http://localhost:8001",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "win": "start cmd /c webpack-dev-server --port 8001 --inline --hot & start chrome.exe http://localhost:8001"
+    "win": "start cmd /c webpack-dev-server --port 8001 & start chrome.exe http://localhost:8001",
+    "webpack": "webpack --watch"
   },
   "author": "Ilpo Oksanen",
   "license": "MIT"

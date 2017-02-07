@@ -31,9 +31,13 @@ export default class Menu extends React.Component{
 			label: "Diacritics 濁点",
 			title: "Show syllables that use diacritics",
 		},{
-			name: "digraphs",
-			label: "Digraphs 拗音",
-			title: "Show syllables that are composed of two symbols",
+      name: "digraphs",
+      label: "Digraphs 拗音",
+      title: "Show syllables that are composed of two symbols",
+    },{
+			name: "transcription",
+			label: "Transcription 外国語の日本語表記",
+			title: "Show foreign transcription kanas",
 			separate: true,
 		},{
 			name: "strokes",

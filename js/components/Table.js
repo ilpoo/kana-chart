@@ -104,7 +104,11 @@ export default class Table extends React.Component{
 					highlightKatakana:options.similar?syllable.highlightKatakana:false,
 					highlightCurrent:syllable.highlightCurrent,
 					highlightExceptions:options.exceptions?syllable.exception:false,
-					hide:((options.digraphs?syllable.hideIfDigraph:syllable.digraph) || (options.diacritics?false:syllable.diacritic) || (options.romanji && syllable.hideIfRomanji)),
+					hide:(
+               (options.digraphs?syllable.hideIfDigraph:syllable.digraph) 
+            || (options.diacritics?false:syllable.diacritic) 
+            || (options.romanji && syllable.hideIfRomanji)
+          ),
 				})}
 				style={{
 					backgroundColor: "hsl(195,53%,"+(options.frequency?((1-(syllable.frequency||0))*100):100)+"%)",
@@ -148,6 +152,7 @@ export default class Table extends React.Component{
 	}
 
 	render(){
+    const { options } = this.props;
 		const consonants=this.state.consonants;
 		return (
 			<table id="table" ref="table">
@@ -160,12 +165,15 @@ export default class Table extends React.Component{
 					}}/>
 				</colgroup>
 				<tbody>
-					{Object.keys(consonants).map(consonant=>{
-						return (
-							<tr key={consonant}>
-								{consonants[consonant].map((syllable,i)=>this.renderTd(syllable,consonant,i))}
-							</tr>
-						);
+					{Object.keys(consonants).filter(consonant=>(
+              (!options.transcription && !consonants[consonant][0].transcription)
+            || (options.transcription && !consonants[consonant][0].noTranscription)
+          )).map(consonant=>{
+            return (
+              <tr key={consonant}>
+                {consonants[consonant].map((syllable,i)=>this.renderTd(syllable,consonant,i))}
+              </tr>
+            );
 					})}
 				</tbody>
 			</table>

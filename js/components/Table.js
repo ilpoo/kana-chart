@@ -10,42 +10,42 @@ export default class Table extends React.Component{
     fontSize: Table.originalFontSize,
   };
 
-	componentDidMount(){
-		window.addEventListener('resize',this.handleResize.bind(this));
-		this.calculateFontSize(this.refs.table);
-	}
+  componentDidMount(){
+    window.addEventListener('resize',this.handleResize.bind(this));
+    this.calculateFontSize(this.refs.table);
+  }
 
-	componentDidUpdate(){
-		this.calculateFontSize(this.refs.table);
-	}
+  componentDidUpdate(){
+    this.calculateFontSize(this.refs.table);
+  }
 
-	componentWillUnmount(){
-		window.removeEventListener('resize',this.handleResize);
-	}
+  componentWillUnmount(){
+    window.removeEventListener('resize',this.handleResize);
+  }
 
-	calculateFontSize(table,forceUpdate){
-		const newOptions=JSON.stringify(this.props.options);
-		if((newOptions!=this.state.lastOptions) || forceUpdate){
-			this.setState({
+  calculateFontSize(table,forceUpdate){
+    const newOptions=JSON.stringify(this.props.options);
+    if((newOptions!=this.state.lastOptions) || forceUpdate){
+      this.setState({
         lastOptions: newOptions,
-			});
-			setTimeout(()=>requestAnimationFrame(()=>{
-				const elementSize=table.getBoundingClientRect(),
-					containerSize=table.parentElement.getBoundingClientRect(),
-					proportion=((containerSize.height-10)/elementSize.height)/1.02;
-				let fontSize=this.state.fontSize*proportion;
-				if(fontSize/Table.originalFontSize<.7) fontSize=Table.originalFontSize*.7;
+      });
+      setTimeout(()=>requestAnimationFrame(()=>{
+        const elementSize=table.getBoundingClientRect(),
+          containerSize=table.parentElement.getBoundingClientRect(),
+          proportion=((containerSize.height-10)/elementSize.height)/1.02;
+        let fontSize=this.state.fontSize*proportion;
+        if(fontSize/Table.originalFontSize<.7) fontSize=Table.originalFontSize*.7;
         this.setState({fontSize});
-			}),0);
-		}
-	}
+      }),0);
+    }
+  }
 
-	handleResize(){
-		this.calculateFontSize(document.getElementById("table"),true);
-	}
+  handleResize(){
+    this.calculateFontSize(document.getElementById("table"),true);
+  }
 
-	hoverOn(hoveredSyllable,consonantIndex,syllableIndex){
-		this.setState({
+  hoverOn(hoveredSyllable,consonantIndex,syllableIndex){
+    this.setState({
       consonants: this.state.consonants.map((consonant,i)=>
         consonant.map((syllable,j)=>{
           syllable.highlightRomanji=(
@@ -68,34 +68,34 @@ export default class Table extends React.Component{
         })
       ),
     });
-	}
+  }
 
-	renderTd(syllable,consonantIndex,syllableIndex){
-		const { options } = this.props;
+  renderTd(syllable,consonantIndex,syllableIndex){
+    const { options } = this.props;
     const { fontSize } = this.state;
     const showSvgStrokes=(
       options.strokes && 
       syllable.strokes
     );
-		return (
-			<td 
+    return (
+      <td 
         key={`key_${consonantIndex}_${syllableIndex}`} 
-				id={syllable.romanji} 
+        id={syllable.romanji} 
         onMouseEnter={this.hoverOn.bind(this, syllable, consonantIndex, syllableIndex)}
-				className={classNames({
+        className={classNames({
           highlightRomanji: syllable.highlightRomanji,
           highlightHiragana: (options.similar && syllable.highlightHiragana),
           highlightKatakana: (options.similar && syllable.highlightKatakana),
           highlightCurrent: syllable.highlightCurrent,
           highlightExceptions: (options.exceptions && syllable.exception),
           hide: (!options.digraphs && syllable.digraph),
-				})}
-				style={{
-					backgroundColor: "hsl(195,53%,"+(options.frequency?((1-(syllable.frequency||0))*100):100)+"%)",
+        })}
+        style={{
+          backgroundColor: "hsl(195,53%,"+(options.frequency?((1-(syllable.frequency||0))*100):100)+"%)",
           fontSize: options.digraphs?Math.min(22,fontSize):fontSize,
-				}}
-			>
-				{ options.hiragana && 
+        }}
+      >
+        { options.hiragana && 
           <div 
             className={classNames(
               "hiragana",
@@ -121,27 +121,27 @@ export default class Table extends React.Component{
             }
           >{syllable.katakana}</div> 
         }
-				{ (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
-				{ (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
-			</td>
-		);
-	}
+        { (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
+        { (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
+      </td>
+    );
+  }
 
-	render(){
+  render(){
     const { options } = this.props;
     const { consonants } = this.state;
-		return (
-			<table id="table" ref="table">
-				<colgroup>
-					<col span="6" style={{
-						width: this.props.options.digraphs?"9.5%":"calc(100% / 6)"
-					}}/>
-					<col span="3" style={{
-						width: this.props.options.digraphs?"calc((100% - 6 * 9.5%) / 3)":0
-					}}/>
-				</colgroup>
-				<tbody>
-					{consonants.filter(consonant=>!(
+    return (
+      <table id="table" ref="table">
+        <colgroup>
+          <col span="6" style={{
+            width: this.props.options.digraphs?"9.5%":"calc(100% / 6)"
+          }}/>
+          <col span="3" style={{
+            width: this.props.options.digraphs?"calc((100% - 6 * 9.5%) / 3)":0
+          }}/>
+        </colgroup>
+        <tbody>
+          {consonants.filter(consonant=>!(
             ( options.transcription && consonant[0].noTranscription) ||
             (!options.transcription && consonant[0].transcription) ||
             (!options.diacritics && consonant[0].diacritic) ||
@@ -155,8 +155,8 @@ export default class Table extends React.Component{
               }
             </tr>
           ))}
-				</tbody>
-			</table>
-		);
-	}
+        </tbody>
+      </table>
+    );
+  }
 }

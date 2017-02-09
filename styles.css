@@ -352,11 +352,11 @@ td > div{
 }
 
 .svgStrokes.hiragana{
-  background-image: url(./media/Table_hiragana.svg);
+  background-image: url(./media/hiragana.min.svg);
 }
 
 .svgStrokes.katakana{
-  background-image: url(./media/Table_katakana.svg);
+  background-image: url(./media/katakana.min.svg);
 }
 
 .foreign{

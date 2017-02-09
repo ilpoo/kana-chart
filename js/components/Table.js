@@ -4,26 +4,11 @@ import alphabet from '../alphabet.json';
 import classNames from "classnames/dedupe.js";
 
 export default class Table extends React.Component{
-	static propTypes={
-		options: React.PropTypes.object,
-	};
-
-	state=alphabet;
-
-	constructor(){
-		super();
-		for(let prop in this.state.consonants){
-			for (let i = 0; i < this.state.consonants[prop].length; i++) {
-				this.state.consonants[prop][i].highlightRomanji=false;
-				this.state.consonants[prop][i].highlightHiragana=false;
-				this.state.consonants[prop][i].highlightKatakana=false;
-				this.state.consonants[prop][i].highlightCurrent=false;
-			}
-		}
-		this.state.originalFontSize=22;
-		this.state.fontSize=this.state.originalFontSize;
-		this.state.options="";
-	}
+  static originalFontSize=22;
+  state={
+    consonants: alphabet,
+    fontSize: Table.originalFontSize,
+  };
 
 	componentDidMount(){
 		window.addEventListener('resize',this.handleResize.bind(this));
@@ -42,18 +27,15 @@ export default class Table extends React.Component{
 		const newOptions=JSON.stringify(this.props.options);
 		if((newOptions!=this.state.lastOptions) || forceUpdate){
 			this.setState({
-				lastOptions:newOptions,
+        lastOptions: newOptions,
 			});
-			console.log("recalculation");
 			setTimeout(()=>requestAnimationFrame(()=>{
 				const elementSize=table.getBoundingClientRect(),
 					containerSize=table.parentElement.getBoundingClientRect(),
 					proportion=((containerSize.height-10)/elementSize.height)/1.02;
 				let fontSize=this.state.fontSize*proportion;
-				if(fontSize/this.state.originalFontSize<.7) fontSize=this.state.originalFontSize*.7;
-				this.setState({
-					fontSize:fontSize
-				});
+				if(fontSize/Table.originalFontSize<.7) fontSize=Table.originalFontSize*.7;
+        this.setState({fontSize});
 			}),0);
 		}
 	}
@@ -62,89 +44,83 @@ export default class Table extends React.Component{
 		this.calculateFontSize(document.getElementById("table"),true);
 	}
 
-	hoverOn(syllable,consonant,k){
-		const consonants=JSON.parse(JSON.stringify(this.state.consonants));
-
-		for(let prop in consonants){
-			for(let i=0; i<consonants[prop].length; i++) {
-				consonants[prop][i].highlightRomanji = Boolean(
-					consonants[prop][i].hasOwnProperty("romanji") && 
-					syllable.hasOwnProperty("base") && 
-					~syllable.base.indexOf(consonants[prop][i].romanji)
-				);
-				consonants[prop][i].highlightHiragana = Boolean(
-					consonants[prop][i].hasOwnProperty("romanji") && 
-					syllable.hasOwnProperty("similarHiragana") && 
-					~syllable.similarHiragana.indexOf(consonants[prop][i].romanji)
-				);
-				consonants[prop][i].highlightKatakana = Boolean(
-					consonants[prop][i].hasOwnProperty("romanji") && 
-					syllable.hasOwnProperty("similarKatakana") &&
-					~syllable.similarKatakana.indexOf(consonants[prop][i].romanji)
-				);
-				consonants[prop][i].highlightCurrent = false;
-			}
-		}
-
-		consonants[consonant][k].highlightCurrent=syllable.hasOwnProperty("hiragana");
-
-		this.setState({consonants:consonants});
+	hoverOn(hoveredSyllable,consonantIndex,syllableIndex){
+		this.setState({
+      consonants: this.state.consonants.map((consonant,i)=>
+        consonant.map((syllable,j)=>{
+          syllable.highlightRomanji=(
+            syllable.hasOwnProperty("romanji") && 
+            hoveredSyllable.hasOwnProperty("base") && 
+            ~hoveredSyllable.base.indexOf(syllable.romanji)
+          );
+          syllable.highlightHiragana=(
+            syllable.hasOwnProperty("romanji") && 
+            hoveredSyllable.hasOwnProperty("similarHiragana") && 
+            ~hoveredSyllable.similarHiragana.indexOf(syllable.romanji)
+          );
+          syllable.highlightKatakana=(
+            syllable.hasOwnProperty("romanji") && 
+            hoveredSyllable.hasOwnProperty("similarKatakana") &&
+            ~hoveredSyllable.similarKatakana.indexOf(syllable.romanji)
+          );
+          syllable.highlightCurrent = (consonantIndex==i && syllableIndex==j);
+          return syllable;
+        })
+      ),
+    });
 	}
 
-	renderTd(syllable,consonant,i){
+	renderTd(syllable,consonantIndex,syllableIndex){
 		const { options } = this.props;
+    const { fontSize } = this.state;
+    const showSvgStrokes=(
+      options.strokes && 
+      syllable.strokes
+    );
 		return (
 			<td 
-				key={"key_"+Math.random()} 
+        key={`key_${consonantIndex}_${syllableIndex}`} 
 				id={syllable.romanji} 
-				onMouseEnter={this.hoverOn.bind(this,syllable,consonant,i)}
+        onMouseEnter={this.hoverOn.bind(this, syllable, consonantIndex, syllableIndex)}
 				className={classNames({
-					highlightRomanji:syllable.highlightRomanji,
-					highlightHiragana:options.similar?syllable.highlightHiragana:false,
-					highlightKatakana:options.similar?syllable.highlightKatakana:false,
-					highlightCurrent:syllable.highlightCurrent,
-					highlightExceptions:options.exceptions?syllable.exception:false,
-					hide:(
-               (options.digraphs?syllable.hideIfDigraph:syllable.digraph) 
-            || (options.diacritics?false:syllable.diacritic) 
-            || (options.romanji && syllable.hideIfRomanji)
-          ),
+          highlightRomanji: syllable.highlightRomanji,
+          highlightHiragana: (options.similar && syllable.highlightHiragana),
+          highlightKatakana: (options.similar && syllable.highlightKatakana),
+          highlightCurrent: syllable.highlightCurrent,
+          highlightExceptions: (options.exceptions && syllable.exception),
+          hide: (!options.digraphs && syllable.digraph),
 				})}
 				style={{
 					backgroundColor: "hsl(195,53%,"+(options.frequency?((1-(syllable.frequency||0))*100):100)+"%)",
-					fontSize: options.digraphs?Math.min(22,this.state.fontSize):this.state.fontSize
+          fontSize: options.digraphs?Math.min(22,fontSize):fontSize,
 				}}
 			>
-				{ options.hiragana && <div className="hiragana" style={
-					(syllable.highlightCurrent && options.strokes && !syllable.diacritic && !syllable.digraph && syllable.hiragana)?{
-						backgroundImage:"url(./media/Hiragana_"+syllable.hiragana+"_stroke_order_animation.gif)",
-						backgroundSize: "contain",
-						backgroundPosition: "center",
-						backgroundRepeat: "no-repeat",
-						height: "2em",
-						color: "transparent",
-						margin: "0em auto",
-					}:(options.strokes && syllable.strokes)?{
-						backgroundImage:"url(./media/Table_hiragana.svg)",
-						backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
-						backgroundSize: "26.2em",
-						height:"2em",
-						width:"2em",
-						color: "transparent",
-						margin: "0 auto",
-					}:{}
-				}>{syllable.hiragana}</div> }
-				{ options.katakana && <div className="katakana" style={
-					(options.strokes && syllable.strokes)?{
-						backgroundImage:"url(./media/Table_katakana.svg)",
-						backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
-						backgroundSize: "26.2em",
-						height:"2em",
-						width:"2em",
-						color: "transparent",
-						margin: "0 auto",
-					}:{}
-				}>{syllable.katakana}</div> }
+				{ options.hiragana && 
+          <div 
+            className={classNames(
+              "hiragana",
+              {svgStrokes: showSvgStrokes},
+            )}
+            style={
+              showSvgStrokes?{
+                backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
+              }:{}
+            }
+          >{syllable.hiragana}</div> 
+        }
+        { options.katakana && 
+          <div 
+            className={classNames(
+              "katakana",
+              {svgStrokes: showSvgStrokes},
+            )} 
+            style={
+              showSvgStrokes?{
+                backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
+              }:{}
+            }
+          >{syllable.katakana}</div> 
+        }
 				{ (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
 				{ (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
 			</td>
@@ -153,7 +129,7 @@ export default class Table extends React.Component{
 
 	render(){
     const { options } = this.props;
-		const consonants=this.state.consonants;
+    const { consonants } = this.state;
 		return (
 			<table id="table" ref="table">
 				<colgroup>
@@ -165,16 +141,20 @@ export default class Table extends React.Component{
 					}}/>
 				</colgroup>
 				<tbody>
-					{Object.keys(consonants).filter(consonant=>(
-              (!options.transcription && !consonants[consonant][0].transcription)
-            || (options.transcription && !consonants[consonant][0].noTranscription)
-          )).map(consonant=>{
-            return (
-              <tr key={consonant}>
-                {consonants[consonant].map((syllable,i)=>this.renderTd(syllable,consonant,i))}
-              </tr>
-            );
-					})}
+					{consonants.filter(consonant=>!(
+            ( options.transcription && consonant[0].noTranscription) ||
+            (!options.transcription && consonant[0].transcription) ||
+            (!options.diacritics && consonant[0].diacritic) ||
+            ( options.digraphs && consonant[0].hideIfDigraph) ||
+            ( options.romanji && consonant[0].hideIfRomanji)
+          )).map((consonant,consonantIndex)=>(
+            <tr key={consonantIndex}>
+              {
+                consonant.map((syllable, syllableIndex)=>
+                this.renderTd(syllable, consonantIndex, syllableIndex))
+              }
+            </tr>
+          ))}
 				</tbody>
 			</table>
 		);

@@ -318,3 +318,19 @@ td > div{
 .hide{
 	display: none;
 }
+
+.svgStrokes{
+  background-size: 26.2em;
+  height: 2em;
+  width: 2em;
+  color: transparent !important;
+  margin: 0 auto;
+}
+
+.svgStrokes.hiragana{
+  background-image: url(./media/Table_hiragana.svg);
+}
+
+.svgStrokes.katakana{
+  background-image: url(./media/Table_katakana.svg);
+}

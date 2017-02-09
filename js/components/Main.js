@@ -16,6 +16,7 @@ export default class Main extends React.Component{
 		exceptions: true,
 		similar: true,
 		frequency: true,
+    transcription: false,
 	}
 
 	state={

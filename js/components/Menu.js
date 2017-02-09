@@ -4,10 +4,6 @@ import FontAwesome from 'react-fontawesome';
 import Checkbox from './Checkbox';
 
 export default class Menu extends React.Component{
-	static propTypes={
-		options: React.PropTypes.object,
-	};
-	
 	options=[
 		{
 			name: "hiragana",
@@ -58,8 +54,6 @@ export default class Menu extends React.Component{
 		},
 	];
 
-	changeOptions=this.props.changeOptions;
-
 	render(){
 		return (
 			<nav>
@@ -73,7 +67,7 @@ export default class Menu extends React.Component{
 						title={option.title} 
 						separate={option.separate} 
 						checked={this.props.options[option.name]} 
-						changeOptions={this.changeOptions}
+						changeOptions={this.props.changeOptions}
 						key={option.name}
 					/>
 				))}

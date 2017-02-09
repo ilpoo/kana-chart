@@ -234,6 +234,10 @@ article{
     margin-left: calc(50vw - 800px / 2);
   }
 
+  .menuTitle h1{
+    margin-left: 0;
+  }
+
   nav{
     position: absolute;
     top: 50px;
@@ -258,11 +262,11 @@ article{
     margin: 0 10px;
   }
 
-  .menuTitle label[for=menubutton]{
+  #menuButton{
     display: none;
   }
 
-  #menubutton ~ #clickOutsideNav{
+  #menuToggle ~ #clickOutsideNav{
     display: none !important;
   }
 }

@@ -1,6 +1,5 @@
 'use strict';
 import React from "react";
-import FontAwesome from 'react-fontawesome';
 import Checkbox from './Checkbox';
 
 export default class Menu extends React.Component{
@@ -58,7 +57,7 @@ export default class Menu extends React.Component{
     return (
       <nav>
         <div class="menuTitle">
-          <label for="menubutton"><FontAwesome name='times'/></label><h1>Options</h1>
+          <h1>Options</h1>
         </div>
         {this.options.map(option=>(
           <Checkbox 

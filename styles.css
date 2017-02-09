@@ -1,6 +1,3 @@
-/*@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css';
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:300';*/
-
 *{
   box-sizing: border-box;
   position: relative;
@@ -100,28 +97,56 @@ header{
   font-weight: normal;
   transform: translateY(-1px);
   font-family: 'Open Sans', sans-serif;
+  margin-left: 55px;
 }
 
-.menuTitle label[for=menubutton]{
-  display: inline-block;
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  font-size: 30px;
-  border-radius: 50%;
-  margin: 3px 5px;
-}
+#menuToggle{display: none;}
 
-.menuTitle label[for=menubutton]:hover{
+#menuButton{
+  font-size: 36px; /* use this to control the icon size */
+  position: fixed;
+  top: 7px;
+  left: 7px;
+  z-index: 101;
+  display: block;
+  width: 1em;
+  height: .1em;
+  border: 0 solid transparent;
+  border-width: .45em 0;
+  background-color: white;
+  background-clip: content-box; 
+  box-sizing: content-box;
+  position: relative;
   cursor: pointer;
-  background: rgba(0,0,0,.2);
+  transition: transform .4s, background-color .3s;
 }
 
-#menubutton{
-  display: none;
+#menuButton::before, #menuButton::after{
+  content: '';
+  display: block;
+  width: 1em;
+  height: .1em;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: white;
+  transition: transform .4s;
+  transform: translateY(-.35em);
+}
+#menuButton::after{
+  transform: translateY(.35em);
 }
 
+#menuToggle:checked ~ #menuButton{
+  transform: rotate(-90deg);
+  background-color: transparent;
+}
+#menuToggle:checked ~ #menuButton::before{
+  transform: rotate(45deg);
+}
+#menuToggle:checked ~ #menuButton::after{
+  transform: rotate(-45deg);
+}
 
 
 
@@ -142,7 +167,6 @@ nav{
   height: 100vh;
   padding: 10px;
 
-  /*background: #b30021; */
   background: #C70025;
   color: white;
   font-size: 16px;
@@ -157,7 +181,7 @@ nav{
   -ms-user-select: none;
   user-select: none;
 }
-#menubutton:checked ~ nav{
+#menuToggle:checked ~ nav{
   transform: translateX(0);
   box-shadow: 0 0 70px rgba(0,0,0,1);
 }
@@ -172,7 +196,7 @@ nav{
   cursor: pointer;
   display: none;
 }
-#menubutton:checked ~ #clickOutsideNav{
+#menuToggle:checked ~ #clickOutsideNav{
   display: block;
 }
 

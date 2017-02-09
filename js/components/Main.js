@@ -33,11 +33,12 @@ export default class Main extends React.Component{
   render(){
     return(
       <div>
-        <input type="checkbox" id="menubutton" />
+        <input type="checkbox" id="menuToggle" />
         <Header />
-        <label for="menubutton" id="clickOutsideNav"></label>
+        <label for="menuToggle" id="clickOutsideNav"></label>
         <Menu options={this.state.options} changeOptions={this.changeOptions.bind(this)}/>
         <Content options={this.state.options}/>
+        <label for="menuToggle" id="menuButton"></label>
       </div>
     );
   }

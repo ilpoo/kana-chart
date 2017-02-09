@@ -1,53 +1,52 @@
 'use strict';
 import React from "react";
-import alphabet from '../alphabet.json';
+import alphabet from "../alphabet.json";
 import classNames from "classnames/dedupe.js";
 
 export default class Table extends React.Component{
-  static originalFontSize=22;
-  state={
+  static originalFontSize = 22;
+  state = {
     consonants: alphabet,
     fontSize: Table.originalFontSize,
   };
+  lastOptions = '';
 
   componentDidMount(){
-    window.addEventListener('resize',this.handleResize.bind(this));
-    this.calculateFontSize(this.refs.table);
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.calculateFontSize();
   }
 
   componentDidUpdate(){
-    this.calculateFontSize(this.refs.table);
+    this.calculateFontSize();
   }
 
   componentWillUnmount(){
-    window.removeEventListener('resize',this.handleResize);
+    window.removeEventListener('resize', this.handleResize);
   }
 
-  calculateFontSize(table,forceUpdate){
+  calculateFontSize(forceUpdate){
     const newOptions=JSON.stringify(this.props.options);
-    if((newOptions!=this.state.lastOptions) || forceUpdate){
-      this.setState({
-        lastOptions: newOptions,
-      });
+    if((newOptions!=this.lastOptions) || forceUpdate){
+      this.lastOptions=newOptions;
       setTimeout(()=>requestAnimationFrame(()=>{
-        const elementSize=table.getBoundingClientRect(),
-          containerSize=table.parentElement.getBoundingClientRect(),
-          proportion=((containerSize.height-10)/elementSize.height)/1.02;
-        let fontSize=this.state.fontSize*proportion;
-        if(fontSize/Table.originalFontSize<.7) fontSize=Table.originalFontSize*.7;
+        const elementSize = this.refs.table.getBoundingClientRect(),
+          containerSize = this.refs.table.parentElement.getBoundingClientRect(),
+          proportion = ((containerSize.height-10)/elementSize.height)/1.02;
+        let fontSize = this.state.fontSize*proportion;
+        if(fontSize/Table.originalFontSize<.7) fontSize = Table.originalFontSize*.7;
         this.setState({fontSize});
       }),0);
     }
   }
 
   handleResize(){
-    this.calculateFontSize(document.getElementById("table"),true);
+    this.calculateFontSize(true);
   }
 
-  hoverOn(hoveredSyllable,consonantIndex,syllableIndex){
+  hoverOn(hoveredSyllable){
     this.setState({
-      consonants: this.state.consonants.map((consonant,i)=>
-        consonant.map((syllable,j)=>{
+      consonants: this.state.consonants.map(consonant=>
+        consonant.map(syllable=>{
           syllable.highlightRomanji=(
             syllable.hasOwnProperty("romanji") && 
             hoveredSyllable.hasOwnProperty("base") && 
@@ -63,7 +62,11 @@ export default class Table extends React.Component{
             hoveredSyllable.hasOwnProperty("similarKatakana") &&
             ~hoveredSyllable.similarKatakana.indexOf(syllable.romanji)
           );
-          syllable.highlightCurrent = (consonantIndex==i && syllableIndex==j);
+          syllable.highlightCurrent = (
+            syllable.romanji 
+            && !syllable.title
+            && syllable.romanji === hoveredSyllable.romanji
+          );
           return syllable;
         })
       ),
@@ -73,52 +76,40 @@ export default class Table extends React.Component{
   renderTd(syllable,consonantIndex,syllableIndex){
     const { options } = this.props;
     const { fontSize } = this.state;
-    const showSvgStrokes=(
+    const svgStrokes = (
       options.strokes && 
       syllable.strokes
     );
+    const kanaStyles = svgStrokes?{
+      backgroundPosition: `${syllable.strokes[0]*2}em ${syllable.strokes[1]*2}em`,
+    }:{};
     return (
       <td 
         key={`key_${consonantIndex}_${syllableIndex}`} 
         id={syllable.romanji} 
-        onMouseEnter={this.hoverOn.bind(this, syllable, consonantIndex, syllableIndex)}
+        onMouseEnter={this.hoverOn.bind(this, syllable)}
         className={classNames({
           highlightRomanji: syllable.highlightRomanji,
           highlightHiragana: (options.similar && syllable.highlightHiragana),
           highlightKatakana: (options.similar && syllable.highlightKatakana),
           highlightCurrent: syllable.highlightCurrent,
           highlightExceptions: (options.exceptions && syllable.exception),
-          hide: (!options.digraphs && syllable.digraph),
         })}
         style={{
-          backgroundColor: "hsl(195,53%,"+(options.frequency?((1-(syllable.frequency||0))*100):100)+"%)",
+          backgroundColor: `hsl(195,53%,${(options.frequency?((1-(syllable.frequency||0))*100):100)}%)`,
           fontSize: options.digraphs?Math.min(22,fontSize):fontSize,
         }}
       >
         { options.hiragana && 
           <div 
-            className={classNames(
-              "hiragana",
-              {svgStrokes: showSvgStrokes},
-            )}
-            style={
-              showSvgStrokes?{
-                backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
-              }:{}
-            }
+            className = { classNames("hiragana", {svgStrokes}) }
+            style = { kanaStyles }
           >{syllable.hiragana}</div> 
         }
         { options.katakana && 
           <div 
-            className={classNames(
-              "katakana",
-              {svgStrokes: showSvgStrokes},
-            )} 
-            style={
-              showSvgStrokes?{
-                backgroundPosition: syllable.strokes[0]*2+"em "+syllable.strokes[1]*2+"em",
-              }:{}
-            }
+            className = { classNames("katakana", {svgStrokes}) } 
+            style = { kanaStyles }
           >{syllable.katakana}</div> 
         }
         { (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
@@ -131,7 +122,7 @@ export default class Table extends React.Component{
     const { options } = this.props;
     const { consonants } = this.state;
     return (
-      <table id="table" ref="table">
+      <table ref="table">
         <colgroup>
           <col span="6" style={{
             width: this.props.options.digraphs?"9.5%":"calc(100% / 6)"
@@ -149,10 +140,11 @@ export default class Table extends React.Component{
             ( options.romanji && consonant[0].hideIfRomanji)
           )).map((consonant,consonantIndex)=>(
             <tr key={consonantIndex}>
-              {
-                consonant.map((syllable, syllableIndex)=>
-                this.renderTd(syllable, consonantIndex, syllableIndex))
-              }
+              {consonant.filter(syllable=>
+                !(!options.digraphs && syllable.digraph)
+              ).map((syllable, syllableIndex)=>
+                this.renderTd(syllable, consonantIndex, syllableIndex)
+              )}
             </tr>
           ))}
         </tbody>

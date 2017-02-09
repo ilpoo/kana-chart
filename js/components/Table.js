@@ -86,7 +86,6 @@ export default class Table extends React.Component{
     return (
       <td 
         key={`key_${consonantIndex}_${syllableIndex}`} 
-        id={syllable.romanji} 
         onMouseEnter={this.hoverOn.bind(this, syllable)}
         className={classNames({
           highlightRomanji: syllable.highlightRomanji,
@@ -94,6 +93,7 @@ export default class Table extends React.Component{
           highlightKatakana: (options.similar && syllable.highlightKatakana),
           highlightCurrent: syllable.highlightCurrent,
           highlightExceptions: (options.exceptions && syllable.exception),
+          foreign: syllable.foreign
         })}
         style={{
           backgroundColor: `hsl(195,53%,${(options.frequency?((1-(syllable.frequency||0))*100):100)}%)`,
@@ -104,7 +104,7 @@ export default class Table extends React.Component{
           <div 
             className = { classNames("hiragana", {svgStrokes}) }
             style = { kanaStyles }
-          >{syllable.hiragana}</div> 
+          >{syllable.foreign?'ー':syllable.hiragana}</div> 
         }
         { options.katakana && 
           <div 

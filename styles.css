@@ -282,13 +282,13 @@ td > div{
   font-weight: bold;
 }
 
+.highlightRomanji{
+  background-color: hsl(120,73%,90%) !important;
+}
+
 .highlightCurrent{
   font-weight: bold;
   background-color: hsl(120,73%,80%) !important;
-}
-
-.highlightRomanji{
-  background-color: hsl(120,73%,90%) !important;
 }
 
 .highlightHiragana{
@@ -333,4 +333,8 @@ td > div{
 
 .svgStrokes.katakana{
   background-image: url(./media/Table_katakana.svg);
+}
+
+.foreign{
+  color: grey;
 }

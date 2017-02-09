@@ -46,7 +46,8 @@
       "similarHiragana":["o"],
       "similarKatakana":["ma","ya"],
       "frequency":0.0543063900914,
-      "strokes":[1.9,7.05]
+      "strokes":[1.9,7.05],
+      "base":["a"]
     },
     {
       "romanji":"i",
@@ -55,7 +56,8 @@
       "pronunciation":"[i]",
       "similarHiragana":["ri"],
       "frequency":0.2770247695934,
-      "strokes":[1.9,5.6875]
+      "strokes":[1.9,5.6875],
+      "base":["i"]
     },
     {
       "romanji":"u",
@@ -63,7 +65,8 @@
       "katakana":"ウ",
       "pronunciation":"[u͍]",
       "frequency":0.277753235527,
-      "strokes":[1.9,4.325]
+      "strokes":[1.9,4.325],
+      "base":["u"]
     },
     {
       "romanji":"e",
@@ -71,7 +74,8 @@
       "katakana":"エ",
       "pronunciation":"[e]",
       "frequency":0.0476143607298,
-      "strokes":[1.9,2.9625]
+      "strokes":[1.9,2.9625],
+      "base":["e"]
     },
     {
       "romanji":"o",
@@ -81,7 +85,8 @@
       "similarHiragana":["a"],
       "similarKatakana":["ho"],
       "frequency":0.0602449838196,
-      "strokes":[1.9,1.6]
+      "strokes":[1.9,1.6],
+      "base":["o"]
     },
     {
       "romanji":"ya",
@@ -89,7 +94,7 @@
       "katakana":"ヤ",
       "pronunciation":"[ja]",
       "similarKatakana":["ma","a"],
-      "base":["a"],
+      "base":["a","ya"],
       "digraph":true,
       "frequency":0.0637982815448
     },
@@ -98,7 +103,7 @@
       "hiragana":"ゆ",
       "katakana":"ユ",
       "pronunciation":"[ju͍]",
-      "base":["u"],
+      "base":["u","yu"],
       "digraph":true,
       "frequency":0.1185482102638
     },
@@ -107,7 +112,7 @@
       "hiragana":"よ",
       "katakana":"ヨ",
       "pronunciation":"[jo]",
-      "base":["o"],
+      "base":["o","yo"],
       "similarHiragana":["na","ha","ho","ba","bo","pa","po","ma"],
       "similarKatakana":["yu","ko"],
       "digraph":true,
@@ -378,7 +383,8 @@
       "hiragana":"さぃ",
       "katakana":"サィ",
       "pronunciation":"[si]",
-      "base":["sa","i"]
+      "base":["sa","i"],
+      "foreign":true
     },
     {
       "romanji":"su",
@@ -446,7 +452,8 @@
       "hiragana":"しぇ",
       "katakana":"シェ",
       "pronunciation":"[ɕe]",
-      "base":["shi","e"]
+      "base":["shi","e"],
+      "foreign":true
     },
     {
       "romanji":"sho",
@@ -630,7 +637,8 @@
       "hiragana":"じぇ",
       "katakana":"ジェ",
       "pronunciation":"[d͡ʑe]",
-      "base":["ji","e"]
+      "base":["ji","e"],
+      "foreign":true
     },
     {
       "romanji":"jo",
@@ -750,16 +758,16 @@
       "hiragana":"てぃ",
       "katakana":"ティ",
       "pronunciation":"[ti]",
-      "exception":true,
-      "base":["te","i"]
+      "base":["te","i"],
+      "foreign":true
     },
     {
       "romanji":"tu",
       "hiragana":"とぅ",
       "katakana":"トゥ",
       "pronunciation":"[tu͍]",
-      "exception":true,
-      "base":["to","u"]
+      "base":["to","u"],
+      "foreign":true
     },
     {
       "romanji":"te",
@@ -787,9 +795,9 @@
       "hiragana":"てゅ",
       "katakana":"テュ",
       "pronunciation":"[tʲu͍]",
-      "exception":true,
       "base":["te","yu"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {"digraph":true}
   ],[
@@ -803,7 +811,6 @@
       "hiragana":"ちゃ",
       "katakana":"チャ",
       "pronunciation":"[t͡ɕa]",
-      "exception":true,
       "base":["chi","ya"]
     },
     {
@@ -811,7 +818,6 @@
       "hiragana":"ち",
       "katakana":"チ",
       "pronunciation":"[t͡ɕi]",
-      "exception":true,
       "base":["ch","i"],
       "similarHiragana":["sa","za","ki","gi","ra"],
       "frequency":0.137902402959,
@@ -822,7 +828,6 @@
       "hiragana":"ちゅ",
       "katakana":"チュ",
       "pronunciation":"[t͡ɕu͍]",
-      "exception":true,
       "base":["chi","yu"]
     },
     {
@@ -830,14 +835,14 @@
       "hiragana":"ちぇ",
       "katakana":"チェ",
       "pronunciation":"[t͡ɕe]",
-      "base":["chi","e"]
+      "base":["chi","e"],
+      "foreign":true
     },
     {
       "romanji":"cho",
       "hiragana":"ちょ",
       "katakana":"チョ",
       "pronunciation":"[t͡ɕo]",
-      "exception":true,
       "base":["chi","yo"]
     },
     {"digraph":true},
@@ -854,14 +859,16 @@
       "hiragana":"つぁ",
       "katakana":"ツァ",
       "pronunciation":"[t͡sa]",
-      "base":["tsu","a"]
+      "base":["tsu","a"],
+      "foreign":true
     },
     {
       "romanji":"tsi",
       "hiragana":"つぃ",
       "katakana":"ツィ",
       "pronunciation":"[t͡si]",
-      "base":["tsu","i"]
+      "base":["tsu","i"],
+      "foreign":true
     },
     {
       "romanji":"tsu",
@@ -875,14 +882,16 @@
       "hiragana":"つぇ",
       "katakana":"ツェ",
       "pronunciation":"[t͡se]",
-      "base":["tsu","e"]
+      "base":["tsu","e"],
+      "foreign":true
     },
     {
       "romanji":"tso",
       "hiragana":"つぉ",
       "katakana":"ツォ",
       "pronunciation":"[t͡so]",
-      "base":["tsu","o"]
+      "base":["tsu","o"],
+      "foreign":true
     },
     {"digraph":true},
     {"digraph":true},
@@ -947,14 +956,16 @@
       "hiragana":"でぃ",
       "katakana":"ディ",
       "pronunciation":"[di]",
-      "base":["de","i"]
+      "base":["de","i"],
+      "foreign":true
     },
     {
       "romanji":"du",
       "hiragana":"どぅ",
       "katakana":"ドゥ",
       "pronunciation":"[du͍]",
-      "base":["do","u"]
+      "base":["do","u"],
+      "foreign":true
     },
     {
       "romanji":"de",
@@ -981,7 +992,8 @@
       "katakana":"デュ",
       "pronunciation":"[dʲu͍]",
       "base":["de","yu"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {"digraph":true}
   ],[
@@ -1184,7 +1196,8 @@
       "katakana":"ホゥ",
       "pronunciation":"[hu͍]",
       "exception":true,
-      "base":["ho","u"]
+      "base":["ho","u"],
+      "foreign":true
     },
     {
       "romanji":"he",
@@ -1241,21 +1254,22 @@
       "hiragana":"ふぁ",
       "katakana":"ファ",
       "pronunciation":"[ɸa]",
-      "base":["fu","a"]
+      "base":["fu","a"],
+      "foreign":true
     },
     {
       "romanji":"fi",
       "hiragana":"ふぃ",
       "katakana":"フィ",
       "pronunciation":"[ɸi]",
-      "base":["fu","i"]
+      "base":["fu","i"],
+      "foreign":true
     },
     {
       "romanji":"fu",
       "hiragana":"ふ",
       "katakana":"フ",
       "pronunciation":"[ɸu͍]",
-      "exception":true,
       "base":["f","u"],
       "similarHiragana":["bu","pu"],
       "similarKatakana":["wo","wa","ra","ku"],
@@ -1267,14 +1281,16 @@
       "hiragana":"ふぇ",
       "katakana":"フェ",
       "pronunciation":"[ɸe]",
-      "base":["fu","e"]
+      "base":["fu","e"],
+      "foreign":true
     },
     {
       "romanji":"fo",
       "hiragana":"ふぉ",
       "katakana":"フォ",
       "pronunciation":"[ɸo]",
-      "base":["fu","o"]
+      "base":["fu","o"],
+      "foreign":true
     },
     {
       "romanji":"fya",
@@ -1282,7 +1298,8 @@
       "katakana":"フャ",
       "pronunciation":"[ɸʲa]",
       "base":["fu","ya"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {
       "romanji":"fyu",
@@ -1290,7 +1307,8 @@
       "katakana":"フュ",
       "pronunciation":"[ɸʲu͍]",
       "base":["fu","yu"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {
       "romanji":"fyo",
@@ -1298,7 +1316,8 @@
       "katakana":"フョ",
       "pronunciation":"[ɸʲo]",
       "base":["fu","yo"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     }
   ],[
     {
@@ -1588,7 +1607,8 @@
       "hiragana":"いぃ",
       "katakana":"イィ",
       "pronunciation":"[ji]",
-      "base":["i"]
+      "base":["i"],
+      "foreign":true
     },
     {
       "romanji":"yu",
@@ -1604,7 +1624,8 @@
       "hiragana":"いぇ",
       "katakana":"イェ",
       "pronunciation":"[je]",
-      "base":["i","e"]
+      "base":["i","e"],
+      "foreign":true
     },
     {
       "romanji":"yo",
@@ -1754,28 +1775,32 @@
       "hiragana":"うぃ",
       "katakana":"ウィ",
       "pronunciation":"[wi]",
-      "base":["u","i"]
+      "base":["u","i"],
+      "foreign":true
     },
     {
       "romanji":"wu",
       "hiragana":"うぅ",
       "katakana":"ウゥ",
       "pronunciation":"[wu͍]",
-      "base":["u"]
+      "base":["u"],
+      "foreign":true
     },
     {
       "romanji":"we",
       "hiragana":"うぇ",
       "katakana":"ウェ",
       "pronunciation":"[we]",
-      "base":["u","e"]
+      "base":["u","e"],
+      "foreign":true
     },
     {
       "romanji":"wo",
       "hiragana":"うぉ",
       "katakana":"ウォ",
       "pronunciation":"[wo]",
-      "base":["u","o"]
+      "base":["u","o"],
+      "foreign":true
     },
     {"digraph":true},
     {
@@ -1784,7 +1809,8 @@
       "katakana":"ウュ",
       "pronunciation":"[wʲu͍]",
       "base":["u","o"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {"digraph":true}
   ],[
@@ -1798,35 +1824,40 @@
       "hiragana":"ゔぁ",
       "katakana":"ヴァ",
       "pronunciation":"[va]",
-      "base":["vu","a"]
+      "base":["vu","a"],
+      "foreign":true
     },
     {
       "romanji":"vi",
       "hiragana":"ゔぃ",
       "katakana":"ヴィ",
       "pronunciation":"[vi]",
-      "base":["vu","i"]
+      "base":["vu","i"],
+      "foreign":true
     },
     {
       "romanji":"vu",
       "hiragana":"ゔ",
       "katakana":"ヴ",
       "pronunciation":"[vu͍]",
-      "base":["u","v"]
+      "base":["u","v"],
+      "foreign":true
     },
     {
       "romanji":"ve",
       "hiragana":"ゔぇ",
       "katakana":"ヴェ",
       "pronunciation":"[ve]",
-      "base":["vu","e"]
+      "base":["vu","e"],
+      "foreign":true
     },
     {
       "romanji":"vo",
       "hiragana":"ゔぉ",
       "katakana":"ヴォ",
       "pronunciation":"[vo]",
-      "base":["vu","o"]
+      "base":["vu","o"],
+      "foreign":true
     },
     {
       "romanji":"vya",
@@ -1834,7 +1865,8 @@
       "katakana":"ヴャ",
       "pronunciation":"[vʲa]",
       "base":["vu","ya"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {
       "romanji":"vyu",
@@ -1842,7 +1874,8 @@
       "katakana":"ヴュ",
       "pronunciation":"[vʲu͍]",
       "base":["vu","yu"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     },
     {
       "romanji":"vyo",
@@ -1850,7 +1883,8 @@
       "katakana":"ヴョ",
       "pronunciation":"[vʲo]",
       "base":["vu","yo"],
-      "digraph":true
+      "digraph":true,
+      "foreign":true
     }
   ]
 ]

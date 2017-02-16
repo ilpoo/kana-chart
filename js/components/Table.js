@@ -122,13 +122,18 @@ export default class Table extends React.Component{
     const { options } = this.props;
     const { consonants } = this.state;
     return (
-      <table ref="table">
+      <table 
+        ref="table"
+        className={classNames({
+          handwritten: options.handwritten,
+        })}
+      >
         <colgroup>
           <col span="6" style={{
-            width: this.props.options.digraphs?"9.5%":"calc(100% / 6)"
+            width: options.digraphs?"9.5%":"calc(100% / 6)"
           }}/>
           <col span="3" style={{
-            width: this.props.options.digraphs?"calc((100% - 6 * 9.5%) / 3)":0
+            width: options.digraphs?"calc((100% - 6 * 9.5%) / 3)":0
           }}/>
         </colgroup>
         <tbody>

@@ -180,6 +180,8 @@ nav{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  overflow-y: auto;
 }
 #menuToggle:checked ~ nav{
   transform: translateX(0);
@@ -300,6 +302,7 @@ td{
   text-align: center;
   position: static;
   overflow: hidden;
+  background-clip: padding-box;
 }
 
 td > div{
@@ -317,6 +320,10 @@ td > div{
 .highlightCurrent{
   font-weight: bold;
   background-color: hsl(120,73%,80%) !important;
+}
+
+.handwritten .hiragana,.katakana{
+  font-family: Kyouka, Arial;
 }
 
 .highlightHiragana{
@@ -364,5 +371,5 @@ td > div{
 }
 
 .foreign{
-  color: grey;
+  color: #666;
 }

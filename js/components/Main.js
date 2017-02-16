@@ -3,6 +3,7 @@ import React from "react";
 import Menu from './Menu';
 import Header from './Header';
 import Content from './Content';
+import WebFont from 'webfontloader';
 
 export default class Main extends React.Component{
   defaultOptions={
@@ -17,10 +18,27 @@ export default class Main extends React.Component{
     similar: true,
     frequency: true,
     transcription: false,
+    handwritten: false,
   }
 
   state={
-    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(this.defaultOptions))
+    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(this.defaultOptions)),
+    kyoukaSupport: false,
+  }
+
+  componentDidMount(){
+    WebFont.load({
+      custom: {
+        families: ['Kyouka'],
+        urls: ['../media/kyouka.css'],
+      },
+      active:()=>{
+        this.setState({kyoukaSupport:true});
+      },
+      inactive:()=>{
+        console.log('Your browser doesn\'t appear to be able to decode Kyouka font.');
+      },
+    });
   }
 
   changeOptions(name, bool) {
@@ -36,7 +54,11 @@ export default class Main extends React.Component{
         <input type="checkbox" id="menuToggle" />
         <Header />
         <label for="menuToggle" id="clickOutsideNav"></label>
-        <Menu options={this.state.options} changeOptions={this.changeOptions.bind(this)}/>
+        <Menu 
+          options={this.state.options} 
+          kyoukaSupport={this.state.kyoukaSupport}
+          changeOptions={this.changeOptions.bind(this)}
+        />
         <Content options={this.state.options}/>
         <label for="menuToggle" id="menuButton"></label>
       </div>

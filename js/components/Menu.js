@@ -50,6 +50,11 @@ export default class Menu extends React.Component{
       name: "frequency",
       label: "Visualize syllable frequency",
       title: "The more common a sound in Japanese is, the darker it'll appear on the chart",
+    },{
+      name: "handwritten",
+      label: "Handwritten font",
+      title: "Use a font that mimics handwriting instead",
+      hideIf: ()=>!this.props.kyoukaSupport,
     },
   ];
 
@@ -59,7 +64,7 @@ export default class Menu extends React.Component{
         <div class="menuTitle">
           <h1>Options</h1>
         </div>
-        {this.options.map(option=>(
+        {this.options.filter(option=>!(!!option.hideIf && option.hideIf())).map(option=>(
           <Checkbox 
             name={option.name} 
             label={option.label} 

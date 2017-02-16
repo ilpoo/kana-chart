@@ -20,6 +20,7 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-fontawesome": "^1.2.0",
+    "webfontloader": "^1.6.27",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.15.2"
   },

@@ -566,7 +566,7 @@
       "hiragana":"ざぃ",
       "katakana":"ザィ",
       "pronunciation":"[zi]",
-      "exception":true,
+      "foreign":true,
       "base":["za","i"]
     },
     {
@@ -1817,7 +1817,8 @@
     {
       "romanji":"v",
       "title":true,
-      "transcription":true
+      "transcription":true,
+      "diacritic":true
     },
     {
       "romanji":"va",

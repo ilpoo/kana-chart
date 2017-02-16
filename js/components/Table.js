@@ -31,9 +31,12 @@ export default class Table extends React.Component{
       setTimeout(()=>requestAnimationFrame(()=>{
         const elementSize = this.refs.table.getBoundingClientRect(),
           containerSize = this.refs.table.parentElement.getBoundingClientRect(),
-          proportion = ((containerSize.height-10)/elementSize.height)/1.02;
+          containerPadding = parseFloat(getComputedStyle(this.refs.table.parentElement).getPropertyValue('padding-top')) || 0,
+          rows = this.refs.table.getElementsByTagName('tr').length-1,
+          proportion = (containerSize.height-containerPadding*2-rows)/(elementSize.height-rows);
         let fontSize = this.state.fontSize*proportion;
-        if(fontSize/Table.originalFontSize<.7) fontSize = Table.originalFontSize*.7;
+        fontSize = Math.max(Table.originalFontSize*.9, fontSize);
+        if(this.props.options.digraphs) fontSize = Math.min(elementSize.width/15, fontSize);
         this.setState({fontSize});
       }),0);
     }
@@ -97,7 +100,7 @@ export default class Table extends React.Component{
         })}
         style={{
           backgroundColor: `hsl(195,53%,${(options.frequency?((1-(syllable.frequency||0))*100):100)}%)`,
-          fontSize: options.digraphs?Math.min(22,fontSize):fontSize,
+          fontSize,
         }}
       >
         { options.hiragana && 

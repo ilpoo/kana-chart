@@ -1,39 +1,70 @@
-var debug = process.env.NODE_ENV !== "production";
-var webpack = require('webpack');
+const debug = process.env.NODE_ENV !== "production";
+const webpack = require('webpack');
+const PurifyCSSPlugin = require('purifycss-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const extractSass = new ExtractTextPlugin('styles.min.css');
+const extractHtml = new ExtractTextPlugin('index.html');
 
 module.exports = {
   context: __dirname,
-  devtool: debug ? "inline-sourcemap" : null,
-  entry: "./js/scripts.js",
+  devtool: debug ? "inline-sourcemap" : false,
+  entry: "./js/index.js",
   module:{
     loaders:[
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
       },
       {
         test: /\.js?$/,
-        exculde: /(node_modules|bower_components)/,
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015', 'stage-0'],
-          plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy']
+          presets: [
+            'react', 
+            'es2015', 
+            'stage-0',
+          ],
+          plugins: [
+            'react-html-attrs', 
+            'transform-class-properties', 
+            'transform-decorators-legacy',
+          ],
         }
-      }
-    ]
+      },
+      {
+        test: /\.scss$/,
+        exclude: /(node_modules)/,
+        use: extractSass.extract({
+          fallback: 'style-loader',
+          use: [
+            'raw-loader', 
+            'sass-loader',
+          ],
+        }),
+      },
+      {
+        test: /\.html$/,
+        use: extractHtml.extract({
+          use: 'raw-loader!html-minifier-loader',
+        }),
+      },
+    ],
   },
   output: {
-    path: __dirname + "/js",
-    filename: "scripts.min.js"
+    path: __dirname + "/public",
+    filename: "scripts.min.js",
   },
-  plugins: debug ? [] : [
+  plugins: debug ? [
+    extractSass,
+    extractHtml,
+  ] : [
     new webpack.DefinePlugin({
       'process.env':{
-        'NODE_ENV': JSON.stringify('production')
-      }
+        'NODE_ENV': JSON.stringify('production'),
+      },
     }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       sourcemap: false,
       comments: false,
@@ -46,7 +77,15 @@ module.exports = {
         join_vars: true,
         drop_console: true,
         keep_fargs: false,
-      }
+      },
+    }),
+    extractSass,
+    extractHtml,
+    new PurifyCSSPlugin({
+      purifyOptions: {
+        info: true,
+        minify: true,
+      },
     }),
   ],
 };

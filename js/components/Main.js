@@ -30,7 +30,7 @@ export default class Main extends React.Component{
     WebFont.load({
       custom: {
         families: ['Kyouka'],
-        urls: ['../media/kyouka.css'],
+        urls: ['./media/kyouka.css'],
       },
       active:()=>{
         this.setState({kyoukaSupport:true});

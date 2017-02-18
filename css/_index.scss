@@ -1,0 +1,18 @@
+*{
+  box-sizing: border-box;
+  position: relative;
+}
+
+body{
+  font-family: Arial;
+  font-size: 22px;
+  margin: 0;
+  overflow: hidden;
+  -ms-content-zooming: none;
+}
+
+@import "Loading.scss";
+@import "Menu.scss";
+@import "Header.scss";
+@import "Content.scss";
+@import "Table.scss";

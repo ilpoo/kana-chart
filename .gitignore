@@ -37,3 +37,5 @@ jspm_packages
 .node_repl_history
 
 *.min.js
+*.min.css
+public/index.html

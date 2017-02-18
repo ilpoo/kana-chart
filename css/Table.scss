@@ -1,0 +1,103 @@
+table{
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+  table-layout: fixed;
+  transform-origin: top;
+  font-size: 22px;
+  
+  & td{
+    padding: .05em;
+    text-align: center;
+    position: static;
+    overflow: hidden;
+    background-clip: padding-box;
+    border: 1px solid black;
+
+    & > div{
+      white-space: nowrap;
+    }
+
+    &.bold{
+      font-weight: bold;
+    }
+
+    &.highlightRomanji{
+      background-color: hsl(120,73%,90%) !important;
+    }
+
+    &.highlightCurrent{
+      font-weight: bold;
+      background-color: hsl(120,73%,80%) !important;
+    }
+
+    &.highlightHiragana .hiragana, &.highlightKatakana .katakana{
+      font-weight: bold;
+      color: red;
+    }
+
+    &.highlightExceptions .romanji{
+      font-weight: bold;
+    }
+
+    & .romanji{
+      font-size: 75%;
+    }
+
+    & .pronunciation{
+      font-size: 75%;
+    }
+
+    &.hide{
+      display: none;
+    }
+
+    & .svgStrokes{
+      background-size: 26.2em;
+      height: 2em;
+      width: 2em;
+      color: transparent !important;
+      margin: 0 auto;
+    }
+
+    & .svgStrokes.hiragana{
+      background-image: url(./media/hiragana.min.svg);
+    }
+
+    & .svgStrokes.katakana{
+      background-image: url(./media/katakana.min.svg);
+    }
+
+    &.foreign{
+      color: #666;
+    }
+  }
+
+  &.handwritten{
+    & .hiragana, & .katakana{
+      font-family: Kyouka, Arial;
+      font-weight: bold;
+      letter-spacing: -.4em;
+    }
+  }
+}
+
+
+
+@media (max-width: 799px){
+  table tr:first-of-type td{
+    border-top: none;
+  }
+
+  table tr:last-of-type td{
+    border-bottom: none;
+  }
+
+  table tr td:first-of-type{
+    border-left: none;
+  }
+
+  table tr td:last-of-type{
+    border-right: none;
+  }
+}

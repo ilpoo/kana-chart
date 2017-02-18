@@ -1,0 +1,33 @@
+#loading{
+  margin: 50px auto;
+  font-size:35px;
+  font-weight: 200;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+
+  & .loadingIcon{
+    height: 20px;
+    width: 20px;
+    position: relative;
+    animation: revolve 600ms infinite linear;
+    display:inline-block;
+    margin: 0 10px;
+    
+    &::after{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 15%;
+      height: 15%;
+      content: '';
+      background-color:black;
+      border-radius: 50%;
+    }
+  }
+}
+
+
+@keyframes revolve{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}

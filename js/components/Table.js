@@ -10,6 +10,7 @@ export default class Table extends React.Component{
     fontSize: Table.originalFontSize,
   };
   lastOptions = '';
+  lastKyoukaSupport = '';
 
   componentDidMount(){
     window.addEventListener('resize', this.handleResize.bind(this));
@@ -25,9 +26,11 @@ export default class Table extends React.Component{
   }
 
   calculateFontSize(forceUpdate){
-    const newOptions=JSON.stringify(this.props.options);
-    if((newOptions!=this.lastOptions) || forceUpdate){
-      this.lastOptions=newOptions;
+    const { kyoukaSupport, options } = this.props;
+    const newOptions = JSON.stringify(options);
+    if((newOptions !== this.lastOptions) || (kyoukaSupport !== this.lastKyoukaSupport) || forceUpdate){
+      this.lastOptions = newOptions;
+      this.lastKyoukaSupport = kyoukaSupport;
       setTimeout(()=>requestAnimationFrame(()=>{
         const elementSize = this.refs.table.getBoundingClientRect(),
           containerSize = this.refs.table.parentElement.getBoundingClientRect(),
@@ -36,7 +39,7 @@ export default class Table extends React.Component{
           proportion = (containerSize.height-containerPadding*2-rows)/(elementSize.height-rows);
         let fontSize = this.state.fontSize*proportion;
         fontSize = Math.max(Table.originalFontSize*.9, fontSize);
-        if(this.props.options.digraphs) fontSize = Math.min(elementSize.width/15, fontSize);
+        if(options.digraphs) fontSize = Math.min(elementSize.width/15, fontSize);
         this.setState({fontSize});
       }),0);
     }

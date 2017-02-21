@@ -6,7 +6,7 @@ export default class Content extends React.Component{
   render(){
     return (
       <article>
-        <Table options={this.props.options}/>
+        <Table {...this.props}/>
       </article>
     );
   }

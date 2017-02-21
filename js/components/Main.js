@@ -18,7 +18,7 @@ export default class Main extends React.Component{
     similar: true,
     frequency: true,
     transcription: false,
-    handwritten: false,
+    handwritten: true,
   }
 
   state={
@@ -32,11 +32,15 @@ export default class Main extends React.Component{
         families: ['Kyouka'],
         urls: ['./media/kyouka.css'],
       },
-      active:()=>{
-        this.setState({kyoukaSupport:true});
-      },
-      inactive:()=>{
+      active: this.setState.bind(this, {kyoukaSupport: true}),
+      inactive: ()=>{
         console.log('Your browser doesn\'t appear to be able to decode Kyouka font.');
+        if(this.state.options.handwritten){
+          const options = this.state.options;
+          options.handwritten = false;
+          this.setState({ options });
+          console.log('Handwritten font option was disabled.');
+        }
       },
     });
   }
@@ -59,7 +63,10 @@ export default class Main extends React.Component{
           kyoukaSupport={this.state.kyoukaSupport}
           changeOptions={this.changeOptions.bind(this)}
         />
-        <Content options={this.state.options}/>
+        <Content 
+          options={this.state.options}
+          kyoukaSupport={this.state.kyoukaSupport}
+        />
         <label for="menuToggle" id="menuButton"></label>
       </div>
     );

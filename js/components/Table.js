@@ -39,7 +39,17 @@ export default class Table extends React.Component{
           proportion = (containerSize.height-containerPadding*2-rows)/(elementSize.height-rows);
         let fontSize = this.state.fontSize*proportion;
         fontSize = Math.max(Table.originalFontSize*.9, fontSize);
-        if(options.digraphs) fontSize = Math.min(elementSize.width/15, fontSize);
+        let verticalSpace;
+        if(options.handwritten){
+          if(options.digraphs) verticalSpace = 15;
+          else if(options.transcription) verticalSpace = 9;
+          else verticalSpace = 6;
+        }else{
+          if(options.digraphs) verticalSpace = 18;
+          else if(options.transcription) verticalSpace = 12;
+          else verticalSpace = 7.5;
+        }
+        fontSize = Math.min(elementSize.width/verticalSpace, fontSize);
         this.setState({fontSize});
       }),0);
     }
@@ -136,10 +146,18 @@ export default class Table extends React.Component{
       >
         <colgroup>
           <col span="6" style={{
-            width: options.digraphs?"9.5%":"calc(100% / 6)"
+            width: options.digraphs ?
+                options.transcription ? 
+                  "calc(100% / 9)"
+                  : "9.5%"
+              :"calc(100% / 6)"
           }}/>
           <col span="3" style={{
-            width: options.digraphs?"calc((100% - 6 * 9.5%) / 3)":0
+            width: options.digraphs?
+                options.transcription ? 
+                "calc(100% / 9)"
+                : "calc((100% - 6 * 9.5%) / 3)"
+              :0
           }}/>
         </colgroup>
         <tbody>

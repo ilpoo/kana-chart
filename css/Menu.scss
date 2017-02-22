@@ -3,7 +3,9 @@ nav{
   top: 0;
   left: 0;
 
-  width: 300px;
+  width: 80%;
+  min-width: 300px;
+  max-width: 350px;
   height: 100vh;
   padding: 10px;
 
@@ -25,7 +27,11 @@ nav{
   
   #menuToggle:checked ~ &{
     transform: translateX(0);
-    box-shadow: 0 0 70px rgba(0,0,0,1);
+  }
+
+  label{
+    display: block;
+    width: 100%;
   }
 }
 
@@ -37,12 +43,31 @@ nav{
   left: 0;
   z-index: 99;
   cursor: pointer;
-  display: none;
+  background-color: black;
+  display: none; 
   
   #menuToggle:checked ~ &{
+    opacity: .4;
     display: block;
   }
 }
+
+@supports (pointer-events: none){
+  #clickOutsideNav{
+    display: block;
+    background-color: black;
+    opacity: 0;
+    transition: opacity .4s;
+    pointer-events: none;
+    
+    #menuToggle:checked ~ &{
+      opacity: .4;
+      pointer-events: auto;
+    }
+  }
+}
+
+
 
 
 
@@ -112,6 +137,7 @@ nav{
     position: absolute;
     top: 50px;
     left: 10px;
+    width: 300px;
     transform: translateX(0);
     background-color: transparent;
     color: black;

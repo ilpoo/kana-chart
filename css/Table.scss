@@ -13,6 +13,10 @@ table{
     overflow: hidden;
     background-clip: padding-box;
     border: 1px solid black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     & > div{
       white-space: nowrap;
@@ -27,8 +31,11 @@ table{
     }
 
     &.highlightCurrent{
-      font-weight: bold;
       background-color: hsl(120,73%,80%) !important;
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
     }
 
     &.highlightHiragana .hiragana, &.highlightKatakana .katakana{
@@ -40,11 +47,7 @@ table{
       font-weight: bold;
     }
 
-    & .romanji{
-      font-size: 75%;
-    }
-
-    & .pronunciation{
+    & .romanji, & .pronunciation{
       font-size: 75%;
     }
 
@@ -79,6 +82,10 @@ table{
       font-weight: bold;
       letter-spacing: -.4em;
       transform: translateX(-.2em);
+
+    }
+    & .romanji, & .pronunciation{
+      font-size: 50%;
     }
   }
 }

@@ -91,7 +91,6 @@ export default class Table extends React.Component{
 
   renderTd(syllable,consonantIndex,syllableIndex){
     const { options } = this.props;
-    const { fontSize } = this.state;
     const svgStrokes = (
       options.strokes && 
       syllable.strokes
@@ -113,7 +112,6 @@ export default class Table extends React.Component{
         })}
         style={{
           backgroundColor: `hsl(195,53%,${(options.frequency?((1-(syllable.frequency||0))*100):100)}%)`,
-          fontSize,
         }}
       >
         { options.hiragana && 
@@ -136,13 +134,14 @@ export default class Table extends React.Component{
 
   render(){
     const { options } = this.props;
-    const { consonants } = this.state;
+    const { consonants, fontSize } = this.state;
     return (
       <table 
         ref="table"
         className={classNames({
           handwritten: options.handwritten,
         })}
+        style={{ fontSize }}
       >
         <colgroup>
           <col span="6" style={{

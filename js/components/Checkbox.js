@@ -2,15 +2,6 @@
 import React from "react";
 
 export default class Checkbox extends React.Component{
-  static propTypes={
-    changeOptions: React.PropTypes.func,
-    name: React.PropTypes.string,
-    label: React.PropTypes.string,
-    title: React.PropTypes.string,
-    separate: React.PropTypes.bool,
-    checked: React.PropTypes.bool,
-  }
-
   onCheck(){
     const { name, checked } = this.props;
     this.props.changeOptions(name, !checked);

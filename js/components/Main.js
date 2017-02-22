@@ -3,7 +3,7 @@ import React from "react";
 import Menu from './Menu';
 import Header from './Header';
 import Content from './Content';
-import WebFont from 'webfontloader';
+import fontLoaded from '../font-loaded';
 
 export default class Main extends React.Component{
   defaultOptions={
@@ -18,7 +18,7 @@ export default class Main extends React.Component{
     similar: true,
     frequency: true,
     transcription: false,
-    handwritten: true,
+    handwritten: false,
   }
 
   state={
@@ -27,22 +27,18 @@ export default class Main extends React.Component{
   }
 
   componentDidMount(){
-    WebFont.load({
-      custom: {
-        families: ['Kyouka'],
-        urls: ['./media/kyouka.css'],
-      },
-      active: this.setState.bind(this, {kyoukaSupport: true}),
-      inactive: ()=>{
-        console.log('Your browser doesn\'t appear to be able to decode Kyouka font.');
-        if(this.state.options.handwritten){
-          const options = this.state.options;
-          options.handwritten = false;
-          this.setState({ options });
-          console.log('Handwritten font option was disabled.');
+    const fontCheck = setInterval((()=>{
+      let fontChecks = 0;
+      return ()=>{
+        if(fontLoaded('Kyouka')){
+          this.setState({kyoukaSupport: true});
+          clearInterval(fontCheck);
+        }else if(++fontChecks>20){
+          clearInterval(fontCheck);
+          console.log('Failed to load Kyouka.');
         }
-      },
-    });
+      }
+    })(), 200);
   }
 
   changeOptions(name, bool) {

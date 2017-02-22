@@ -1,8 +1,0 @@
-@font-face {
-  font-family: 'Kyouka';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Kyouka'), 
-    url(kyouka.woff) format('woff'),
-    url(kyouka.ttf) format('ttf');
-}

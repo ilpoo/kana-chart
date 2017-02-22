@@ -16,16 +16,14 @@ export default (()=>{
     document.body.removeChild(span);
   });
 
-  return font=>{
-    return !baseFonts.some(baseFont=>{
-      span.style.fontFamily　=　`${font}, ${baseFont}`;
-      document.body.appendChild(span);
-      const matched = (
-        span.offsetWidth  === measurements[baseFont].width &&
-        span.offsetHeight === measurements[baseFont].height
-      );
-      document.body.removeChild(span);
-      return matched;
-    });
-  }
+  return font => !baseFonts.some(baseFont=>{
+    span.style.fontFamily　=　`${font}, ${baseFont}`;
+    document.body.appendChild(span);
+    const matched = (
+      span.offsetWidth  === measurements[baseFont].width &&
+      span.offsetHeight === measurements[baseFont].height
+    );
+    document.body.removeChild(span);
+    return matched;
+  });
 })();

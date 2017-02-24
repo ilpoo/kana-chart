@@ -54,7 +54,6 @@ export default class Menu extends React.Component{
       name: "handwritten",
       label: "Handwritten font",
       title: "Use a font that mimics handwriting instead",
-      hideIf: ()=>!this.props.kyoukaSupport,
     },
   ];
 
@@ -64,7 +63,7 @@ export default class Menu extends React.Component{
         <div class="menuTitle">
           <h1>Options</h1>
         </div>
-        {this.options.filter(option=>!(!!option.hideIf && option.hideIf())).map(option=>(
+        {this.options.map(option=>(
           <Checkbox 
             name={option.name} 
             label={option.label} 

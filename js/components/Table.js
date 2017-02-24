@@ -10,7 +10,7 @@ export default class Table extends React.Component{
     fontSize: Table.originalFontSize,
   };
   lastOptions = '';
-  lastKyoukaSupport = '';
+  lastkyoukashoLoaded = '';
 
   componentDidMount(){
     window.addEventListener('resize', this.handleResize.bind(this));
@@ -26,11 +26,11 @@ export default class Table extends React.Component{
   }
 
   calculateFontSize(forceUpdate){
-    const { kyoukaSupport, options } = this.props;
+    const { kyoukashoLoaded, options } = this.props;
     const newOptions = JSON.stringify(options);
-    if((newOptions !== this.lastOptions) || (kyoukaSupport !== this.lastKyoukaSupport) || forceUpdate){
+    if((newOptions !== this.lastOptions) || (kyoukashoLoaded !== this.lastkyoukashoLoaded) || forceUpdate){
       this.lastOptions = newOptions;
-      this.lastKyoukaSupport = kyoukaSupport;
+      this.lastkyoukashoLoaded = kyoukashoLoaded;
       setTimeout(()=>requestAnimationFrame(()=>{
         const elementSize = this.refs.table.getBoundingClientRect(),
           containerSize = this.refs.table.parentElement.getBoundingClientRect(),
@@ -152,7 +152,7 @@ export default class Table extends React.Component{
               :"calc(100% / 6)"
           }}/>
           <col span="3" style={{
-            width: options.digraphs?
+            width: options.digraphs ?
                 options.transcription ? 
                 "calc(100% / 9)"
                 : "calc((100% - 6 * 9.5%) / 3)"

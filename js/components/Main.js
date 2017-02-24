@@ -18,20 +18,20 @@ export default class Main extends React.Component{
     similar: true,
     frequency: true,
     transcription: false,
-    handwritten: false,
+    handwritten: true,
   }
 
   state={
     options: JSON.parse(localStorage.getItem('options') || JSON.stringify(this.defaultOptions)),
-    kyoukaSupport: false,
+    kyoukashoLoaded: false,
   }
 
   componentDidMount(){
     const fontCheck = setInterval((()=>{
       let fontChecks = 0;
       return ()=>{
-        if(fontLoaded('Kyouka')){
-          this.setState({kyoukaSupport: true});
+        if(fontLoaded('Kyoukasho')){
+          this.setState({kyoukashoLoaded: true});
           clearInterval(fontCheck);
         }else if(++fontChecks>20){
           clearInterval(fontCheck);
@@ -56,12 +56,11 @@ export default class Main extends React.Component{
         <label for="menuToggle" id="clickOutsideNav"></label>
         <Menu 
           options={this.state.options} 
-          kyoukaSupport={this.state.kyoukaSupport}
           changeOptions={this.changeOptions.bind(this)}
         />
         <Content 
           options={this.state.options}
-          kyoukaSupport={this.state.kyoukaSupport}
+          kyoukashoLoaded={this.state.kyoukashoLoaded}
         />
         <label for="menuToggle" id="menuButton"></label>
       </div>

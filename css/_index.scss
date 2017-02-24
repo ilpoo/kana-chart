@@ -1,10 +1,11 @@
 @font-face {
-  font-family: 'Kyouka';
+  font-family: 'Kyoukasho';
   font-style: normal;
   font-weight: 400;
-  src: local('Kyouka'), 
-    url(media/kyouka.woff) format('woff'),
-    url(media/kyouka.ttf) format('ttf');
+  src:
+    url(media/kyoukasho.subset.kana.woff2) format('woff2'),
+    url(media/kyoukasho.subset.kana.woff) format('woff'),
+    url(media/kyoukasho.subset.kana.ttf) format('ttf');
 }
 
 *{

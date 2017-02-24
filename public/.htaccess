@@ -1,5 +1,5 @@
 # One month for most static assets
-<filesMatch ".(css|jpg|jpeg|gif|js|ico|png|svg)$">
+<filesMatch ".(css|jpg|jpeg|gif|js|ico|png|svg|ttf|woff|woff2)$">
 Header set Cache-Control "max-age=31536000, public"
 </filesMatch>
 <ifModule mod_gzip.c>

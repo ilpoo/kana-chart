@@ -1,6 +1,7 @@
 table{
   border-collapse: collapse;
   margin: 0 auto;
+  min-height: 100%;
   width: 100%;
   table-layout: fixed;
   transform-origin: top;
@@ -17,6 +18,7 @@ table{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    position: relative;
 
     & > div{
       white-space: nowrap;
@@ -90,8 +92,6 @@ table{
   }
 }
 
-
-
 @media (max-width: 799px){
   table tr:first-of-type td{
     border-top: none;
@@ -107,5 +107,14 @@ table{
 
   table tr td:last-of-type{
     border-right: none;
+  }
+}
+
+@media (min-width: 800px){
+  table{
+    margin: 0 10px;
+    width: calc(100% - 10px);
+    min-height: calc(100% - 4px);
+    max-width: 700px;
   }
 }

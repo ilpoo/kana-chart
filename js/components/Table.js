@@ -7,7 +7,6 @@ export default class Table extends React.Component{
   static originalFontSize = 22;
   state = {
     consonants: alphabet,
-    fontSize: Table.originalFontSize,
   };
   lastOptions = '';
   lastkyoukashoLoaded = '';
@@ -28,17 +27,32 @@ export default class Table extends React.Component{
   calculateFontSize(forceUpdate){
     const { kyoukashoLoaded, options } = this.props;
     const newOptions = JSON.stringify(options);
-    if((newOptions !== this.lastOptions) || (kyoukashoLoaded !== this.lastkyoukashoLoaded) || forceUpdate){
+
+    if(
+      (newOptions !== this.lastOptions) || 
+      (kyoukashoLoaded !== this.lastkyoukashoLoaded) || 
+      forceUpdate
+    ){
+
       this.lastOptions = newOptions;
       this.lastkyoukashoLoaded = kyoukashoLoaded;
-      setTimeout(()=>requestAnimationFrame(()=>{
-        const elementSize = this.refs.table.getBoundingClientRect(),
-          containerSize = this.refs.table.parentElement.getBoundingClientRect(),
-          containerPadding = parseFloat(getComputedStyle(this.refs.table.parentElement).getPropertyValue('padding-top')) || 0,
-          rows = this.refs.table.getElementsByTagName('tr').length-1,
-          proportion = (containerSize.height-containerPadding*2-rows)/(elementSize.height-rows);
-        let fontSize = this.state.fontSize*proportion;
-        fontSize = Math.max(Table.originalFontSize*.9, fontSize);
+
+      const table = this.refs.table;
+      const article = table.parentElement;
+      const rows = table.getElementsByTagName('tr');
+      const cell = rows[1].getElementsByTagName('td')[1];
+
+      table.style.fontSize = `${Table.originalFontSize}px`;
+
+      requestAnimationFrame(()=>{
+        const tableSize = table.getBoundingClientRect();
+        const articleSize = article.getBoundingClientRect();
+        const cellStyles = getComputedStyle(cell);
+        const cellHeight = cell.clientHeight;
+        const contentHeight = cell.firstChild.getBoundingClientRect().height;
+        const proportion = (cellHeight / contentHeight);
+        let fontSize = parseFloat(table.style.fontSize) * proportion * .9;
+
         let verticalSpace;
         if(options.handwritten){
           if(options.digraphs) verticalSpace = 15;
@@ -49,9 +63,13 @@ export default class Table extends React.Component{
           else if(options.transcription) verticalSpace = 12;
           else verticalSpace = 7.5;
         }
-        fontSize = Math.min(elementSize.width/verticalSpace, fontSize);
-        this.setState({fontSize});
-      }),0);
+        fontSize = ~~Math.min(tableSize.width/verticalSpace, fontSize);
+        fontSize = ~~Math.max(Table.originalFontSize, fontSize);
+
+        table.style.fontSize = `${fontSize}px`;
+
+      });
+
     }
   }
 
@@ -89,7 +107,7 @@ export default class Table extends React.Component{
     });
   }
 
-  renderTd(syllable,consonantIndex,syllableIndex){
+  renderTd(syllable, consonantIndex, syllableIndex){
     const { options } = this.props;
     const svgStrokes = (
       options.strokes && 
@@ -114,6 +132,7 @@ export default class Table extends React.Component{
           backgroundColor: `hsl(195,53%,${(options.frequency?((1-(syllable.frequency||0))*100):100)}%)`,
         }}
       >
+        <span>
         { options.hiragana && 
           <div 
             className = { classNames("hiragana", {svgStrokes}) }
@@ -128,20 +147,20 @@ export default class Table extends React.Component{
         }
         { (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
         { (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
+        </span>
       </td>
     );
   }
 
   render(){
     const { options } = this.props;
-    const { consonants, fontSize } = this.state;
+    const { consonants } = this.state;
     return (
       <table 
         ref="table"
         className={classNames({
           handwritten: options.handwritten,
         })}
-        style={{ fontSize }}
       >
         <colgroup>
           <col span="6" style={{
@@ -149,15 +168,13 @@ export default class Table extends React.Component{
                 options.transcription ? 
                   "calc(100% / 9)"
                   : "9.5%"
-              :"calc(100% / 6)"
+              :""
           }}/>
-          <col span="3" style={{
-            width: options.digraphs ?
-                options.transcription ? 
-                "calc(100% / 9)"
-                : "calc((100% - 6 * 9.5%) / 3)"
-              :0
-          }}/>
+          {options.digraphs && <col span="3" style={{
+            width: options.transcription ? 
+              "calc(100% / 9)"
+              : "calc((100% - 6 * 9.5%) / 3)"
+          }}/>}
         </colgroup>
         <tbody>
           {consonants.filter(consonant=>!(

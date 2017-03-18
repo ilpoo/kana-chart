@@ -6,7 +6,7 @@ export default class Header extends React.Component{
     return (
       <header>
         <div class="menuTitle">
-          <h1>Japanese syllabary</h1>
+          <h1>Kana Chart</h1>
         </div>
       </header>
     );

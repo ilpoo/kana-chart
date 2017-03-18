@@ -1,5 +1,5 @@
 {
-	"name": "Japanese Syllabary",
+	"name": "Kana Chart",
 	"icons": [
 		{
 			"src": "\/android-chrome-192x192.png",
@@ -8,5 +8,6 @@
 		}
 	],
 	"theme_color": "#c70025",
+  "background_color": "#ffffff",
 	"display": "standalone"
 }

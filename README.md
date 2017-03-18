@@ -1,4 +1,4 @@
-# Japanese Syllabary
+# Kana Chart
 A single page web app built using React. It's an interactive syllabary chart to help you start to learn writing and reading Japanese. The app can visualize how common each sound is and helps you distinguish between similar kanas. You may also choose which things you want the app to display so you don't get overwhelmed by information you don't need.
 
 The app is live at http://japanese.oksanen.co/

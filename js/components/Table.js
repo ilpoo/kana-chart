@@ -1,12 +1,12 @@
 'use strict';
 import React from "react";
-import alphabet from "../alphabet.json";
+import syllabary from "../syllabary.json";
 import classNames from "classnames/dedupe.js";
 
 export default class Table extends React.Component{
   static originalFontSize = 22;
   state = {
-    consonants: alphabet,
+    consonants: syllabary,
     transpose: this.isLandscape(),
   };
   lastOptions = '';

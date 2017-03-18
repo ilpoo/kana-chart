@@ -19,9 +19,15 @@ table{
     -ms-user-select: none;
     user-select: none;
     position: relative;
-
-    & > div{
-      white-space: nowrap;
+    
+    & > span {
+      display: table;
+      margin: 0 auto;
+      
+      & > div {
+        white-space: nowrap;
+        display: table-row;
+      }
     }
 
     &.bold{

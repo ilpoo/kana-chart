@@ -7,9 +7,11 @@ export default class Table extends React.Component{
   static originalFontSize = 22;
   state = {
     consonants: alphabet,
+    transpose: this.isLandscape(),
   };
   lastOptions = '';
   lastkyoukashoLoaded = '';
+  lastTranspose = '';
 
   componentDidMount(){
     window.addEventListener('resize', this.handleResize.bind(this));
@@ -26,55 +28,73 @@ export default class Table extends React.Component{
 
   calculateFontSize(forceUpdate){
     const { kyoukashoLoaded, options } = this.props;
+    const { transpose } = this.state;
     const newOptions = JSON.stringify(options);
 
     if(
       (newOptions !== this.lastOptions) || 
       (kyoukashoLoaded !== this.lastkyoukashoLoaded) || 
+      (transpose !== this.lastTranspose) ||
       forceUpdate
     ){
 
       this.lastOptions = newOptions;
       this.lastkyoukashoLoaded = kyoukashoLoaded;
+      this.lastTranspose = transpose;
 
       const table = this.refs.table;
-      const article = table.parentElement;
-      const rows = table.getElementsByTagName('tr');
-      const cell = rows[1].getElementsByTagName('td')[1];
-
       table.style.fontSize = `${Table.originalFontSize}px`;
+      const rows = table.getElementsByTagName('tr');
+      const cell = transpose ? 
+        (!options.transcription && options.digraphs) ?
+          rows[rows.length-1].getElementsByTagName('td')[2]:
+          (!options.transcription && !options.digraphs && !options.transcription) ?
+            rows[1].getElementsByTagName('td')[1]:
+            rows[2].getElementsByTagName('td')[0]:
+        (options.digraphs) ?
+          rows[2].getElementsByTagName('td')[6]:
+          rows[1].getElementsByTagName('td')[1];
 
       requestAnimationFrame(()=>{
-        const tableSize = table.getBoundingClientRect();
-        const articleSize = article.getBoundingClientRect();
-        const cellStyles = getComputedStyle(cell);
-        const cellHeight = cell.clientHeight;
-        const contentHeight = cell.firstChild.getBoundingClientRect().height;
-        const proportion = (cellHeight / contentHeight);
-        let fontSize = parseFloat(table.style.fontSize) * proportion * .9;
-
-        let verticalSpace;
-        if(options.handwritten){
-          if(options.digraphs) verticalSpace = 15;
-          else if(options.transcription) verticalSpace = 9;
-          else verticalSpace = 6;
-        }else{
-          if(options.digraphs) verticalSpace = 18;
-          else if(options.transcription) verticalSpace = 12;
-          else verticalSpace = 7.5;
-        }
-        fontSize = ~~Math.min(tableSize.width/verticalSpace, fontSize);
-        fontSize = ~~Math.max(Table.originalFontSize, fontSize);
+        const cellSize = cell.getBoundingClientRect();
+        const contentSize = cell.firstChild.getBoundingClientRect();
+        const proportion = Math.min(
+          (cellSize.height / contentSize.height), 
+          (cellSize.width / (contentSize.width*1.3))
+        );
+        const fontSize = ~~Math.max(
+          Table.originalFontSize, 
+          Table.originalFontSize * proportion * .9
+        );
 
         table.style.fontSize = `${fontSize}px`;
-
       });
-
     }
   }
 
   handleResize(){
-    this.calculateFontSize(true);
+    const transpose = this.isLandscape();
+    if(transpose !== this.state.transpose){
+      this.setState({
+        transpose,
+      });
+    }else{
+      this.calculateFontSize(true);
+    }
+  }
+
+  transposeArray(array){
+    const newArray = [...Array(array[0].length)].map(i=>[...Array(array.length)]);
+    for(let i=0; i < array.length; i++) {
+      for (let j = 0; j < array[0].length; j++) {
+        newArray[j][array.length-1-i] = array[i][j];
+      }
+    }
+    return newArray;
+  }
+
+  isLandscape(){
+    return window.innerWidth < 800 && window.innerWidth > window.innerHeight;
   }
 
   hoverOn(hoveredSyllable){
@@ -154,7 +174,59 @@ export default class Table extends React.Component{
 
   render(){
     const { options } = this.props;
-    const { consonants } = this.state;
+    const { consonants, transpose } = this.state;
+
+    const filteredConsonants = consonants.filter(consonant=>!(
+      ( options.transcription && consonant[0].noTranscription) ||
+      (!options.transcription && consonant[0].transcription) ||
+      (!options.diacritics && consonant[0].diacritic) ||
+      ( options.digraphs && consonant[0].hideIfDigraph) ||
+      ( options.romanji && consonant[0].hideIfRomanji)
+    ));
+    filteredConsonants.forEach((consonant, i)=>{
+      filteredConsonants[i] = consonant.filter(syllable=>
+        !(!options.digraphs && syllable.digraph)
+      );
+    });
+    const transposedConsonants = transpose ? 
+      this.transposeArray(filteredConsonants) : 
+      filteredConsonants;
+    const width = transposedConsonants[0].length;
+
+    const colgroup = transpose ? (
+      options.romanji ? (
+        <colgroup>
+          <col span={width-1} style={{
+            width: `${100/width}%`
+          }}/>
+        </colgroup>
+      ) : (
+        <colgroup>
+          <col span={width-1} style={{
+            width: `${200/(width*2-1)}%`
+          }}/>
+          <col span="1" style={{
+            width: `${100/(width*2-1)}%`
+          }}/>
+        </colgroup>
+      )
+    ) : (
+      <colgroup>
+        <col span="6" style={{
+          width: options.digraphs ?
+              options.transcription ? 
+                "calc(100% / 9)"
+                : "9.5%"
+            :""
+        }}/>
+        {options.digraphs && <col span="3" style={{
+          width: options.transcription ? 
+            "calc(100% / 9)"
+            : "calc((100% - 6 * 9.5%) / 3)"
+        }}/>}
+      </colgroup>
+    );
+
     return (
       <table 
         ref="table"
@@ -162,36 +234,15 @@ export default class Table extends React.Component{
           handwritten: options.handwritten,
         })}
       >
-        <colgroup>
-          <col span="6" style={{
-            width: options.digraphs ?
-                options.transcription ? 
-                  "calc(100% / 9)"
-                  : "9.5%"
-              :""
-          }}/>
-          {options.digraphs && <col span="3" style={{
-            width: options.transcription ? 
-              "calc(100% / 9)"
-              : "calc((100% - 6 * 9.5%) / 3)"
-          }}/>}
-        </colgroup>
+        { colgroup }
         <tbody>
-          {consonants.filter(consonant=>!(
-            ( options.transcription && consonant[0].noTranscription) ||
-            (!options.transcription && consonant[0].transcription) ||
-            (!options.diacritics && consonant[0].diacritic) ||
-            ( options.digraphs && consonant[0].hideIfDigraph) ||
-            ( options.romanji && consonant[0].hideIfRomanji)
-          )).map((consonant,consonantIndex)=>(
+          { transposedConsonants.map((consonant,consonantIndex)=>(
             <tr key={consonantIndex}>
-              {consonant.filter(syllable=>
-                !(!options.digraphs && syllable.digraph)
-              ).map((syllable, syllableIndex)=>
+              {consonant.map((syllable, syllableIndex)=>
                 this.renderTd(syllable, consonantIndex, syllableIndex)
               )}
             </tr>
-          ))}
+          )) }
         </tbody>
       </table>
     );

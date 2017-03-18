@@ -157,7 +157,7 @@ export default class Table extends React.Component{
           <div 
             className = { classNames("hiragana", {svgStrokes}) }
             style = { kanaStyles }
-          >{syllable.foreign?'ー':syllable.hiragana}</div> 
+          >{syllable.foreign&&!syllable.hiragana?'ー':syllable.hiragana}</div> 
         }
         { options.katakana && 
           <div 

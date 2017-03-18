@@ -1,165 +1,103 @@
-nav{
-  position: fixed;
+.react-swipe-menu{
+  width: 0;
+  height: 0;
   top: 0;
   left: 0;
+  position: absolute;
 
-  width: 80%;
-  min-width: 300px;
-  max-width: 350px;
-  height: 100vh;
-  padding: 10px;
-
-  background: #C70025;
-  color: white;
-  font-size: 16px;
-
-  z-index: 100;
-  transform: translateX(-100%);
-  padding-top: 60px;
-  transition: transform .4s, box-shadow .4s;
-  line-height: 40px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  overflow-y: auto;
-  
-  #menuToggle:checked ~ &{
-    transform: translateX(0);
-  }
-
-  label{
-    display: block;
-    width: 100%;
-  }
-}
-
-#clickOutsideNav{
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99;
-  cursor: pointer;
-  background-color: black;
-  display: none; 
-  
-  #menuToggle:checked ~ &{
-    opacity: .4;
-    display: block;
-  }
-}
-
-@supports (pointer-events: none){
-  #clickOutsideNav{
-    display: block;
-    background-color: black;
-    opacity: 0;
-    transition: opacity .4s;
-    pointer-events: none;
-    
-    #menuToggle:checked ~ &{
-      opacity: .4;
-      pointer-events: auto;
-    }
-  }
-}
-
-
-
-
-
-
-
-#menuToggle{display: none;}
-
-
-
-
-
-
-#menuButton{
-  font-size: 44px; /* use this to control the icon size */
-  position: fixed;
-  top: 3px;
-  left: 3px;
-  z-index: 101;
-  display: block;
-  width: .64em;
-  height: .07em;
-  border: 0 solid transparent;
-  border-width: .468em .18em;
-  background-color: white;
-  background-clip: content-box; 
-  box-sizing: content-box;
-  cursor: pointer;
-  transition: transform .4s, background-color .3s;
-  
-
-  &::before, &::after{
-    content: '';
-    display: block;
-    width: .64em;
-    height: .07em;
-    position: absolute;
-    left: 0;
+  & > .react-swipe-menu-navigation{
+    position: fixed;
     top: 0;
-    background-color: white;
+    left: 0;
+
+    width: 80%;
+    min-width: 300px;
+    max-width: 350px;
+    height: 100vh;
+    padding: 10px;
+
+    background: #C70025;
+    color: white;
+    font-size: 16px;
+
+    transform: translateX(-100%);
+    padding-top: 60px;
     transition: transform .4s;
-    transform: translateY(-.24em);
-  }
-  &::after{
-    transform: translateY(.24em);
-  }
+    line-height: 40px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-  #menuToggle:checked ~ &{
-    transform: rotate(-90deg);
-    background-color: transparent;
-    &::before{
-      transform: rotate(45deg);
+    overflow-y: auto;
+
+    @media (min-width: 800px){
+      &{
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        width: 300px;
+        transform: translateX(0);
+        background-color: transparent;
+        color: black;
+        padding-top: 80px;
+        height: calc(100vh - 50px);
+      }
     }
-    &::after{
-      transform: rotate(-45deg);
-    }
-  }
-
-}
-
-
-
-
-
-@media (min-width: 800px){
-  nav{
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    width: 300px;
-    transform: translateX(0);
-    background-color: transparent;
-    color: black;
-    box-shadow: none !important;
-    padding-top: 80px;
-    height: calc(100vh - 50px);
     
-    & .menuTitle{
-      top: 30px;
+    @media (min-width: 1000px){
+      &{
+        left: calc(50vw - 1000px / 2 + 10px);
+      }
     }
   }
 
-  #menuButton{
-    display: none;
+  & > .react-swipe-menu-backdrop{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .4s;
   }
 
-  #menuToggle ~ #clickOutsideNav{
-    display: none !important;
-  }
-}
+  & > .react-swipe-menu-toggle{
+    font-size: 50px;
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    transition: all .4s;
 
-@media (min-width: 1000px){
-  nav{
-    left: calc(50vw - 1000px / 2 + 10px);
+    @media (min-width: 800px){
+      &{
+        display: none;
+      }
+    }
+
+    & > .react-swipe-menu-line{
+      position: absolute;
+
+      background: white;
+      width: .64em;
+      height: 3px;
+      left: .18em;
+
+      transition: all .4s;
+
+      &:first-of-type{
+        top: .22em;
+      }
+
+      &:nth-of-type(2){
+        top: .468em;
+      }
+
+      &:last-of-type{
+        top: .71em;
+      }
+    }
   }
 }

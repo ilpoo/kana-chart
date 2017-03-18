@@ -7,7 +7,6 @@ header{
   line-height: 50px;
   background: #C70025;
   color: white;
-  z-index: 90;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -26,10 +25,12 @@ header{
     margin: 0;
     display: inline-block;
     font-size: 25px;
+    line-height: 50px;
     transform: translateY(-1px);
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
     margin-left: 55px;
+    vertical-align: -4px;
   }
 }
 

@@ -4,25 +4,12 @@ import Menu from './Menu';
 import Header from './Header';
 import Content from './Content';
 import fontLoaded from '../font-loaded';
+import Checkbox from './Checkbox';
+import optionsData from '../options.json';
 
 export default class Main extends React.Component{
-  defaultOptions={
-    hiragana: true,
-    romanji: true,
-    katakana: false,
-    pronunciation: false,
-    diacritics: false,
-    digraphs: false,
-    strokes: false,
-    exceptions: true,
-    similar: true,
-    frequency: true,
-    transcription: false,
-    handwritten: true,
-  }
-
   state={
-    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(this.defaultOptions)),
+    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(optionsData.defaultOptions)),
     kyoukashoLoaded: false,
   }
 
@@ -41,7 +28,7 @@ export default class Main extends React.Component{
     })(), 200);
   }
 
-  changeOptions(name, bool) {
+  changeOptions = (name, bool) => {
     const options = JSON.parse(JSON.stringify(this.state.options));
     options[name] = bool;
     this.setState({options: options});
@@ -51,18 +38,27 @@ export default class Main extends React.Component{
   render(){
     return(
       <div>
-        <input type="checkbox" id="menuToggle" />
         <Header />
-        <label for="menuToggle" id="clickOutsideNav"></label>
-        <Menu 
-          options={this.state.options} 
-          changeOptions={this.changeOptions.bind(this)}
-        />
         <Content 
           options={this.state.options}
           kyoukashoLoaded={this.state.kyoukashoLoaded}
         />
-        <label for="menuToggle" id="menuButton"></label>
+        <Menu>
+          <div class="menuTitle">
+            <h1>Options</h1>
+          </div>
+          {optionsData.data.map(option=>(
+            <Checkbox 
+              name={option.name} 
+              label={option.label} 
+              title={option.title} 
+              separate={option.separate} 
+              checked={this.state.options[option.name]} 
+              changeOptions={this.changeOptions}
+              key={option.name}
+            />
+          ))}
+        </Menu>
       </div>
     );
   }

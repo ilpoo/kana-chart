@@ -58,6 +58,7 @@ export default class Table extends React.Component{
       requestAnimationFrame(()=>{
         const cellSize = cell.getBoundingClientRect();
         const contentSize = cell.firstChild.getBoundingClientRect();
+        console.log(cellSize, contentSize);
         const proportion = Math.min(
           (cellSize.height / contentSize.height), 
           (cellSize.width / (contentSize.width*1.3))
@@ -153,20 +154,22 @@ export default class Table extends React.Component{
         }}
       >
         <span>
-        { options.hiragana && 
-          <div 
-            className = { classNames("hiragana", {svgStrokes}) }
-            style = { kanaStyles }
-          >{syllable.foreign&&!syllable.hiragana?'ー':syllable.hiragana}</div> 
-        }
-        { options.katakana && 
-          <div 
-            className = { classNames("katakana", {svgStrokes}) } 
-            style = { kanaStyles }
-          >{syllable.katakana}</div> 
-        }
-        { (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
-        { (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
+            { options.hiragana && 
+              <div
+                className = { classNames("hiragana", {svgStrokes}) }
+                style = { kanaStyles }
+              >
+                {syllable.foreign&&!syllable.hiragana?'ー':syllable.hiragana}
+              </div> 
+            }
+            { options.katakana && 
+              <div 
+                className = { classNames("katakana", {svgStrokes}) } 
+                style = { kanaStyles }
+              >{syllable.katakana}</div> 
+            }
+            { (options.romanji || syllable.title) && <div className="romanji">{syllable.romanji}</div> }
+            { (options.pronunciation) && <div className="pronunciation">{syllable.pronunciation}</div> }
         </span>
       </td>
     );

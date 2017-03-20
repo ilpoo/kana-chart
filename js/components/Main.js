@@ -9,7 +9,7 @@ import optionsData from '../options.json';
 
 export default class Main extends React.Component{
   state={
-    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(optionsData.defaultOptions)),
+    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(optionsData.default)),
     kyoukashoLoaded: false,
   }
 

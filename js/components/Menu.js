@@ -59,6 +59,8 @@ export default class Menu extends React.Component{
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
     const transition={
+      visibility: percentage > 0 ? 'visible' : 'hidden'
+      opacity: .4 * percentage,
       position: position === -this.navWidth ? "-100%" : `${position}px`,
       rotate: -180 * percentage,
       rotate2: 45 * percentage,
@@ -67,8 +69,8 @@ export default class Menu extends React.Component{
       scaleX: .3 * percentage,
     }
     this.refs.nav.style.transform = `translateX(${transition.position})`;
-    this.refs.backdrop.style.visibility = percentage > 0 ? 'visible' : 'hidden';
-    this.refs.backdrop.style.opacity = percentage;
+    this.refs.backdrop.style.visibility = transition.visibility;
+    this.refs.backdrop.style.opacity = transition.opacity;
     this.refs.toggle.style.transform = `rotate(${transition.rotate}deg)`;
     this.refs.line1.style.transform = `rotate(${transition.rotate2}deg) translate(${transition.translateX}%, ${-transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
     this.refs.line3.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;

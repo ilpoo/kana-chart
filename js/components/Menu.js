@@ -59,7 +59,7 @@ export default class Menu extends React.Component{
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
     const transition={
-      visibility: percentage > 0 ? 'visible' : 'hidden'
+      visibility: percentage > 0 ? 'visible' : 'hidden',
       opacity: .4 * percentage,
       position: position === -this.navWidth ? "-100%" : `${position}px`,
       rotate: -180 * percentage,

@@ -237,7 +237,7 @@
       "pronunciation":"[ɡu͍]",
       "base":["g","u"],
       "similarHiragana":["ku"],
-      "similarKatakana":["ku","ge","ga","da"],
+      "similarKatakana":["ku","ge","ga","da","bu"],
       "frequency":0.00993168037071
     },
     {
@@ -297,7 +297,7 @@
       "pronunciation":"[sa]",
       "base":["s","a"],
       "similarHiragana":["za","chi","ki","gi"],
-      "similarKatakana":["za","so","tsu","n","no"],
+      "similarKatakana":["za"],
       "frequency":0.0979804489832,
       "strokes":[4.076,7.05]
     },
@@ -309,7 +309,7 @@
       "exception":true,
       "base":["s","i"],
       "similarHiragana":["ji"],
-      "similarKatakana":["ji"],
+      "similarKatakana":["ji","so","tsu","n","no","zo"],
       "frequency":0.188668325613,
       "strokes":[4.076,5.6875]
     },
@@ -320,7 +320,7 @@
       "pronunciation":"[su͍]",
       "base":["s","u"],
       "similarHiragana":["zu"],
-      "similarKatakana":["zu"],
+      "similarKatakana":["zu","nu","fu"],
       "frequency":0.074406992057,
       "strokes":[4.076,4.325]
     },
@@ -386,7 +386,7 @@
       "pronunciation":"[sa]",
       "base":["s","a"],
       "similarHiragana":["za","chi","ki","gi"],
-      "similarKatakana":["za","so","tsu","n","no"],
+      "similarKatakana":["za"],
       "frequency":0.0979804489832,
       "strokes":[4.076,7.05]
     },
@@ -404,6 +404,7 @@
       "pronunciation":"[su͍]",
       "base":["s","u"],
       "similarHiragana":["zu"],
+      "similarKatakana":["zu","nu","fu"],
       "frequency":0.074406992057,
       "strokes":[4.076,4.325]
     },
@@ -452,7 +453,7 @@
       "pronunciation":"[ɕi]",
       "base":["sh","i"],
       "similarHiragana":["ji"],
-      "similarKatakana":["ji"]
+      "similarKatakana":["ji","so","tsu","n","no", "zo"]
     },
     {
       "romanji":"shu",
@@ -503,7 +504,7 @@
       "exception":true,
       "base":["z","i"],
       "similarHiragana":["shi"],
-      "similarKatakana":["shi"],
+      "similarKatakana":["shi","zo","tsu"],
       "frequency":0.0854006405609
     },
     {
@@ -643,7 +644,7 @@
       "exception":true,
       "base":["z","i"],
       "similarHiragana":["shi"],
-      "similarKatakana":["shi"],
+      "similarKatakana":["shi","zo","tsu"],
       "frequency":0.0854006405609
     },
     {
@@ -708,6 +709,7 @@
       "exception":true,
       "base":["t","u"],
       "similarHiragana":["du"],
+      "similarKatakana":["shi","ji","so","zo","no","n"],
       "frequency":0.16964530423302,
       "strokes":[5.164,4.325]
     },
@@ -896,7 +898,10 @@
       "katakana":"ツ",
       "pronunciation":"[t͡su͍]",
       "base":["ts","u"],
-      "similarHiragana":["du"]
+      "similarHiragana":["du"],
+      "similarKatakana":["shi","ji","so","zo","no","n"],
+      "frequency":0.16964530423302,
+      "strokes":[5.164,4.325]
     },
     {
       "romanji":"tse",
@@ -1077,7 +1082,7 @@
       "pronunciation":"[nu͍]",
       "base":["n","u"],
       "similarHiragana":["ne","no","me"],
-      "similarKatakana":["ta","fu","wo"],
+      "similarKatakana":["ta","fu","wo","su"],
       "frequency":0,
       "strokes":[6.252,4.325]
     },
@@ -1397,7 +1402,7 @@
       "pronunciation":"[bu͍]",
       "base":["b","u"],
       "similarHiragana":["fu","pu"],
-      "similarKatakana":["fu","pu"],
+      "similarKatakana":["fu","pu","zu","gu"],
       "frequency":0.0332831982086
     },
     {

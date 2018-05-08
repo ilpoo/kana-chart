@@ -8,29 +8,32 @@ const extractHtml = new ExtractTextPlugin('index.html');
 module.exports = {
   context: __dirname,
   devtool: debug ? "inline-sourcemap" : false,
+  mode: debug ? "development" : "production",
   entry: "./js/index.js",
   module:{
-    loaders:[
-      {
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
+    rules: [
+      // {
+      //   test: /\.json$/,
+      //   use: 'json-loader',
+      // },
       {
         test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        query: {
-          presets: [
-            'react', 
-            'es2015', 
-            'stage-0',
-          ],
-          plugins: [
-            'react-html-attrs', 
-            'transform-class-properties', 
-            'transform-decorators-legacy',
-          ],
-        }
+        use: {
+          loader: 'babel-loader',
+          query: {
+            presets: [
+              'react', 
+              'es2015', 
+              'stage-0',
+            ],
+            plugins: [
+              'react-html-attrs', 
+              'transform-class-properties', 
+              'transform-decorators-legacy',
+            ],
+          }
+        },
       },
       {
         test: /\.scss$/,
@@ -46,7 +49,10 @@ module.exports = {
       {
         test: /\.html$/,
         use: extractHtml.extract({
-          use: 'raw-loader!html-minifier-loader',
+          use: [
+            'raw-loader',
+            // 'html-minifier-loader',
+          ],
         }),
       },
     ],

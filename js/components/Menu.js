@@ -1,5 +1,109 @@
-'use strict';
 import React from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+`;
+
+const Backdrop = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .4s;
+`;
+
+const Navigation = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 80%;
+  min-width: 300px;
+  max-width: 350px;
+  height: 100vh;
+  padding: 10px;
+
+  background: #C70025;
+  color: white;
+  font-size: 16px;
+
+  transform: translateX(-100%);
+  padding-top: 60px;
+  transition: transform .4s;
+  line-height: 40px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  overflow-y: auto;
+
+  @media (min-width: 800px){
+    &{
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      width: 300px;
+      transform: translateX(0);
+      background-color: transparent;
+      color: black;
+      padding-top: 80px;
+      height: calc(100vh - 50px);
+    }
+  }
+  
+  @media (min-width: 1000px){
+    &{
+      left: calc(50vw - 1000px / 2 + 10px);
+    }
+  }
+`;
+
+const Toggle = styled.div`
+  font-size: 50px;
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  transition: all .4s;
+
+  @media (min-width: 800px){
+    &{
+      display: none;
+    }
+  }
+`;
+
+const Line = styled.div`
+  position: absolute;
+
+  background: white;
+  width: .64em;
+  height: 3px;
+  left: .18em;
+
+  transition: all .4s;
+
+  &:first-of-type{
+    top: .22em;
+  }
+
+  &:nth-of-type(2){
+    top: .468em;
+  }
+
+  &:last-of-type{
+    top: .71em;
+  }
+`;
 
 export default class Menu extends React.Component{
   mobile = false;
@@ -20,11 +124,11 @@ export default class Menu extends React.Component{
         (!this.open && e.touches.item(0).clientX <= 20)
       ){
         this.swiping = true;
-        this.refs.backdrop.style.transition = 
-        this.refs.toggle.style.transition = 
-        this.refs.nav.style.transition = 
-        this.refs.line1.style.transition = 
-        this.refs.line3.style.transition = 'initial';
+        this.backdrop.style.transition = 
+        this.toggle.style.transition = 
+        this.nav.style.transition = 
+        this.line1.style.transition = 
+        this.line3.style.transition = 'initial';
         this.fastSwipeDetector = setTimeout(()=>{
           this.fastSwipe = false;
         },1000);
@@ -42,11 +146,11 @@ export default class Menu extends React.Component{
     if(this.swiping){
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
-      this.refs.backdrop.style.transition = 
-      this.refs.toggle.style.transition = 
-      this.refs.nav.style.transition = 
-      this.refs.line1.style.transition = 
-      this.refs.line3.style.transition = '';
+      this.backdrop.style.transition = 
+      this.toggle.style.transition = 
+      this.nav.style.transition = 
+      this.line1.style.transition = 
+      this.line3.style.transition = '';
       if     (this.fastSwipe && !this.open && this.navPosition*-1/this.navWidth < .9) this.openMenu();
       else if(this.fastSwipe && this.open && this.navPosition*-1/this.navWidth > .1) this.closeMenu();
       else if(this.navPosition*-1/this.navWidth < .5) this.openMenu();
@@ -68,12 +172,12 @@ export default class Menu extends React.Component{
       translateY: 100 * percentage,
       scaleX: .3 * percentage,
     }
-    this.refs.nav.style.transform = `translateX(${transition.position})`;
-    this.refs.backdrop.style.visibility = transition.visibility;
-    this.refs.backdrop.style.opacity = transition.opacity;
-    this.refs.toggle.style.transform = `rotate(${transition.rotate}deg)`;
-    this.refs.line1.style.transform = `rotate(${transition.rotate2}deg) translate(${transition.translateX}%, ${-transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
-    this.refs.line3.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
+    this.nav.style.transform = `translateX(${transition.position})`;
+    this.backdrop.style.visibility = transition.visibility;
+    this.backdrop.style.opacity = transition.opacity;
+    this.toggle.style.transform = `rotate(${transition.rotate}deg)`;
+    this.line1.style.transform = `rotate(${transition.rotate2}deg) translate(${transition.translateX}%, ${-transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
+    this.line3.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
   }
 
   openMenu = () => {
@@ -97,29 +201,29 @@ export default class Menu extends React.Component{
   resizeHandler = () => {
     const mobile = this.isMobile();
     if(!mobile && this.mobile){
-      this.refs.toggle.style.transition = 
-      this.refs.toggle.style.transform = 
-      this.refs.nav.style.transition = 
-      this.refs.line1.style.transition = 
-      this.refs.line1.style.transform = 
-      this.refs.line3.style.transition =
-      this.refs.line3.style.transform =
-      this.refs.nav.style.transform = 
-      this.refs.backdrop.style.display = 
-      this.refs.backdrop.style.transition = 
-      this.refs.backdrop.style.opacity =  '';
+      this.toggle.style.transition = 
+      this.toggle.style.transform = 
+      this.nav.style.transition = 
+      this.line1.style.transition = 
+      this.line1.style.transform = 
+      this.line3.style.transition =
+      this.line3.style.transform =
+      this.nav.style.transform = 
+      this.backdrop.style.display = 
+      this.backdrop.style.transition = 
+      this.backdrop.style.opacity =  '';
     }
     this.mobile = mobile;
   }
 
   componentDidMount(){
     this.mobile = this.isMobile();
-    this.navWidth = this.refs.nav.getBoundingClientRect().width;
+    this.navWidth = this.nav.getBoundingClientRect().width;
     this.navPosition = -this.navWidth;
     this.minPosition = -this.navWidth;
 
-    this.refs.backdrop.addEventListener('click', this.toggleMenu);
-    this.refs.toggle.addEventListener('click', this.toggleMenu);
+    this.backdrop.addEventListener('click', this.toggleMenu);
+    this.toggle.addEventListener('click', this.toggleMenu);
     window.addEventListener('resize', this.resizeHandler);
     window.addEventListener('touchstart', this.handleSwipeStart, { passive: true });
     window.addEventListener('touchmove', this.handleSwipeMove, { passive: true });
@@ -128,17 +232,17 @@ export default class Menu extends React.Component{
 
   render(){
     return (
-      <div class="react-swipe-menu" ref="container">
-        <div class="react-swipe-menu-backdrop" ref="backdrop"></div>
-        <nav class="react-swipe-menu-navigation" ref="nav">
-         {this.props.children}
-        </nav>
-        <div class="react-swipe-menu-toggle" ref="toggle">
-          <div class="react-swipe-menu-line" ref="line1"></div>
-          <div class="react-swipe-menu-line" ref="line2"></div>
-          <div class="react-swipe-menu-line" ref="line3"></div>
-        </div>
-      </div>
+      <Container innerRef={c => this.container = c}>
+        <Backdrop innerRef={c => this.backdrop = c}/>
+        <Navigation innerRef={c => this.nav = c}>
+          {this.props.children}
+        </Navigation>
+        <Toggle innerRef={c => this.toggle = c}>
+          <Line innerRef={c => this.line1 = c}/>
+          <Line innerRef={c => this.line2 = c}/>
+          <Line innerRef={c => this.line3 = c}/>
+        </Toggle>
+      </Container>
     );
   }
 }

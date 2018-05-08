@@ -1,7 +1,132 @@
-'use strict';
 import React from "react";
 import syllabary from "../syllabary.json";
 import classNames from "classnames/dedupe.js";
+import styled from "styled-components";
+
+const Container = styled.table`
+  border-collapse: collapse;
+  margin: 0 auto;
+  min-height: 100%;
+  width: 100%;
+  table-layout: fixed;
+  transform-origin: top;
+  font-size: 22px;
+  
+  & td{
+    padding: .05em;
+    text-align: center;
+    position: static;
+    overflow: hidden;
+    background-clip: padding-box;
+    border: 1px solid black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    
+    & > span {
+      display: table;
+      margin: 0 auto;
+      
+      & > div {
+        display: block;
+      }
+    }
+
+    &.bold{
+      font-weight: bold;
+    }
+
+    &.highlightRomanji{
+      background-color: hsl(120,73%,90%) !important;
+    }
+
+    &.highlightCurrent{
+      background-color: hsl(120,73%,80%) !important;
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
+    }
+
+    &.highlightHiragana .hiragana, &.highlightKatakana .katakana{
+      font-weight: bold;
+      color: red;
+    }
+
+    &.highlightExceptions .romanji{
+      font-weight: bold;
+    }
+
+    & .romanji, & .pronunciation{
+      font-size: 75%;
+    }
+
+    &.hide{
+      display: none;
+    }
+
+    & .svgStrokes{
+      background-size: 26.2em;
+      height: 2em;
+      width: 2em;
+      color: transparent !important;
+      margin: 0 auto;
+    }
+
+    & .svgStrokes.hiragana{
+      background-image: url(./media/hiragana.min.svg);
+    }
+
+    & .svgStrokes.katakana{
+      background-image: url(./media/katakana.min.svg);
+    }
+
+    &.foreign{
+      color: #888;
+    }
+  }
+
+  &.handwritten{
+    & .hiragana, & .katakana{
+      font-family: Kyoukasho, Arial;
+      font-weight: bold;
+      letter-spacing: -.4em;
+      transform: translateX(-.2em);
+    }
+    & .romanji, & .pronunciation{
+      font-size: 50%;
+    }
+  }
+
+  @media (max-width: 799px){
+    & tr:first-of-type td{
+      border-top: none;
+    }
+
+    & tr:last-of-type td{
+      border-bottom: none;
+    }
+
+    & tr td:first-of-type{
+      border-left: none;
+    }
+
+    & tr td:last-of-type{
+      border-right: none;
+    }
+  }
+
+  @media (min-width: 800px){
+    &{
+      margin: 0 10px;
+      width: calc(100% - 10px);
+      min-height: calc(100% - 4px);
+      max-width: 700px;
+    }
+  }
+`;
 
 export default class Table extends React.Component{
   static originalFontSize = 22;
@@ -42,7 +167,7 @@ export default class Table extends React.Component{
       this.lastkyoukashoLoaded = kyoukashoLoaded;
       this.lastTranspose = transpose;
 
-      const table = this.refs.table;
+      const table = this.table;
       table.style.fontSize = `${Table.originalFontSize}px`;
       const rows = table.getElementsByTagName('tr');
       const cell = transpose ? 
@@ -231,8 +356,8 @@ export default class Table extends React.Component{
     );
 
     return (
-      <table 
-        ref="table"
+      <Container 
+        innerRef={c => this.table = c}
         className={classNames({
           handwritten: options.handwritten,
         })}
@@ -247,7 +372,7 @@ export default class Table extends React.Component{
             </tr>
           )) }
         </tbody>
-      </table>
+      </Container>
     );
   }
 }

@@ -1,4 +1,3 @@
-'use strict';
 import React from "react";
 import Menu from './Menu';
 import Header from './Header';

@@ -39,3 +39,4 @@ jspm_packages
 *.min.js
 *.min.css
 public/index.html
+package-lock.json

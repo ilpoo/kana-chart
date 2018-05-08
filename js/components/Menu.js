@@ -121,9 +121,9 @@ export default class Menu extends React.Component{
     this.refs.backdrop.addEventListener('click', this.toggleMenu);
     this.refs.toggle.addEventListener('click', this.toggleMenu);
     window.addEventListener('resize', this.resizeHandler);
-    window.addEventListener('touchstart', this.handleSwipeStart);
-    window.addEventListener('touchmove', this.handleSwipeMove);
-    window.addEventListener('touchend', this.handleSwipeEnd);
+    window.addEventListener('touchstart', this.handleSwipeStart, { passive: true });
+    window.addEventListener('touchmove', this.handleSwipeMove, { passive: true });
+    window.addEventListener('touchend', this.handleSwipeEnd, { passive: true });
   }
 
   render(){

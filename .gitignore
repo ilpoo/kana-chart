@@ -40,3 +40,4 @@ jspm_packages
 *.min.css
 public/index.html
 package-lock.json
+public/*.js

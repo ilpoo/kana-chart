@@ -57,7 +57,7 @@ const Navigation = styled.div`
       height: calc(100vh - 50px);
     }
   }
-  
+
   @media (min-width: 1000px){
     &{
       left: calc(50vw - 1000px / 2 + 10px);
@@ -105,7 +105,11 @@ const Line = styled.div`
   }
 `;
 
-export default class Menu extends React.Component{
+export interface MenuProps {
+  children: any;
+}
+
+export default class Menu extends React.Component<MenuProps, {}>{
   mobile = false;
   swiping = false;
   open = false;
@@ -124,10 +128,10 @@ export default class Menu extends React.Component{
         (!this.open && e.touches.item(0).clientX <= 20)
       ){
         this.swiping = true;
-        this.backdrop.style.transition = 
-        this.toggle.style.transition = 
-        this.nav.style.transition = 
-        this.line1.style.transition = 
+        this.backdrop.style.transition =
+        this.toggle.style.transition =
+        this.nav.style.transition =
+        this.line1.style.transition =
         this.line3.style.transition = 'initial';
         this.fastSwipeDetector = setTimeout(()=>{
           this.fastSwipe = false;
@@ -146,10 +150,10 @@ export default class Menu extends React.Component{
     if(this.swiping){
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
-      this.backdrop.style.transition = 
-      this.toggle.style.transition = 
-      this.nav.style.transition = 
-      this.line1.style.transition = 
+      this.backdrop.style.transition =
+      this.toggle.style.transition =
+      this.nav.style.transition =
+      this.line1.style.transition =
       this.line3.style.transition = '';
       if     (this.fastSwipe && !this.open && this.navPosition*-1/this.navWidth < .9) this.openMenu();
       else if(this.fastSwipe && this.open && this.navPosition*-1/this.navWidth > .1) this.closeMenu();
@@ -201,16 +205,16 @@ export default class Menu extends React.Component{
   resizeHandler = () => {
     const mobile = this.isMobile();
     if(!mobile && this.mobile){
-      this.toggle.style.transition = 
-      this.toggle.style.transform = 
-      this.nav.style.transition = 
-      this.line1.style.transition = 
-      this.line1.style.transform = 
+      this.toggle.style.transition =
+      this.toggle.style.transform =
+      this.nav.style.transition =
+      this.line1.style.transition =
+      this.line1.style.transform =
       this.line3.style.transition =
       this.line3.style.transform =
-      this.nav.style.transform = 
-      this.backdrop.style.display = 
-      this.backdrop.style.transition = 
+      this.nav.style.transform =
+      this.backdrop.style.display =
+      this.backdrop.style.transition =
       this.backdrop.style.opacity =  '';
     }
     this.mobile = mobile;

@@ -1,6 +1,7 @@
 import React from "react";
 import Table from './Table';
 import styled from "styled-components";
+import Options from "../interfaces/Options";
 
 const Container = styled.div`
   position: fixed;
@@ -25,7 +26,12 @@ const Container = styled.div`
   }
 `;
 
-export default class Content extends React.Component{
+export interface ContentProps {
+  options: Options;
+  kyoukashoLoaded: boolean;
+}
+
+export default class Content extends React.Component<ContentProps, {}> {
   render(){
     return (
       <Container>

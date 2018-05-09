@@ -1,6 +1,11 @@
 export default (()=>{
   const baseFonts = ['monospace', 'sans-serif', 'serif'];
-  const measurements　=　{};
+  const measurements : {
+    [key: string]: {
+      width: number;
+      height: number;
+    }
+  }　=　{};
   const span = document.createElement('span');
   span.style.fontSize = '72px';
   span.style.display = 'inline';
@@ -16,7 +21,7 @@ export default (()=>{
     document.body.removeChild(span);
   });
 
-  return font => !baseFonts.some(baseFont=>{
+  return (font: string) => !baseFonts.some(baseFont=>{
     span.style.fontFamily　=　`${font}, ${baseFont}`;
     document.body.appendChild(span);
     const matched = (

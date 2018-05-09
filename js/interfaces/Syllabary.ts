@@ -19,7 +19,7 @@ export interface Syllable {
   hideIfDigraph?: boolean,
 }
 
-interface ExtendedSyllable extends Syllable {
+export interface ExtendedSyllable extends Syllable {
   highlightRomanji?: boolean,
   highlightHiragana?: boolean,
   highlightKatakana?: boolean,

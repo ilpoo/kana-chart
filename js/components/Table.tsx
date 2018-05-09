@@ -1,10 +1,10 @@
-import React, { ReactNode, RefObject } from "react";
-import ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from 'react-dom';
 import syllabary from "../syllabary";
-import classNames from "classnames/dedupe.js";
+import classnames from "classnames/dedupe.js";
 import styled from "styled-components";
 
-import { ExtendedSyllabary } from "../interfaces/Syllabary";
+import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
 import Options from "../interfaces/Options";
 
 const Container = styled.table`
@@ -147,7 +147,7 @@ export default class Table extends React.Component<TableProps, {}> {
       transpose: this.isLandscape(),
     };
   lastOptions = '';
-  lastkyoukashoLoaded: boolean;
+  lastkyoukashoLoaded = false;
   lastTranspose = this.state.transpose;
   table = React.createRef();
 
@@ -195,7 +195,7 @@ export default class Table extends React.Component<TableProps, {}> {
 
       requestAnimationFrame(() => {
         const cellSize = cell.getBoundingClientRect();
-        const contentSize = cell.firstElementChild.getBoundingClientRect();
+        const contentSize = cell.firstElementChild!.getBoundingClientRect();
         // console.log(cellSize, contentSize);
         const proportion = Math.min(
           (cellSize.height / contentSize.height),
@@ -222,8 +222,8 @@ export default class Table extends React.Component<TableProps, {}> {
     }
   }
 
-  transposeArray(array) {
-    const newArray = [...Array(array[0].length)].map(i => [...Array(array.length)]);
+  transposeArray(array: any[]) {
+    const newArray = [...Array(array[0].length)].map(() => [...Array(array.length)]);
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < array[0].length; j++) {
         newArray[j][array.length - 1 - i] = array[i][j];
@@ -236,27 +236,27 @@ export default class Table extends React.Component<TableProps, {}> {
     return window.innerWidth < 800 && window.innerWidth > window.innerHeight;
   }
 
-  hoverOn(hoveredSyllable) {
+  hoverOn(hoveredSyllable: ExtendedSyllable) {
     this.setState({
       consonants: this.state.consonants.map(consonant =>
         consonant.map(syllable => {
           syllable.highlightRomanji = (
             syllable.hasOwnProperty("romanji") &&
             hoveredSyllable.hasOwnProperty("base") &&
-            !!~hoveredSyllable.base.indexOf(syllable.romanji)
+            !!~hoveredSyllable.base!.indexOf(syllable.romanji!)
           );
           syllable.highlightHiragana = (
             syllable.hasOwnProperty("romanji") &&
             hoveredSyllable.hasOwnProperty("similarHiragana") &&
-            !!~hoveredSyllable.similarHiragana.indexOf(syllable.romanji)
+            !!~hoveredSyllable.similarHiragana!.indexOf(syllable.romanji!)
           );
           syllable.highlightKatakana = (
             syllable.hasOwnProperty("romanji") &&
             hoveredSyllable.hasOwnProperty("similarKatakana") &&
-            !!~hoveredSyllable.similarKatakana.indexOf(syllable.romanji)
+            !!~hoveredSyllable.similarKatakana!.indexOf(syllable.romanji!)
           );
           syllable.highlightCurrent = (
-            syllable.romanji
+            !!syllable.romanji
             && !syllable.title
             && syllable.romanji === hoveredSyllable.romanji
           );
@@ -266,20 +266,20 @@ export default class Table extends React.Component<TableProps, {}> {
     });
   }
 
-  renderTd(syllable, consonantIndex, syllableIndex) {
+  renderTd(syllable: ExtendedSyllable, consonantIndex: number, syllableIndex: number) {
     const { options } = this.props;
     const svgStrokes = (
       options.strokes &&
       syllable.strokes
     );
     const kanaStyles = svgStrokes ? {
-      backgroundPosition: `${syllable.strokes[0] * 2}em ${syllable.strokes[1] * 2}em`,
+      backgroundPosition: `${syllable.strokes![0] * 2}em ${syllable.strokes![1] * 2}em`,
     } : {};
     return (
       <td
         key={`key_${consonantIndex}_${syllableIndex}`}
         onMouseEnter={this.hoverOn.bind(this, syllable)}
-        className={classNames({
+        className={classnames({
           highlightRomanji: syllable.highlightRomanji,
           highlightHiragana: (options.similar && syllable.highlightHiragana),
           highlightKatakana: (options.similar && syllable.highlightKatakana),
@@ -294,7 +294,7 @@ export default class Table extends React.Component<TableProps, {}> {
         <span>
           {options.hiragana &&
             <div
-              className={classNames("hiragana", { svgStrokes })}
+              className={classnames("hiragana", { svgStrokes })}
               style={kanaStyles}
             >
               {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
@@ -302,7 +302,7 @@ export default class Table extends React.Component<TableProps, {}> {
           }
           {options.katakana &&
             <div
-              className={classNames("katakana", { svgStrokes })}
+              className={classnames("katakana", { svgStrokes })}
               style={kanaStyles}
             >
               {syllable.katakana}
@@ -398,7 +398,7 @@ export default class Table extends React.Component<TableProps, {}> {
     return (
       <Container
         innerRef={c => this.table = c}
-        className={classNames({
+        className={classnames({
           handwritten: options.handwritten,
         })}
       >
@@ -406,7 +406,7 @@ export default class Table extends React.Component<TableProps, {}> {
         <tbody>
           {transposedConsonants.map((consonant, consonantIndex) => (
             <tr key={consonantIndex}>
-              {consonant.map((syllable, syllableIndex) =>
+              {consonant.map((syllable: Syllable, syllableIndex) =>
                 this.renderTd(syllable, consonantIndex, syllableIndex)
               )}
             </tr>

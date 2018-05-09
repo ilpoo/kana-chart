@@ -1,8 +1,9 @@
-import React from "react";
+import * as React from "react";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
 
 export interface CheckboxProps extends OptionDescription {
   changeOptions: Function;
+  checked: boolean;
 }
 
 export default class Checkbox extends React.Component<CheckboxProps, {}> {

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Menu from './Menu';
 import Header from './Header';
 import Content from './Content';
@@ -34,7 +34,7 @@ export default class Main extends React.Component<{}, MainStates> {
     })(), 200);
   }
 
-  changeOptions = (name, bool) => {
+  changeOptions = (name: string, bool: boolean) => {
     const options = JSON.parse(JSON.stringify(this.state.options));
     options[name] = bool;
     this.setState({ options: options });

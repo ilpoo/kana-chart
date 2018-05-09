@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -119,13 +119,21 @@ export default class Menu extends React.Component<MenuProps, {}>{
   maxPosition = 0;
   touchStart = 0;
   fastSwipe = true;
-  fastSwipeDetector = null;
+  fastSwipeDetector = setTimeout(() => {}, 0);
 
-  handleSwipeStart = e => {
+  container = React.createRef();
+  nav = React.createRef();
+  backdrop = React.createRef();
+  toggle = React.createRef();
+  line1 = React.createRef();
+  line2 = React.createRef();
+  line3 = React.createRef();
+
+  handleSwipeStart = (e: TouchEvent) => {
     if(e.touches.length === 1 && this.mobile){
       if(
-        ( this.open && e.touches.item(0).clientX > this.navWidth) ||
-        (!this.open && e.touches.item(0).clientX <= 20)
+        ( this.open && e.touches.item(0)!.clientX > this.navWidth) ||
+        (!this.open && e.touches.item(0)!.clientX <= 20)
       ){
         this.swiping = true;
         this.backdrop.style.transition =
@@ -140,13 +148,13 @@ export default class Menu extends React.Component<MenuProps, {}>{
     }
   }
 
-  handleSwipeMove = e => {
+  handleSwipeMove = (e: TouchEvent) => {
     if(this.swiping){
-      this.setNavPosition(Math.min(0, e.touches.item(0).clientX - this.navWidth));
+      this.setNavPosition(Math.min(0, e.touches.item(0)!.clientX - this.navWidth));
     }
   }
 
-  handleSwipeEnd = e => {
+  handleSwipeEnd = () => {
     if(this.swiping){
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
@@ -163,7 +171,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
     }
   }
 
-  setNavPosition = position => {
+  setNavPosition = (position: number) => {
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
     const transition={

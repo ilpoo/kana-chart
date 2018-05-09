@@ -1,11 +1,7 @@
-import React from "react";
+import * as React from "react";
 import Table from './Table';
 
 export default class Content extends React.Component<{}, {}> {
-  static propTypes = {
-    options: React.PropTypes.object,
-  };
-
   render(){
     return (
       <div>

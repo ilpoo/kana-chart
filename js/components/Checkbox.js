@@ -10,7 +10,7 @@ export default class Checkbox extends React.Component{
     const {name, label, title, checked, separate} = this.props;
     return (
       <div>
-        <label for={name} title={title}>
+        <label htmlFor={name} title={title}>
           <input 
             id={name} 
             type="checkbox" 

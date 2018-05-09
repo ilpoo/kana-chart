@@ -23,7 +23,15 @@ module.exports = {
   context: __dirname,
   devtool: debug ? "inline-sourcemap" : false,
   mode: debug ? "development" : "production",
-  entry: "./js/index.js",
+  entry: {
+    main: ["babel-polyfill", "./js/index.js"],
+    worker: "./js/worker.js",
+  },
+  output: {
+    path: __dirname + "/public",
+    globalObject: "this",
+    // filename: "main.js",
+  },
   module:{
     rules: [
       // {
@@ -39,6 +47,8 @@ module.exports = {
             presets: [
               'react', 
               'es2015', 
+              'es2016', 
+              'es2017', 
               'stage-0',
             ],
           }
@@ -47,23 +57,19 @@ module.exports = {
     ],
   },
   optimization: {
-    minimizer: debug ? [] : [
+    minimizer: [
       new UglifyJsPlugin({
         parallel: true,
         uglifyOptions: {
-          sourcemap: false,
+          sourcemap: debug,
           compress: {
-            drop_console: true,
+            drop_console: !debug,
             keep_fargs: false,
             passes: 2,
           },
         },
       }),
     ],
-  },
-  output: {
-    path: __dirname + "/public",
-    filename: "scripts.min.js",
   },
   plugins: debug ? [
     HtmlWebpack,

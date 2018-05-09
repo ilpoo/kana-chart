@@ -43,7 +43,7 @@ export default class Main extends React.Component{
           kyoukashoLoaded={this.state.kyoukashoLoaded}
         />
         <Menu>
-          <div class="menuTitle">
+          <div className="menuTitle">
             <h1>Options</h1>
           </div>
           {optionsData.data.map(option=>(

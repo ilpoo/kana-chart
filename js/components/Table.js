@@ -183,7 +183,7 @@ export default class Table extends React.Component{
       requestAnimationFrame(()=>{
         const cellSize = cell.getBoundingClientRect();
         const contentSize = cell.firstChild.getBoundingClientRect();
-        console.log(cellSize, contentSize);
+        // console.log(cellSize, contentSize);
         const proportion = Math.min(
           (cellSize.height / contentSize.height), 
           (cellSize.width / (contentSize.width*1.3))

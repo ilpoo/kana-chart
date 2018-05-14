@@ -36,9 +36,5 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-*.min.js
-*.min.css
-public/index.html
 package-lock.json
-public/*.js
-public/dist
+dist/*

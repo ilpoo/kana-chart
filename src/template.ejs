@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= htmlWebpackPlugin.options.data.locale %>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -9,19 +9,31 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
 
+  <title><%= htmlWebpackPlugin.options.data.name %></title>
+  <meta name="application-name" content="<%= htmlWebpackPlugin.options.data.name %>">
+  <meta name="author" content="<%= htmlWebpackPlugin.options.data.author %>" />
+  <meta name="description" content="<%= htmlWebpackPlugin.options.data.description %>" />
+  <meta name="keywords" content="<%= htmlWebpackPlugin.options.data.keywords %>" />
+  <meta name="twitter:card" content="product">
+  <meta name="twitter:site" content="<%= htmlWebpackPlugin.options.data.twitter %>">
+  <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.data.name %>">
+  <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.data.description %>">
+  <meta name="twitter:creator" content="<%= htmlWebpackPlugin.options.data.twitter %>">
+  <meta name="twitter:image" content="<%= htmlWebpackPlugin.options.data.image %>">
+  <meta property="og:title" content="<%= htmlWebpackPlugin.options.data.name %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="<%= htmlWebpackPlugin.options.data.url %>" />
+  <meta property="og:image" content="<%= htmlWebpackPlugin.options.data.image %>" />
+  <meta property="og:description" content="<%= htmlWebpackPlugin.options.data.description %>" />
+  <meta property="og:site_name" content="<%= htmlWebpackPlugin.options.data.name %>" />
+  <meta name="msapplication-TileColor" content="<%= htmlWebpackPlugin.options.data.theme_color %>">
+  <meta name="theme-color" content="<%= htmlWebpackPlugin.options.data.theme_color %>">
+
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="mask-icon" href="safari-pinned-tab.svg" color="#c70025">
-  <meta name="msapplication-TileColor" content="#c70025">
-  <meta name="application-name" content="Kana Chart">
-  <meta name="theme-color" content="#c70025">
-  <link rel="manifest" href="manifest.json">
-
-  <title>Kana Chart</title>
-  <meta name="author" content="Ilpo Oksanen"/>
-  <meta name="description" content="An interactive syllable chart to help you learn the kanas in the two Japanese syllabaries, hiragana and katakana."/>
-  <meta name="keywords" content="japanese, hiragana, katakana, romanji, pronunciation, stroke order, how to write, interactive, chart, table"/>
+  <link rel="mask-icon" href="safari-pinned-tab.svg" color="<%= htmlWebpackPlugin.options.data.theme_color %>">
+  <link rel="manifest" href="site.webmanifest">
 
   <link rel="preload" href="media/Kyoukasho.subset.kana.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="//fonts.googleapis.com/css?family=Open+Sans:300">

@@ -1,11 +1,10 @@
 {
   "name": "kana-chart",
-  "version": "1.6.0",
-  "description": "An interactive table for the two Japanese syllabaries, hiragana and katakana.",
+  "version": "1.7.0",
+  "description": "An interactive syllable chart to help you learn the kanas in the two Japanese syllabaries, hiragana and katakana.",
   "main": "webpack.config.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/classnames": "^2.2.3",
     "@types/react": "^16.3.2",
     "@types/react-dom": "^16.0.5",
     "babel-core": "^6.26.3",
@@ -16,8 +15,9 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "classnames": "^2.2.5",
+    "cli-real-favicon": "0.0.6",
     "cross-env": "^5.1.4",
+    "fs-extra": "^6.0.1",
     "html-minifier": "^3.5.15",
     "html-minifier-loader": "^1.4.1",
     "html-webpack-plugin": "^3.2.0",
@@ -26,6 +26,8 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "styled-components": "^3.2.6",
+    "ts-loader": "^4.3.0",
+    "typescript": "^2.8.3",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webfontloader": "^1.6.28",
     "webpack": "^4.8.1",
@@ -33,9 +35,10 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "test": "start cmd /K call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd /K webpack --watch & start chrome.exe http://localhost:8001/public",
-    "start": "start cmd /c call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start chrome.exe http://localhost:8001/public",
-    "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack --progress --colors"
+    "test": "start cmd /K call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd /K webpack --watch & start chrome.exe http://localhost:8001/dist/",
+    "start": "start cmd /c call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start chrome.exe http://localhost:8001/dist/",
+    "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack --progress --colors",
+    "icons": "cross-env ./node_modules/cli-real-favicon/real-favicon.js generate dist/faviconDescription.json dist/faviconData.json dist"
   },
   "author": "Ilpo Oksanen",
   "license": "MIT",

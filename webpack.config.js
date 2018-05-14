@@ -1,8 +1,9 @@
 const debug = process.env.NODE_ENV !== "production";
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const data = require("./data");
 const HtmlWebpack = new HtmlWebpackPlugin({
-  template: 'js/template.ejs',
+  template: 'src/template.ejs',
   filename: 'index.html',
   minify: debug ? false : {
     removeAttributeQuotes: true,
@@ -15,8 +16,10 @@ const HtmlWebpack = new HtmlWebpackPlugin({
     removeStyleLinkTypeAttributes: true,
   },
   hash: true,
+  data,
 });
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const distributor = require("./distributor");
 
 
 module.exports = {
@@ -24,20 +27,19 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : false,
   mode: debug ? "development" : "production",
   entry: {
-    main: ["babel-polyfill", "./js/index.js"],
-    worker: "./js/worker.js",
+    main: ["babel-polyfill", "./src/index.tsx"],
+    worker: "./src/worker.js",
   },
   output: {
-    path: __dirname + "/public",
+    path: __dirname + "/dist",
     globalObject: "this",
     // filename: "main.js",
   },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
   module:{
     rules: [
-      // {
-      //   test: /\.json$/,
-      //   use: 'json-loader',
-      // },
       {
         test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
@@ -45,14 +47,33 @@ module.exports = {
           loader: 'babel-loader',
           query: {
             presets: [
-              'react', 
-              'es2015', 
-              'es2016', 
-              'es2017', 
+              'react',
+              'es2015',
+              'es2016',
+              'es2017',
               'stage-0',
             ],
           }
         },
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
+          {
+            loader: 'babel-loader',
+            query: {
+              presets: [
+                'react',
+                'es2015',
+                'es2016',
+                'es2017',
+                'stage-0',
+              ],
+            },
+          },
+          "ts-loader",
+        ],
       },
     ],
   },

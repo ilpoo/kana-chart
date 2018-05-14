@@ -15,7 +15,7 @@ export default class Checkbox extends React.Component<CheckboxProps, {}> {
   render(){
     const {name, label, title, checked, separate} = this.props;
     return (
-      <>
+      <React.Fragment>
         <label htmlFor={name} title={title}>
           <input
             id={name}
@@ -25,7 +25,7 @@ export default class Checkbox extends React.Component<CheckboxProps, {}> {
           /> {label}
         </label>
         {separate && <hr/>}
-      </>
+      </React.Fragment>
     );
   }
 }

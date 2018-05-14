@@ -1,6 +1,6 @@
 {
   "name": "kana-chart",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "An interactive table for the two Japanese syllabaries, hiragana and katakana.",
   "main": "webpack.config.js",
   "dependencies": {},

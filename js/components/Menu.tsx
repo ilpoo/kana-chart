@@ -121,13 +121,13 @@ export default class Menu extends React.Component<MenuProps, {}>{
   fastSwipe = true;
   fastSwipeDetector = setTimeout(() => {}, 0);
 
-  container = React.createRef();
-  nav = React.createRef();
-  backdrop = React.createRef();
-  toggle = React.createRef();
-  line1 = React.createRef();
-  line2 = React.createRef();
-  line3 = React.createRef();
+  container = React.createRef<HTMLElement>();
+  nav = React.createRef<HTMLElement>();
+  backdrop = React.createRef<HTMLElement>();
+  toggle = React.createRef<HTMLElement>();
+  line1 = React.createRef<HTMLElement>();
+  line2 = React.createRef<HTMLElement>();
+  line3 = React.createRef<HTMLElement>();
 
   handleSwipeStart = (e: TouchEvent) => {
     if(e.touches.length === 1 && this.mobile){
@@ -136,11 +136,11 @@ export default class Menu extends React.Component<MenuProps, {}>{
         (!this.open && e.touches.item(0)!.clientX <= 20)
       ){
         this.swiping = true;
-        this.backdrop.style.transition =
-        this.toggle.style.transition =
-        this.nav.style.transition =
-        this.line1.style.transition =
-        this.line3.style.transition = 'initial';
+        this.backdrop.current!.style.transition =
+        this.toggle.current!.style.transition =
+        this.nav.current!.style.transition =
+        this.line1.current!.style.transition =
+        this.line3.current!.style.transition = 'initial';
         this.fastSwipeDetector = setTimeout(()=>{
           this.fastSwipe = false;
         },1000);
@@ -158,11 +158,11 @@ export default class Menu extends React.Component<MenuProps, {}>{
     if(this.swiping){
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
-      this.backdrop.style.transition =
-      this.toggle.style.transition =
-      this.nav.style.transition =
-      this.line1.style.transition =
-      this.line3.style.transition = '';
+      this.backdrop.current!.style.transition =
+      this.toggle.current!.style.transition =
+      this.nav.current!.style.transition =
+      this.line1.current!.style.transition =
+      this.line3.current!.style.transition = '';
       if     (this.fastSwipe && !this.open && this.navPosition*-1/this.navWidth < .9) this.openMenu();
       else if(this.fastSwipe && this.open && this.navPosition*-1/this.navWidth > .1) this.closeMenu();
       else if(this.navPosition*-1/this.navWidth < .5) this.openMenu();
@@ -184,12 +184,12 @@ export default class Menu extends React.Component<MenuProps, {}>{
       translateY: 100 * percentage,
       scaleX: .3 * percentage,
     }
-    this.nav.style.transform = `translateX(${transition.position})`;
-    this.backdrop.style.visibility = transition.visibility;
-    this.backdrop.style.opacity = transition.opacity;
-    this.toggle.style.transform = `rotate(${transition.rotate}deg)`;
-    this.line1.style.transform = `rotate(${transition.rotate2}deg) translate(${transition.translateX}%, ${-transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
-    this.line3.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
+    this.nav.current!.style.transform = `translateX(${transition.position})`;
+    this.backdrop.current!.style.visibility = transition.visibility;
+    this.backdrop.current!.style.opacity = transition.opacity.toString();
+    this.toggle.current!.style.transform = `rotate(${transition.rotate}deg)`;
+    this.line1.current!.style.transform = `rotate(${transition.rotate2}deg) translate(${transition.translateX}%, ${-transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
+    this.line3.current!.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
   }
 
   openMenu = () => {
@@ -213,29 +213,29 @@ export default class Menu extends React.Component<MenuProps, {}>{
   resizeHandler = () => {
     const mobile = this.isMobile();
     if(!mobile && this.mobile){
-      this.toggle.style.transition =
-      this.toggle.style.transform =
-      this.nav.style.transition =
-      this.line1.style.transition =
-      this.line1.style.transform =
-      this.line3.style.transition =
-      this.line3.style.transform =
-      this.nav.style.transform =
-      this.backdrop.style.display =
-      this.backdrop.style.transition =
-      this.backdrop.style.opacity =  '';
+      this.toggle.current!.style.transition =
+      this.toggle.current!.style.transform =
+      this.nav.current!.style.transition =
+      this.line1.current!.style.transition =
+      this.line1.current!.style.transform =
+      this.line3.current!.style.transition =
+      this.line3.current!.style.transform =
+      this.nav.current!.style.transform =
+      this.backdrop.current!.style.display =
+      this.backdrop.current!.style.transition =
+      this.backdrop.current!.style.opacity =  '';
     }
     this.mobile = mobile;
   }
 
   componentDidMount(){
     this.mobile = this.isMobile();
-    this.navWidth = this.nav.getBoundingClientRect().width;
+    this.navWidth = this.nav.current!.getBoundingClientRect().width;
     this.navPosition = -this.navWidth;
     this.minPosition = -this.navWidth;
 
-    this.backdrop.addEventListener('click', this.toggleMenu);
-    this.toggle.addEventListener('click', this.toggleMenu);
+    this.backdrop.current!.addEventListener('click', this.toggleMenu);
+    this.toggle.current!.addEventListener('click', this.toggleMenu);
     window.addEventListener('resize', this.resizeHandler);
     window.addEventListener('touchstart', this.handleSwipeStart, { passive: true });
     window.addEventListener('touchmove', this.handleSwipeMove, { passive: true });
@@ -244,15 +244,15 @@ export default class Menu extends React.Component<MenuProps, {}>{
 
   render(){
     return (
-      <Container innerRef={c => this.container = c}>
-        <Backdrop innerRef={c => this.backdrop = c}/>
-        <Navigation innerRef={c => this.nav = c}>
+      <Container innerRef={this.container}>
+        <Backdrop innerRef={this.backdrop}/>
+        <Navigation innerRef={this.nav}>
           {this.props.children}
         </Navigation>
-        <Toggle innerRef={c => this.toggle = c}>
-          <Line innerRef={c => this.line1 = c}/>
-          <Line innerRef={c => this.line2 = c}/>
-          <Line innerRef={c => this.line3 = c}/>
+        <Toggle innerRef={this.toggle}>
+          <Line innerRef={this.line1}/>
+          <Line innerRef={this.line2}/>
+          <Line innerRef={this.line3}/>
         </Toggle>
       </Container>
     );

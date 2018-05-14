@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom';
 import syllabary from "../syllabary";
-import classnames from "classnames/dedupe.js";
+// import classNames from "classNames/dedupe.js";
+import classNames from "../classNames";
 import styled from "styled-components";
 
 import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
@@ -149,7 +150,7 @@ export default class Table extends React.Component<TableProps, {}> {
   lastOptions = '';
   lastkyoukashoLoaded = false;
   lastTranspose = this.state.transpose;
-  table = React.createRef();
+  table = React.createRef<HTMLElement>();
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize.bind(this));
@@ -180,7 +181,7 @@ export default class Table extends React.Component<TableProps, {}> {
       this.lastkyoukashoLoaded = kyoukashoLoaded;
       this.lastTranspose = transpose;
 
-      const table: HTMLElement = this.table.current;
+      const table: HTMLElement = this.table.current!;
       table.style.fontSize = `${Table.originalFontSize}px`;
       const rows = table.getElementsByTagName('tr');
       const cell = transpose
@@ -270,7 +271,7 @@ export default class Table extends React.Component<TableProps, {}> {
     const { options } = this.props;
     const svgStrokes = (
       options.strokes &&
-      syllable.strokes
+      !!syllable.strokes
     );
     const kanaStyles = svgStrokes ? {
       backgroundPosition: `${syllable.strokes![0] * 2}em ${syllable.strokes![1] * 2}em`,
@@ -279,7 +280,7 @@ export default class Table extends React.Component<TableProps, {}> {
       <td
         key={`key_${consonantIndex}_${syllableIndex}`}
         onMouseEnter={this.hoverOn.bind(this, syllable)}
-        className={classnames({
+        className={classNames({
           highlightRomanji: syllable.highlightRomanji,
           highlightHiragana: (options.similar && syllable.highlightHiragana),
           highlightKatakana: (options.similar && syllable.highlightKatakana),
@@ -294,7 +295,7 @@ export default class Table extends React.Component<TableProps, {}> {
         <span>
           {options.hiragana &&
             <div
-              className={classnames("hiragana", { svgStrokes })}
+              className={classNames("hiragana", { svgStrokes })}
               style={kanaStyles}
             >
               {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
@@ -302,7 +303,7 @@ export default class Table extends React.Component<TableProps, {}> {
           }
           {options.katakana &&
             <div
-              className={classnames("katakana", { svgStrokes })}
+              className={classNames("katakana", { svgStrokes })}
               style={kanaStyles}
             >
               {syllable.katakana}
@@ -397,8 +398,8 @@ export default class Table extends React.Component<TableProps, {}> {
 
     return (
       <Container
-        innerRef={c => this.table = c}
-        className={classnames({
+        innerRef={this.table}
+        className={classNames({
           handwritten: options.handwritten,
         })}
       >

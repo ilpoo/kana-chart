@@ -22,46 +22,35 @@ const Navigation = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-
   width: 80%;
   min-width: 300px;
   max-width: 350px;
   height: 100vh;
   padding: 10px;
-
   background: #C70025;
   color: white;
   font-size: 16px;
-
   transform: translateX(-100%);
   padding-top: 60px;
   transition: transform .4s;
   line-height: 40px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-
   overflow-y: auto;
 
   @media (min-width: 800px){
-    &{
-      position: absolute;
-      top: 50px;
-      left: 10px;
-      width: 300px;
-      transform: translateX(0);
-      background-color: transparent;
-      color: black;
-      padding-top: 80px;
-      height: calc(100vh - 50px);
-    }
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 300px;
+    transform: translateX(0);
+    background-color: transparent;
+    color: black;
+    padding-top: 80px;
+    height: calc(100vh - 50px);
   }
 
   @media (min-width: 1000px){
-    &{
-      left: calc(50vw - 1000px / 2 + 10px);
-    }
+    left: calc(50vw - 1000px / 2 + 10px);
   }
 `;
 
@@ -76,20 +65,16 @@ const Toggle = styled.div`
   transition: all .4s;
 
   @media (min-width: 800px){
-    &{
-      display: none;
-    }
+    display: none;
   }
 `;
 
 const Line = styled.div`
   position: absolute;
-
   background: white;
   width: .64em;
   height: 3px;
   left: .18em;
-
   transition: all .4s;
 
   &:first-of-type{

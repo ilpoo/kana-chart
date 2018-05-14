@@ -1,5 +1,10 @@
 import * as React from "react";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
+import styled from "styled-components";
+
+const Label = styled.label`
+  display: block;
+`;
 
 export interface CheckboxProps extends OptionDescription {
   changeOptions: Function;
@@ -16,14 +21,14 @@ export default class Checkbox extends React.Component<CheckboxProps, {}> {
     const {name, label, title, checked, separate} = this.props;
     return (
       <React.Fragment>
-        <label htmlFor={name} title={title}>
+        <Label htmlFor={name} title={title}>
           <input
             id={name}
             type="checkbox"
             checked={checked}
             onChange={this.onCheck.bind(this)}
           /> {label}
-        </label>
+        </Label>
         {separate && <hr/>}
       </React.Fragment>
     );

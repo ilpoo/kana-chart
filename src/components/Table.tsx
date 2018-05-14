@@ -1,12 +1,112 @@
 import * as React from "react";
-import * as ReactDOM from 'react-dom';
 import syllabary from "../syllabary";
-// import classNames from "classNames/dedupe.js";
-import classNames from "../classNames";
 import styled from "styled-components";
 
 import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
 import Options from "../interfaces/Options";
+
+const CellWrapper = styled.span`
+  display: table;
+  margin: 0 auto;
+`;
+
+export interface TdProps {
+  highlight: boolean,
+  foreign: boolean,
+  background: string,
+}
+const Td = styled.td`
+  padding: .05em;
+  text-align: center;
+  position: static;
+  overflow: hidden;
+  background-clip: padding-box;
+  border: 1px solid black;
+  user-select: none;
+  position: relative;
+
+  ${(props: TdProps) => props.highlight && `
+    background-color: hsl(120,73%,80%) !important;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+  `}
+
+  ${props => props.foreign && `
+    color: #888;
+  `}
+
+  ${props => props.background && `
+    background-color: ${props.background};
+  `}
+
+  @media (max-width: 799px){
+    tr:first-of-type &{
+      border-top: none;
+    }
+
+    tr:last-of-type &{
+      border-bottom: none;
+    }
+
+    tr &:first-of-type{
+      border-left: none;
+    }
+
+    tr &:last-of-type{
+      border-right: none;
+    }
+  }
+`;
+
+interface KanaProps {
+  highlight: boolean,
+  svgStrokes: boolean,
+  backgroundPosition: string,
+  handwritten: boolean,
+  type: "hiragana" | "katakana",
+}
+const Kana = styled.div`
+  display: block;
+  ${(props: KanaProps) => props.highlight && `
+    font-weight: bold;
+    color: red;
+  `}
+  ${(props) => props.svgStrokes && `
+    background-size: 26.2em;
+    height: 2em;
+    width: 2em;
+    color: transparent !important;
+    margin: 0 auto;
+    background-position: ${props.backgroundPosition};
+    background-image: url(./media/${props.type}.min.svg);
+  `}
+  ${(props) => props.handwritten && `
+    font-family: Kyoukasho, Arial;
+    font-weight: bold;
+    letter-spacing: -.4em;
+    transform: translateX(-.2em);
+  `}
+`;
+
+interface TextProps {
+  handwritten: boolean,
+  highlight?: boolean,
+}
+const Text = styled.div`
+  display: block;
+
+  ${(props:TextProps) => props.handwritten ? `
+    font-size: 50%;
+  ` : `
+    font-size: 75%;
+  `}
+
+  ${props => props.highlight && `
+    font-weight: bold;
+  `}
+`;
 
 const Container = styled.table`
   border-collapse: collapse;
@@ -17,119 +117,11 @@ const Container = styled.table`
   transform-origin: top;
   font-size: 22px;
 
-  & td{
-    padding: .05em;
-    text-align: center;
-    position: static;
-    overflow: hidden;
-    background-clip: padding-box;
-    border: 1px solid black;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    position: relative;
-
-    & > span {
-      display: table;
-      margin: 0 auto;
-
-      & > div {
-        display: block;
-      }
-    }
-
-    &.bold{
-      font-weight: bold;
-    }
-
-    &.highlightRomanji{
-      background-color: hsl(120,73%,90%) !important;
-    }
-
-    &.highlightCurrent{
-      background-color: hsl(120,73%,80%) !important;
-      -webkit-user-select: auto;
-      -moz-user-select: auto;
-      -ms-user-select: auto;
-      user-select: auto;
-    }
-
-    &.highlightHiragana .hiragana, &.highlightKatakana .katakana{
-      font-weight: bold;
-      color: red;
-    }
-
-    &.highlightExceptions .romanji{
-      font-weight: bold;
-    }
-
-    & .romanji, & .pronunciation{
-      font-size: 75%;
-    }
-
-    &.hide{
-      display: none;
-    }
-
-    & .svgStrokes{
-      background-size: 26.2em;
-      height: 2em;
-      width: 2em;
-      color: transparent !important;
-      margin: 0 auto;
-    }
-
-    & .svgStrokes.hiragana{
-      background-image: url(./media/hiragana.min.svg);
-    }
-
-    & .svgStrokes.katakana{
-      background-image: url(./media/katakana.min.svg);
-    }
-
-    &.foreign{
-      color: #888;
-    }
-  }
-
-  &.handwritten{
-    & .hiragana, & .katakana{
-      font-family: Kyoukasho, Arial;
-      font-weight: bold;
-      letter-spacing: -.4em;
-      transform: translateX(-.2em);
-    }
-    & .romanji, & .pronunciation{
-      font-size: 50%;
-    }
-  }
-
-  @media (max-width: 799px){
-    & tr:first-of-type td{
-      border-top: none;
-    }
-
-    & tr:last-of-type td{
-      border-bottom: none;
-    }
-
-    & tr td:first-of-type{
-      border-left: none;
-    }
-
-    & tr td:last-of-type{
-      border-right: none;
-    }
-  }
-
   @media (min-width: 800px){
-    &{
-      margin: 0 10px;
-      width: calc(100% - 10px);
-      min-height: calc(100% - 4px);
-      max-width: 700px;
-    }
+    margin: 0 10px;
+    width: calc(100% - 10px);
+    min-height: calc(100% - 4px);
+    max-width: 700px;
   }
 `;
 
@@ -137,7 +129,6 @@ export interface TableProps {
   kyoukashoLoaded: boolean;
   options: Options;
 }
-
 export default class Table extends React.Component<TableProps, {}> {
   static originalFontSize = 22;
   state: {
@@ -181,7 +172,7 @@ export default class Table extends React.Component<TableProps, {}> {
       this.lastkyoukashoLoaded = kyoukashoLoaded;
       this.lastTranspose = transpose;
 
-      const table: HTMLElement = this.table.current!;
+      const table = this.table.current!;
       table.style.fontSize = `${Table.originalFontSize}px`;
       const rows = table.getElementsByTagName('tr');
       const cell = transpose
@@ -197,7 +188,6 @@ export default class Table extends React.Component<TableProps, {}> {
       requestAnimationFrame(() => {
         const cellSize = cell.getBoundingClientRect();
         const contentSize = cell.firstElementChild!.getBoundingClientRect();
-        // console.log(cellSize, contentSize);
         const proportion = Math.min(
           (cellSize.height / contentSize.height),
           (cellSize.width / (contentSize.width * 1.3))
@@ -270,57 +260,60 @@ export default class Table extends React.Component<TableProps, {}> {
   renderTd(syllable: ExtendedSyllable, consonantIndex: number, syllableIndex: number) {
     const { options } = this.props;
     const svgStrokes = (
-      options.strokes &&
-      !!syllable.strokes
+      options.strokes
+      && !!syllable.strokes
     );
-    const kanaStyles = svgStrokes ? {
-      backgroundPosition: `${syllable.strokes![0] * 2}em ${syllable.strokes![1] * 2}em`,
-    } : {};
+    const svgPosition = svgStrokes
+      ? `${syllable.strokes![0] * 2}em ${syllable.strokes![1] * 2}em`
+      : `0 0`;
     return (
-      <td
+      <Td
         key={`key_${consonantIndex}_${syllableIndex}`}
         onMouseEnter={this.hoverOn.bind(this, syllable)}
-        className={classNames({
-          highlightRomanji: syllable.highlightRomanji,
-          highlightHiragana: (options.similar && syllable.highlightHiragana),
-          highlightKatakana: (options.similar && syllable.highlightKatakana),
-          highlightCurrent: syllable.highlightCurrent,
-          highlightExceptions: (options.exceptions && syllable.exception),
-          foreign: syllable.foreign
-        })}
-        style={{
-          backgroundColor: `hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`,
-        }}
+        foreign={!!syllable.foreign}
+        highlight={!!syllable.highlightCurrent}
+        background={`hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`}
       >
-        <span>
+        <CellWrapper>
           {options.hiragana &&
-            <div
-              className={classNames("hiragana", { svgStrokes })}
-              style={kanaStyles}
+            <Kana
+              highlight={!!(options.similar && syllable.highlightHiragana)}
+              svgStrokes={svgStrokes}
+              backgroundPosition={svgPosition}
+              handwritten={options.handwritten}
+              type="hiragana"
             >
               {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
-            </div>
+            </Kana>
           }
           {options.katakana &&
-            <div
-              className={classNames("katakana", { svgStrokes })}
-              style={kanaStyles}
+            <Kana
+              highlight={!!(options.similar && syllable.highlightKatakana)}
+              svgStrokes={svgStrokes}
+              backgroundPosition={svgPosition}
+              handwritten={options.handwritten}
+              type="katakana"
             >
               {syllable.katakana}
-            </div>
+            </Kana>
           }
           { (options.romanji || syllable.title) &&
-            <div className="romanji">
+            <Text
+              highlight={!!(options.exceptions && syllable.exception)}
+              handwritten={options.handwritten}
+            >
               {syllable.romanji}
-            </div>
+            </Text>
           }
           {(options.pronunciation) &&
-            <div className="pronunciation">
+            <Text
+              handwritten={options.handwritten}
+            >
               {syllable.pronunciation}
-            </div>
+            </Text>
           }
-        </span>
-      </td>
+        </CellWrapper>
+      </Td>
     );
   }
 
@@ -399,9 +392,6 @@ export default class Table extends React.Component<TableProps, {}> {
     return (
       <Container
         innerRef={this.table}
-        className={classNames({
-          handwritten: options.handwritten,
-        })}
       >
         {colgroup}
         <tbody>

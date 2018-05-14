@@ -1,6 +1,3 @@
-// const fs = require("fs");
-// const info = JSON.parse(fs.readFileSync("./package.json"));
-
 const info = require("./package.json");
 
 module.exports = {

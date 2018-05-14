@@ -12,17 +12,13 @@ const Container = styled.div`
   overflow-x: auto;
 
   @media (min-width: 800px){
-    &{
-      padding: 5px;
-      position: absolute;
-      width: calc(100vw - 300px);
-    }
+    padding: 5px;
+    position: absolute;
+    width: calc(100vw - 300px);
   }
 
   @media (min-width: 1000px){
-    &{
-      width: calc(100vw - (50vw - 1000px / 2 + 300px));
-    }
+    width: calc(100vw - (50vw - 1000px / 2 + 300px));
   }
 `;
 

@@ -93,7 +93,7 @@ const faviconDescription = {
   },
   "versioning": {
     "paramName": "v",
-    "paramValue": Math.random().toString(36).substr(2, 17),
+    "paramValue": Math.random().toString(36).substr(2, 9),
   },
 };
 

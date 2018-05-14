@@ -1,4 +1,6 @@
-[
+import Syllabary from "./interfaces/Syllabary";
+
+const syllabary: Syllabary = [
   [
     {"hideIfRomanji":true},
     {
@@ -154,7 +156,7 @@
       "pronunciation":"[ku͍]",
       "base":["k","u"],
       "similarHiragana":["gu"],
-      "similarKatakana":["ka","ke","ta","fu","wa","gu"], 
+      "similarKatakana":["ka","ke","ta","fu","wa","gu"],
       "frequency":0.14781457562429998,
       "strokes":[2.988,4.325]
     },
@@ -1944,4 +1946,8 @@
       "foreign":true
     }
   ]
-]
+];
+
+Object.freeze(syllabary);
+
+export default syllabary;

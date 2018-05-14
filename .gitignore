@@ -41,3 +41,4 @@ jspm_packages
 public/index.html
 package-lock.json
 public/*.js
+public/dist

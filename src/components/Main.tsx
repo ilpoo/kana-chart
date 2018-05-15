@@ -43,7 +43,7 @@ export default class Main extends React.Component<{}, MainStates> {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Header />
         <Content
           options={this.state.options}
@@ -65,7 +65,7 @@ export default class Main extends React.Component<{}, MainStates> {
             />
           ))}
         </Menu>
-      </div>
+      </React.Fragment>
     );
   }
 }

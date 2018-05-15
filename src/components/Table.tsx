@@ -135,85 +135,95 @@ export default class Table extends React.Component<TableProps, {}> {
     consonants: ExtendedSyllabary,
     transpose: boolean,
   } = {
-      consonants: syllabary,
-      transpose: this.isLandscape(),
-    };
-  lastOptions = '';
+    consonants: syllabary,
+    transpose: this.isLandscape(),
+  };
+  lastOptions = "";
   lastkyoukashoLoaded = false;
   lastTranspose = this.state.transpose;
-  table = React.createRef<HTMLElement>();
+  table = React.createRef<HTMLTableElement>();
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize.bind(this));
-    this.calculateFontSize();
+    this.updateFontSize();
   }
 
   componentDidUpdate() {
-    this.calculateFontSize();
+    this.updateFontSize();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  calculateFontSize(forceUpdate = false) {
+  private updateFontSize(forceUpdate = false) {
     const { kyoukashoLoaded, options } = this.props;
     const { transpose } = this.state;
     const newOptions = JSON.stringify(options);
 
     if (
-      (newOptions !== this.lastOptions) ||
-      (kyoukashoLoaded !== this.lastkyoukashoLoaded) ||
-      (transpose !== this.lastTranspose) ||
-      forceUpdate
+         (newOptions !== this.lastOptions) // Options changed
+      || (kyoukashoLoaded !== this.lastkyoukashoLoaded) // Font got loaded since last update
+      || (transpose !== this.lastTranspose) // Orientation changed
+      || forceUpdate
     ) {
 
       this.lastOptions = newOptions;
       this.lastkyoukashoLoaded = kyoukashoLoaded;
       this.lastTranspose = transpose;
 
-      const table = this.table.current!;
-      table.style.fontSize = `${Table.originalFontSize}px`;
-      const rows = table.getElementsByTagName('tr');
-      const cell = transpose
-        ? (!options.transcription && options.digraphs)
-          ? rows[rows.length - 1].getElementsByTagName('td')[2]
-          : (!options.transcription && !options.digraphs && !options.transcription)
-            ? rows[1].getElementsByTagName('td')[1]
-            : rows[2].getElementsByTagName('td')[0]
-        : (options.digraphs)
-          ? rows[2].getElementsByTagName('td')[6]
-          : rows[1].getElementsByTagName('td')[1];
+      this.setFontSize(Table.originalFontSize);
+      const cell = this.decideWhichCellToBaseCalculationsOn();
 
-      requestAnimationFrame(() => {
-        const cellSize = cell.getBoundingClientRect();
-        const contentSize = cell.firstElementChild!.getBoundingClientRect();
-        const proportion = Math.min(
-          (cellSize.height / contentSize.height),
-          (cellSize.width / (contentSize.width * 1.3))
-        );
-        const fontSize = ~~Math.max(
-          Table.originalFontSize,
-          Table.originalFontSize * proportion * .9
-        );
-
-        table.style.fontSize = `${fontSize}px`;
-      });
+      // Let the browser paint first to get accurate measurements:
+      requestAnimationFrame(this.calculateFontSize(cell));
     }
   }
 
-  handleResize() {
+  private decideWhichCellToBaseCalculationsOn() {
+    const { options } = this.props;
+    const rows = this.table.current!.getElementsByTagName('tr');
+    return this.state.transpose
+      ? (!options.transcription && options.digraphs)
+        ? rows[rows.length - 1].getElementsByTagName('td')[2]
+        : (!options.transcription && !options.digraphs && !options.transcription)
+          ? rows[1].getElementsByTagName('td')[1]
+          : rows[2].getElementsByTagName('td')[0]
+      : (options.digraphs)
+        ? rows[2].getElementsByTagName('td')[6]
+        : rows[1].getElementsByTagName('td')[1];
+  }
+
+  private calculateFontSize(
+    cell: HTMLTableDataCellElement,
+  ): FrameRequestCallback {
+    return () => {
+      const cellSize = cell.getBoundingClientRect();
+      const contentSize = cell.firstElementChild!.getBoundingClientRect();
+      const proportion = Math.min((cellSize.height / contentSize.height), (cellSize.width / (contentSize.width * 1.3)));
+      const fontSize = ~~Math.max(Table.originalFontSize, Table.originalFontSize * proportion * .9);
+      this.setFontSize(fontSize);
+    };
+  }
+
+  private setFontSize(
+    fontSize: number,
+  ) {
+    this.table.current!.style.fontSize = `${fontSize}px`;
+  }
+
+  private handleResize() {
     const transpose = this.isLandscape();
     if (transpose !== this.state.transpose) {
       this.setState({
         transpose,
       });
     } else {
-      this.calculateFontSize(true);
+      this.updateFontSize(true);
     }
   }
 
-  transposeArray(array: any[]) {
+  private transposeArray(array: any[]) {
     const newArray = [...Array(array[0].length)].map(() => [...Array(array.length)]);
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < array[0].length; j++) {
@@ -223,11 +233,16 @@ export default class Table extends React.Component<TableProps, {}> {
     return newArray;
   }
 
-  isLandscape() {
-    return window.innerWidth < 800 && window.innerWidth > window.innerHeight;
+  private isLandscape() {
+    return (
+      window.innerWidth < 800
+      && window.innerWidth > window.innerHeight
+    );
   }
 
-  hoverOn(hoveredSyllable: ExtendedSyllable) {
+  private hoverOn(
+    hoveredSyllable: ExtendedSyllable,
+  ) {
     this.setState({
       consonants: this.state.consonants.map(consonant =>
         consonant.map(syllable => {
@@ -257,7 +272,11 @@ export default class Table extends React.Component<TableProps, {}> {
     });
   }
 
-  renderTd(syllable: ExtendedSyllable, consonantIndex: number, syllableIndex: number) {
+  private renderTd(
+    syllable: ExtendedSyllable,
+    consonantIndex: number,
+    syllableIndex: number,
+  ) {
     const { options } = this.props;
     const svgStrokes = (
       options.strokes
@@ -276,124 +295,200 @@ export default class Table extends React.Component<TableProps, {}> {
       >
         <CellWrapper>
           {options.hiragana &&
-            <Kana
-              highlight={!!(options.similar && syllable.highlightHiragana)}
-              svgStrokes={svgStrokes}
-              backgroundPosition={svgPosition}
-              handwritten={options.handwritten}
-              type="hiragana"
-            >
-              {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
-            </Kana>
+            this.renderHiragana(options, syllable, svgStrokes, svgPosition)
           }
           {options.katakana &&
-            <Kana
-              highlight={!!(options.similar && syllable.highlightKatakana)}
-              svgStrokes={svgStrokes}
-              backgroundPosition={svgPosition}
-              handwritten={options.handwritten}
-              type="katakana"
-            >
-              {syllable.katakana}
-            </Kana>
+            this.renderKatakana(options, syllable, svgStrokes, svgPosition)
           }
           { (options.romanji || syllable.title) &&
-            <Text
-              highlight={!!(options.exceptions && syllable.exception)}
-              handwritten={options.handwritten}
-            >
-              {syllable.romanji}
-            </Text>
+            this.renderRomanji(options, syllable)
           }
           {(options.pronunciation) &&
-            <Text
-              handwritten={options.handwritten}
-            >
-              {syllable.pronunciation}
-            </Text>
+            this.renderPronunciation(options, syllable)
           }
         </CellWrapper>
       </Td>
     );
   }
 
-  render() {
-    const { options } = this.props;
-    const { consonants, transpose } = this.state;
+  private renderHiragana(
+    options: Options,
+    syllable: ExtendedSyllable,
+    svgStrokes: boolean,
+    svgPosition: string,
+  ): React.ReactNode {
+    return (
+      <Kana
+        highlight={!!(options.similar && syllable.highlightHiragana)}
+        svgStrokes={svgStrokes}
+        backgroundPosition={svgPosition}
+        handwritten={options.handwritten}
+        type="hiragana"
+      >
+        {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
+      </Kana>
+    );
+  }
 
-    const filteredConsonants = consonants.filter(consonant => !(
+  private renderKatakana(
+    options: Options,
+    syllable: ExtendedSyllable,
+    svgStrokes: boolean,
+    svgPosition: string,
+  ): React.ReactNode {
+    return (
+      <Kana
+        highlight={!!(options.similar && syllable.highlightKatakana)}
+        svgStrokes={svgStrokes}
+        backgroundPosition={svgPosition}
+        handwritten={options.handwritten}
+        type="katakana"
+      >
+        {syllable.katakana}
+      </Kana>
+    );
+  }
+
+  private renderRomanji(
+    options: Options,
+    syllable: ExtendedSyllable,
+  ): React.ReactNode {
+    return <Text highlight={!!(options.exceptions && syllable.exception)} handwritten={options.handwritten}>
+      {syllable.romanji}
+    </Text>;
+  }
+
+  private renderPronunciation(
+    options: Options,
+    syllable: ExtendedSyllable,
+  ): React.ReactNode {
+    return <Text handwritten={options.handwritten}>
+      {syllable.pronunciation}
+    </Text>;
+  }
+
+  private processCells() {
+    return this.transposeIfNecessary(
+      this.filterConsonants()
+      .map(this.filterSyllables)
+    );
+  }
+
+  private filterSyllables = (
+    consonant: ExtendedSyllable[],
+  ) => {
+    const { options } = this.props;
+    return consonant.filter(syllable =>
+      !(!options.digraphs && syllable.digraph)
+    );
+  }
+
+  private filterConsonants() {
+    const { options } = this.props;
+    return this.state.consonants.filter(consonant => !(
       (options.transcription && consonant[0].noTranscription) ||
       (!options.transcription && consonant[0].transcription) ||
       (!options.diacritics && consonant[0].diacritic) ||
       (options.digraphs && consonant[0].hideIfDigraph) ||
       (options.romanji && consonant[0].hideIfRomanji)
-    ));
-    filteredConsonants.forEach((consonant, i) => {
-      filteredConsonants[i] = consonant.filter(syllable =>
-        !(!options.digraphs && syllable.digraph)
-      );
-    });
-    const transposedConsonants = transpose ?
+    ))
+  }
+
+  private transposeIfNecessary(
+    filteredConsonants: ExtendedSyllable[][]
+  ) {
+    const { transpose } = this.state;
+    return transpose ?
       this.transposeArray(filteredConsonants) :
       filteredConsonants;
-    const width = transposedConsonants[0].length;
+  }
 
-    const colgroup = transpose ? (
-      options.romanji ? (
+  private renderColgroupTransposedWithRomanji(
+    columnCount: number,
+  ) {
+    return (
         <colgroup>
           <col
-            span={width - 1}
+            span={columnCount - 1}
             style={{
-              width: `${100 / width}%`
+              width: `${100 / columnCount}%`
             }}
           />
         </colgroup>
-      ) : (
-          <colgroup>
-            <col
-              span={width - 1}
-              style={{
-                width: `${200 / (width * 2 - 1)}%`
-              }}
-            />
-            <col
-              span={1}
-              style={{
-                width: `${100 / (width * 2 - 1)}%`
-              }}
-            />
-          </colgroup>
-        )
-    ) : (
-        <colgroup>
+      )
+  }
+
+  private renderColgroupTransposedWithoutRomanji(
+    columnCount: number,
+  ) {
+    return (
+      <colgroup>
+        <col
+          span={columnCount - 1}
+          style={{
+            width: `${200 / (columnCount * 2 - 1)}%`
+          }}
+        />
+        <col
+          span={1}
+          style={{
+            width: `${100 / (columnCount * 2 - 1)}%`
+          }}
+        />
+      </colgroup>
+    );
+  }
+
+  private renderColgroupUpright() {
+    const { options } = this.props;
+    return (
+      <colgroup>
+        <col
+          span={6}
+          style={{
+            width: options.digraphs
+              ? options.transcription
+                ? "calc(100% / 9)"
+                : "9.5%"
+              : ""
+          }}
+        />
+        {options.digraphs &&
           <col
-            span={6}
+            span={3}
             style={{
-              width: options.digraphs
-                ? options.transcription
-                  ? "calc(100% / 9)"
-                  : "9.5%"
-                : ""
+              width: options.transcription ?
+                "calc(100% / 9)"
+                : "calc((100% - 6 * 9.5%) / 3)"
             }}
           />
-          {options.digraphs &&
-            <col
-              span={3}
-              style={{
-                width: options.transcription ?
-                  "calc(100% / 9)"
-                  : "calc((100% - 6 * 9.5%) / 3)"
-              }}
-            />
-          }
-        </colgroup>
-      );
+        }
+      </colgroup>
+    );
+  }
+
+  private renderColgroup(
+    columnCount: number,
+  ) {
+    const { options } = this.props;
+    const { transpose } = this.state;
+
+    return transpose
+      ? options.romanji
+        ? this.renderColgroupTransposedWithRomanji(columnCount)
+        : this.renderColgroupTransposedWithoutRomanji(columnCount)
+      : this.renderColgroupUpright();
+  }
+
+  render() {
+    const transposedConsonants = this.processCells();
+    const columnCount = transposedConsonants[0].length;
 
     return (
       <Container
         innerRef={this.table}
       >
-        {colgroup}
+        {this.renderColgroup(columnCount)}
         <tbody>
           {transposedConsonants.map((consonant, consonantIndex) => (
             <tr key={consonantIndex}>

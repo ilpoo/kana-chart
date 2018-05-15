@@ -106,15 +106,17 @@ export default class Menu extends React.Component<MenuProps, {}>{
   fastSwipe = true;
   fastSwipeDetector = setTimeout(() => {}, 0);
 
-  container = React.createRef<HTMLElement>();
-  nav = React.createRef<HTMLElement>();
-  backdrop = React.createRef<HTMLElement>();
-  toggle = React.createRef<HTMLElement>();
-  line1 = React.createRef<HTMLElement>();
-  line2 = React.createRef<HTMLElement>();
-  line3 = React.createRef<HTMLElement>();
+  container = React.createRef<HTMLDivElement>();
+  nav = React.createRef<HTMLDivElement>();
+  backdrop = React.createRef<HTMLDivElement>();
+  toggle = React.createRef<HTMLDivElement>();
+  line1 = React.createRef<HTMLDivElement>();
+  line2 = React.createRef<HTMLDivElement>();
+  line3 = React.createRef<HTMLDivElement>();
 
-  handleSwipeStart = (e: TouchEvent) => {
+  private handleSwipeStart = (
+    e: TouchEvent,
+  ) => {
     if(e.touches.length === 1 && this.mobile){
       if(
         ( this.open && e.touches.item(0)!.clientX > this.navWidth) ||
@@ -133,13 +135,15 @@ export default class Menu extends React.Component<MenuProps, {}>{
     }
   }
 
-  handleSwipeMove = (e: TouchEvent) => {
+  private handleSwipeMove = (
+    e: TouchEvent,
+  ) => {
     if(this.swiping){
       this.setNavPosition(Math.min(0, e.touches.item(0)!.clientX - this.navWidth));
     }
   }
 
-  handleSwipeEnd = () => {
+  private handleSwipeEnd = () => {
     if(this.swiping){
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
@@ -156,7 +160,9 @@ export default class Menu extends React.Component<MenuProps, {}>{
     }
   }
 
-  setNavPosition = (position: number) => {
+  private setNavPosition = (
+    position: number,
+  ) => {
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
     const transition={
@@ -177,25 +183,25 @@ export default class Menu extends React.Component<MenuProps, {}>{
     this.line3.current!.style.transform = `rotate(${-transition.rotate2}deg) translate(${transition.translateX}%, ${transition.translateY}%) scaleX(${1-(transition.scaleX)})`;
   }
 
-  openMenu = () => {
+  private openMenu = () => {
     this.open = true;
     this.setNavPosition(0);
   }
 
-  closeMenu = () => {
+  private closeMenu = () => {
     this.open = false;
     this.setNavPosition(-this.navWidth);
   }
 
-  toggleMenu = () => {
+  private toggleMenu = () => {
     this.open ? this.closeMenu() : this.openMenu();
   }
 
-  isMobile = () => {
+  private isMobile = () => {
     return window.innerWidth < 800;
   }
 
-  resizeHandler = () => {
+  private resizeHandler = () => {
     const mobile = this.isMobile();
     if(!mobile && this.mobile){
       this.toggle.current!.style.transition =
@@ -213,7 +219,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
     this.mobile = mobile;
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.mobile = this.isMobile();
     this.navWidth = this.nav.current!.getBoundingClientRect().width;
     this.navPosition = -this.navWidth;
@@ -227,7 +233,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
     window.addEventListener('touchend', this.handleSwipeEnd, { passive: true });
   }
 
-  render(){
+  render() {
     return (
       <Container innerRef={this.container}>
         <Backdrop innerRef={this.backdrop}/>

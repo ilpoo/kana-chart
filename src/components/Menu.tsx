@@ -127,7 +127,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
         this.toggle.current!.style.transition =
         this.nav.current!.style.transition =
         this.line1.current!.style.transition =
-        this.line3.current!.style.transition = 'initial';
+        this.line3.current!.style.transition = "initial";
         this.fastSwipeDetector = setTimeout(()=>{
           this.fastSwipe = false;
         },1000);
@@ -166,7 +166,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
     const transition={
-      visibility: percentage > 0 ? 'visible' : 'hidden',
+      visibility: percentage > 0 ? "visible" : "hidden",
       opacity: .4 * percentage,
       position: position === -this.navWidth ? "-100%" : `${position}px`,
       rotate: -180 * percentage,
@@ -225,12 +225,12 @@ export default class Menu extends React.Component<MenuProps, {}>{
     this.navPosition = -this.navWidth;
     this.minPosition = -this.navWidth;
 
-    this.backdrop.current!.addEventListener('click', this.toggleMenu);
-    this.toggle.current!.addEventListener('click', this.toggleMenu);
-    window.addEventListener('resize', this.resizeHandler);
-    window.addEventListener('touchstart', this.handleSwipeStart, { passive: true });
-    window.addEventListener('touchmove', this.handleSwipeMove, { passive: true });
-    window.addEventListener('touchend', this.handleSwipeEnd, { passive: true });
+    this.backdrop.current!.addEventListener("click", this.toggleMenu);
+    this.toggle.current!.addEventListener("click", this.toggleMenu);
+    window.addEventListener("resize", this.resizeHandler);
+    window.addEventListener("touchstart", this.handleSwipeStart, { passive: true });
+    window.addEventListener("touchmove", this.handleSwipeMove, { passive: true });
+    window.addEventListener("touchend", this.handleSwipeEnd, { passive: true });
   }
 
   render() {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Table from './Table';
+import Table from "./Table";
 
 export default class Content extends React.Component<{}, {}> {
   render(){

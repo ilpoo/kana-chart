@@ -1,11 +1,11 @@
 import * as React from "react";
-import Menu from './Menu';
-import Header from './Header';
-import Content from './Content';
-import fontLoaded from '../font-loaded';
-import Checkbox from './Checkbox';
-import defaultOptions from '../defaultOptions';
-import optionDescriptions from '../optionDescriptions';
+import Menu from "./Menu";
+import Header from "./Header";
+import Content from "./Content";
+import fontLoaded from "../font-loaded";
+import Checkbox from "./Checkbox";
+import defaultOptions from "../defaultOptions";
+import optionDescriptions from "../optionDescriptions";
 import Options from "../interfaces/Options";
 
 export interface MainStates {
@@ -15,7 +15,7 @@ export interface MainStates {
 
 export default class Main extends React.Component<{}, MainStates> {
   state: MainStates = {
-    options: JSON.parse(localStorage.getItem('options') || JSON.stringify(defaultOptions)),
+    options: JSON.parse(localStorage.getItem("options") || JSON.stringify(defaultOptions)),
     kyoukashoLoaded: false,
   }
 
@@ -23,12 +23,12 @@ export default class Main extends React.Component<{}, MainStates> {
     const fontCheck = setInterval((() => {
       let fontChecks = 0;
       return () => {
-        if (fontLoaded('Kyoukasho')) {
+        if (fontLoaded("Kyoukasho")) {
           this.setState({ kyoukashoLoaded: true });
           clearInterval(fontCheck);
         } else if (++fontChecks > 20) {
           clearInterval(fontCheck);
-          console.log('Failed to load Kyouka.');
+          console.log("Failed to load Kyouka.");
         }
       }
     })(), 200);
@@ -38,7 +38,7 @@ export default class Main extends React.Component<{}, MainStates> {
     const options = JSON.parse(JSON.stringify(this.state.options));
     options[name] = bool;
     this.setState({ options: options });
-    localStorage.setItem('options', JSON.stringify(options));
+    localStorage.setItem("options", JSON.stringify(options));
   }
 
   render() {

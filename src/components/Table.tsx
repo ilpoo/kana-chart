@@ -144,7 +144,7 @@ export default class Table extends React.Component<TableProps, {}> {
   table = React.createRef<HTMLTableElement>();
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener("resize", this.handleResize.bind(this));
     this.updateFontSize();
   }
 
@@ -153,7 +153,7 @@ export default class Table extends React.Component<TableProps, {}> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   private updateFontSize(forceUpdate = false) {
@@ -167,7 +167,6 @@ export default class Table extends React.Component<TableProps, {}> {
       || (transpose !== this.lastTranspose) // Orientation changed
       || forceUpdate
     ) {
-
       this.lastOptions = newOptions;
       this.lastkyoukashoLoaded = kyoukashoLoaded;
       this.lastTranspose = transpose;
@@ -182,16 +181,16 @@ export default class Table extends React.Component<TableProps, {}> {
 
   private decideWhichCellToBaseCalculationsOn() {
     const { options } = this.props;
-    const rows = this.table.current!.getElementsByTagName('tr');
+    const rows = this.table.current!.getElementsByTagName("tr");
     return this.state.transpose
       ? (!options.transcription && options.digraphs)
-        ? rows[rows.length - 1].getElementsByTagName('td')[2]
+        ? rows[rows.length - 1].getElementsByTagName("td")[2]
         : (!options.transcription && !options.digraphs && !options.transcription)
-          ? rows[1].getElementsByTagName('td')[1]
-          : rows[2].getElementsByTagName('td')[0]
+          ? rows[1].getElementsByTagName("td")[1]
+          : rows[2].getElementsByTagName("td")[0]
       : (options.digraphs)
-        ? rows[2].getElementsByTagName('td')[6]
-        : rows[1].getElementsByTagName('td')[1];
+        ? rows[2].getElementsByTagName("td")[6]
+        : rows[1].getElementsByTagName("td")[1];
   }
 
   private calculateFontSize(
@@ -353,18 +352,27 @@ export default class Table extends React.Component<TableProps, {}> {
     options: Options,
     syllable: ExtendedSyllable,
   ): React.ReactNode {
-    return <Text highlight={!!(options.exceptions && syllable.exception)} handwritten={options.handwritten}>
-      {syllable.romanji}
-    </Text>;
+    return (
+      <Text
+        highlight={!!(options.exceptions && syllable.exception)}
+        handwritten={options.handwritten}
+      >
+        {syllable.romanji}
+      </Text>
+    );
   }
 
   private renderPronunciation(
     options: Options,
     syllable: ExtendedSyllable,
   ): React.ReactNode {
-    return <Text handwritten={options.handwritten}>
-      {syllable.pronunciation}
-    </Text>;
+    return (
+      <Text
+        handwritten={options.handwritten}
+      >
+        {syllable.pronunciation}
+      </Text>
+    );
   }
 
   private processCells() {

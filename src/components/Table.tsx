@@ -1,21 +1,20 @@
 import * as React from "react";
+import styled, { css } from "react-emotion";
 import syllabary from "../syllabary";
-import styled from "styled-components";
 
 import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
 import Options from "../interfaces/Options";
 
-const CellWrapper = styled.span`
+const CellWrapper = styled("span")`
   display: table;
   margin: 0 auto;
 `;
 
 export interface TdProps {
-  highlight: boolean,
-  foreign: boolean,
-  background: string,
+  highlight?: boolean,
+  foreign?: boolean,
 }
-const Td = styled.td`
+const Td = styled<TdProps, "td">("td")`
   padding: .05em;
   text-align: center;
   position: static;
@@ -25,20 +24,13 @@ const Td = styled.td`
   user-select: none;
   position: relative;
 
-  ${(props: TdProps) => props.highlight && `
+  ${props => props.highlight && `
     background-color: hsl(120,73%,80%) !important;
-    -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
     user-select: auto;
   `}
 
   ${props => props.foreign && `
     color: #888;
-  `}
-
-  ${props => props.background && `
-    background-color: ${props.background};
   `}
 
   @media (max-width: 799px){
@@ -61,15 +53,15 @@ const Td = styled.td`
 `;
 
 interface KanaProps {
-  highlight: boolean,
-  svgStrokes: boolean,
-  backgroundPosition: string,
-  handwritten: boolean,
+  highlight?: boolean,
+  svgStrokes?: boolean,
+  backgroundPosition?: string,
+  handwritten?: boolean,
   type: "hiragana" | "katakana",
 }
-const Kana = styled.div`
+const Kana = styled<KanaProps, "div">("div")`
   display: block;
-  ${(props: KanaProps) => props.highlight && `
+  ${props => props.highlight && `
     font-weight: bold;
     color: red;
   `}
@@ -94,10 +86,10 @@ interface TextProps {
   handwritten: boolean,
   highlight?: boolean,
 }
-const Text = styled.div`
+const Text = styled<TextProps, "div">("div")`
   display: block;
 
-  ${(props:TextProps) => props.handwritten ? `
+  ${props => props.handwritten ? `
     font-size: 50%;
   ` : `
     font-size: 75%;
@@ -108,7 +100,7 @@ const Text = styled.div`
   `}
 `;
 
-const Container = styled.table`
+const Container = styled("table")`
   border-collapse: collapse;
   margin: 0 auto;
   min-height: 100%;
@@ -290,7 +282,9 @@ export default class Table extends React.Component<TableProps, {}> {
         onMouseEnter={this.hoverOn.bind(this, syllable)}
         foreign={!!syllable.foreign}
         highlight={!!syllable.highlightCurrent}
-        background={`hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`}
+        style={{
+          backgroundColor: `hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`
+        }}
       >
         <CellWrapper>
           {options.hiragana &&

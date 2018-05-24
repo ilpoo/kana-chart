@@ -1,8 +1,8 @@
 import * as React from "react";
+import styled from "react-emotion";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
-import styled from "styled-components";
 
-const Label = styled.label`
+const Label = styled("label")`
   display: block;
 `;
 

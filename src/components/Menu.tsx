@@ -1,7 +1,8 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled from "react-emotion";
 
-const Container = styled.div`
+
+const Container = styled("div")`
   width: 0;
   height: 0;
   top: 0;
@@ -9,7 +10,7 @@ const Container = styled.div`
   position: absolute;
 `;
 
-const Backdrop = styled.div`
+const Backdrop = styled("div")`
   width: 100vw;
   height: 100vh;
   background-color: black;
@@ -18,7 +19,7 @@ const Backdrop = styled.div`
   transition: all .4s;
 `;
 
-const Navigation = styled.div`
+const Navigation = styled("div")`
   position: fixed;
   top: 0;
   left: 0;
@@ -54,7 +55,7 @@ const Navigation = styled.div`
   }
 `;
 
-const Toggle = styled.div`
+const Toggle = styled("div")`
   font-size: 50px;
   width: 1em;
   height: 1em;
@@ -69,7 +70,7 @@ const Toggle = styled.div`
   }
 `;
 
-const Line = styled.div`
+const Line = styled("div")`
   position: absolute;
   background: white;
   width: .64em;

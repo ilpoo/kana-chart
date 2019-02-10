@@ -1,5 +1,5 @@
-import * as React from "react";
-import styled, { css } from "react-emotion";
+import React from "react";
+import styled from "@emotion/styled";
 import syllabary from "../syllabary";
 
 import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
@@ -14,7 +14,7 @@ export interface TdProps {
   highlight?: boolean,
   foreign?: boolean,
 }
-const Td = styled<TdProps, "td">("td")`
+const Td = styled("td")<TdProps>`
   padding: .05em;
   text-align: center;
   position: static;
@@ -33,7 +33,7 @@ const Td = styled<TdProps, "td">("td")`
     color: #888;
   `}
 
-  @media (max-width: 799px){
+  @media (max-width: 799px) {
     tr:first-of-type &{
       border-top: none;
     }
@@ -59,7 +59,7 @@ interface KanaProps {
   handwritten?: boolean,
   type: "hiragana" | "katakana",
 }
-const Kana = styled<KanaProps, "div">("div")`
+const Kana = styled("div")<KanaProps>`
   display: block;
   ${props => props.highlight && `
     font-weight: bold;
@@ -86,7 +86,7 @@ interface TextProps {
   handwritten: boolean,
   highlight?: boolean,
 }
-const Text = styled<TextProps, "div">("div")`
+const Text = styled("div")<TextProps>`
   display: block;
 
   ${props => props.handwritten ? `
@@ -109,7 +109,7 @@ const Container = styled("table")`
   transform-origin: top;
   font-size: 22px;
 
-  @media (min-width: 800px){
+  @media (min-width: 800px) {
     margin: 0 10px;
     width: calc(100% - 10px);
     min-height: calc(100% - 4px);
@@ -121,7 +121,10 @@ export interface TableProps {
   kyoukashoLoaded: boolean;
   options: Options;
 }
-export default class Table extends React.Component<TableProps, {}> {
+export default class Table extends React.Component<
+  TableProps,
+  {}
+> {
   static originalFontSize = 22;
   state: {
     consonants: ExtendedSyllabary,
@@ -278,11 +281,11 @@ export default class Table extends React.Component<TableProps, {}> {
       : `0 0`;
     return (
       <Td
-        key={`key_${consonantIndex}_${syllableIndex}`}
-        onMouseEnter={this.hoverOn.bind(this, syllable)}
-        foreign={!!syllable.foreign}
-        highlight={!!syllable.highlightCurrent}
-        style={{
+        key = {`key_${consonantIndex}_${syllableIndex}`}
+        onMouseEnter = {this.hoverOn.bind(this, syllable)}
+        foreign = {!!syllable.foreign}
+        highlight = {!!syllable.highlightCurrent}
+        style = {{
           backgroundColor: `hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`
         }}
       >
@@ -312,11 +315,11 @@ export default class Table extends React.Component<TableProps, {}> {
   ): React.ReactNode {
     return (
       <Kana
-        highlight={!!(options.similar && syllable.highlightHiragana)}
-        svgStrokes={svgStrokes}
-        backgroundPosition={svgPosition}
-        handwritten={options.handwritten}
-        type="hiragana"
+        highlight = {!!(options.similar && syllable.highlightHiragana)}
+        svgStrokes = {svgStrokes}
+        backgroundPosition = {svgPosition}
+        handwritten = {options.handwritten}
+        type = "hiragana"
       >
         {syllable.foreign && !syllable.hiragana ? 'ー' : syllable.hiragana}
       </Kana>
@@ -331,11 +334,11 @@ export default class Table extends React.Component<TableProps, {}> {
   ): React.ReactNode {
     return (
       <Kana
-        highlight={!!(options.similar && syllable.highlightKatakana)}
-        svgStrokes={svgStrokes}
-        backgroundPosition={svgPosition}
-        handwritten={options.handwritten}
-        type="katakana"
+        highlight = {!!(options.similar && syllable.highlightKatakana)}
+        svgStrokes = {svgStrokes}
+        backgroundPosition = {svgPosition}
+        handwritten = {options.handwritten}
+        type = "katakana"
       >
         {syllable.katakana}
       </Kana>
@@ -348,8 +351,8 @@ export default class Table extends React.Component<TableProps, {}> {
   ): React.ReactNode {
     return (
       <Text
-        highlight={!!(options.exceptions && syllable.exception)}
-        handwritten={options.handwritten}
+        highlight = {!!(options.exceptions && syllable.exception)}
+        handwritten = {options.handwritten}
       >
         {syllable.romanji}
       </Text>
@@ -362,7 +365,7 @@ export default class Table extends React.Component<TableProps, {}> {
   ): React.ReactNode {
     return (
       <Text
-        handwritten={options.handwritten}
+        handwritten = {options.handwritten}
       >
         {syllable.pronunciation}
       </Text>
@@ -411,8 +414,8 @@ export default class Table extends React.Component<TableProps, {}> {
     return (
         <colgroup>
           <col
-            span={columnCount - 1}
-            style={{
+            span = {columnCount - 1}
+            style = {{
               width: `${100 / columnCount}%`
             }}
           />
@@ -426,14 +429,14 @@ export default class Table extends React.Component<TableProps, {}> {
     return (
       <colgroup>
         <col
-          span={columnCount - 1}
-          style={{
+          span = {columnCount - 1}
+          style = {{
             width: `${200 / (columnCount * 2 - 1)}%`
           }}
         />
         <col
-          span={1}
-          style={{
+          span = {1}
+          style = {{
             width: `${100 / (columnCount * 2 - 1)}%`
           }}
         />
@@ -446,8 +449,8 @@ export default class Table extends React.Component<TableProps, {}> {
     return (
       <colgroup>
         <col
-          span={6}
-          style={{
+          span = {6}
+          style = {{
             width: options.digraphs
               ? options.transcription
                 ? "calc(100% / 9)"
@@ -457,8 +460,8 @@ export default class Table extends React.Component<TableProps, {}> {
         />
         {options.digraphs &&
           <col
-            span={3}
-            style={{
+            span = {3}
+            style = {{
               width: options.transcription ?
                 "calc(100% / 9)"
                 : "calc((100% - 6 * 9.5%) / 3)"
@@ -488,12 +491,12 @@ export default class Table extends React.Component<TableProps, {}> {
 
     return (
       <Container
-        innerRef={this.table}
+        ref = {this.table}
       >
         {this.renderColgroup(columnCount)}
         <tbody>
           {transposedConsonants.map((consonant, consonantIndex) => (
-            <tr key={consonantIndex}>
+            <tr key = {consonantIndex}>
               {consonant.map((syllable: Syllable, syllableIndex) =>
                 this.renderTd(syllable, consonantIndex, syllableIndex)
               )}

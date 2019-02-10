@@ -1,5 +1,5 @@
-import * as React from "react";
-import styled from "react-emotion";
+import React from "react";
+import styled from "@emotion/styled";
 
 
 const Container = styled("div")`
@@ -38,7 +38,7 @@ const Navigation = styled("div")`
   user-select: none;
   overflow-y: auto;
 
-  @media (min-width: 800px){
+  @media (min-width: 800px) {
     position: absolute;
     top: 50px;
     left: 10px;
@@ -50,7 +50,7 @@ const Navigation = styled("div")`
     height: calc(100vh - 50px);
   }
 
-  @media (min-width: 1000px){
+  @media (min-width: 1000px) {
     left: calc(50vw - 1000px / 2 + 10px);
   }
 `;
@@ -65,7 +65,7 @@ const Toggle = styled("div")`
   cursor: pointer;
   transition: all .4s;
 
-  @media (min-width: 800px){
+  @media (min-width: 800px) {
     display: none;
   }
 `;
@@ -82,7 +82,7 @@ const Line = styled("div")`
     top: .22em;
   }
 
-  &:nth-of-type(2){
+  &:nth-of-type(2) {
     top: .468em;
   }
 
@@ -95,7 +95,10 @@ export interface MenuProps {
   children: any;
 }
 
-export default class Menu extends React.Component<MenuProps, {}>{
+export default class Menu extends React.Component<
+  MenuProps,
+  {}
+> {
   mobile = false;
   swiping = false;
   open = false;
@@ -118,20 +121,20 @@ export default class Menu extends React.Component<MenuProps, {}>{
   private handleSwipeStart = (
     e: TouchEvent,
   ) => {
-    if(e.touches.length === 1 && this.mobile){
-      if(
+    if (e.touches.length === 1 && this.mobile) {
+      if (
         ( this.open && e.touches.item(0)!.clientX > this.navWidth) ||
         (!this.open && e.touches.item(0)!.clientX <= 20)
-      ){
+      ) {
         this.swiping = true;
         this.backdrop.current!.style.transition =
-        this.toggle.current!.style.transition =
-        this.nav.current!.style.transition =
-        this.line1.current!.style.transition =
-        this.line3.current!.style.transition = "initial";
-        this.fastSwipeDetector = setTimeout(()=>{
+          this.toggle.current!.style.transition =
+          this.nav.current!.style.transition =
+          this.line1.current!.style.transition =
+          this.line3.current!.style.transition = "initial";
+        this.fastSwipeDetector = setTimeout(() => {
           this.fastSwipe = false;
-        },1000);
+        }, 1000);
       }
     }
   }
@@ -139,13 +142,13 @@ export default class Menu extends React.Component<MenuProps, {}>{
   private handleSwipeMove = (
     e: TouchEvent,
   ) => {
-    if(this.swiping){
+    if (this.swiping) {
       this.setNavPosition(Math.min(0, e.touches.item(0)!.clientX - this.navWidth));
     }
   }
 
   private handleSwipeEnd = () => {
-    if(this.swiping){
+    if (this.swiping) {
       clearTimeout(this.fastSwipeDetector);
       this.swiping = false;
       this.backdrop.current!.style.transition =
@@ -153,10 +156,31 @@ export default class Menu extends React.Component<MenuProps, {}>{
       this.nav.current!.style.transition =
       this.line1.current!.style.transition =
       this.line3.current!.style.transition = '';
-      if     (this.fastSwipe && !this.open && this.navPosition*-1/this.navWidth < .9) this.openMenu();
-      else if(this.fastSwipe && this.open && this.navPosition*-1/this.navWidth > .1) this.closeMenu();
-      else if(this.navPosition*-1/this.navWidth < .5) this.openMenu();
-      else this.closeMenu();
+
+      const menuOpenness = this.navPosition * -1 / this.navWidth;
+      if (
+        this.fastSwipe &&
+        !this.open &&
+        menuOpenness < .9
+      ) {
+        this.openMenu();
+      }
+      else if (
+        this.fastSwipe &&
+        this.open &&
+        menuOpenness > .1
+      ) {
+        this.closeMenu();
+      }
+      else if (
+        menuOpenness < .5
+      ) {
+        this.openMenu();
+      }
+      else {
+        this.closeMenu();
+      }
+
       this.fastSwipe = true;
     }
   }
@@ -166,7 +190,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
   ) => {
     this.navPosition = position;
     const percentage = 1 - (this.maxPosition - position) / (this.maxPosition - this.minPosition);
-    const transition={
+    const transition = {
       visibility: percentage > 0 ? "visible" : "hidden",
       opacity: .4 * percentage,
       position: position === -this.navWidth ? "-100%" : `${position}px`,
@@ -204,7 +228,7 @@ export default class Menu extends React.Component<MenuProps, {}>{
 
   private resizeHandler = () => {
     const mobile = this.isMobile();
-    if(!mobile && this.mobile){
+    if (!mobile && this.mobile) {
       this.toggle.current!.style.transition =
       this.toggle.current!.style.transform =
       this.nav.current!.style.transition =
@@ -236,15 +260,15 @@ export default class Menu extends React.Component<MenuProps, {}>{
 
   render() {
     return (
-      <Container innerRef={this.container}>
-        <Backdrop innerRef={this.backdrop}/>
-        <Navigation innerRef={this.nav}>
+      <Container ref = {this.container}>
+        <Backdrop ref = {this.backdrop}/>
+        <Navigation ref = {this.nav}>
           {this.props.children}
         </Navigation>
-        <Toggle innerRef={this.toggle}>
-          <Line innerRef={this.line1}/>
-          <Line innerRef={this.line2}/>
-          <Line innerRef={this.line3}/>
+        <Toggle ref = {this.toggle}>
+          <Line ref = {this.line1}/>
+          <Line ref = {this.line2}/>
+          <Line ref = {this.line3}/>
         </Toggle>
       </Container>
     );

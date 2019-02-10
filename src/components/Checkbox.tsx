@@ -1,5 +1,5 @@
-import * as React from "react";
-import styled from "react-emotion";
+import React from "react";
+import styled from "@emotion/styled";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
 
 const Label = styled("label")`
@@ -11,26 +11,32 @@ export interface CheckboxProps extends OptionDescription {
   checked: boolean;
 }
 
-export default class Checkbox extends React.Component<CheckboxProps, {}> {
-  onCheck(){
+export default class Checkbox extends React.Component<
+  CheckboxProps,
+  {}
+> {
+  onCheck() {
     const { name, checked } = this.props;
     this.props.changeOptions(name, !checked);
   }
 
-  render(){
+  render() {
     const {name, label, title, checked, separate} = this.props;
     return (
-      <React.Fragment>
-        <Label htmlFor={name} title={title}>
+      <>
+        <Label
+          htmlFor = {name}
+          title = {title}
+        >
           <input
-            id={name}
-            type="checkbox"
-            checked={checked}
-            onChange={this.onCheck.bind(this)}
+            id = {name}
+            type = "checkbox"
+            checked = {checked}
+            onChange = {this.onCheck.bind(this)}
           /> {label}
         </Label>
         {separate && <hr/>}
-      </React.Fragment>
+      </>
     );
   }
 }

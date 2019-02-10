@@ -51,24 +51,24 @@
     url(media/Kyoukasho.subset.kana.ttf) format('truetype');
 }
 
-*{
+* {
   box-sizing: border-box;
   position: relative;
   -webkit-tap-highlight-color: transparent;
 }
 
-body{
+body {
   font-family: Arial;
   font-size: 22px;
   margin: 0;
   overflow: hidden;
 }
 
-html, body, #app{
+html, body, #app {
   height: 100%;
 }
 
-header{
+header {
   position: fixed;
   top: 0;
   left: 0;
@@ -83,7 +83,7 @@ header{
   user-select: none;
 }
 
-.menuTitle{
+.menuTitle {
   position: absolute;
   left: 0;
   top: 0;
@@ -92,7 +92,7 @@ header{
   line-height: 50px;
 }
 
-.menuTitle h1{
+.menuTitle h1 {
   margin: 0;
   display: inline-block;
   font-size: 25px;
@@ -104,7 +104,7 @@ header{
   vertical-align: -4px;
 }
 
-@media (min-width: 800px){
+@media (min-width: 800px) {
   header .menuTitle{
     margin-left: 10px;
   }
@@ -114,13 +114,13 @@ header{
   }
 }
 
-@media (min-width: 1000px){
+@media (min-width: 1000px) {
   header .menuTitle{
     margin-left: calc(50vw - 1000px / 2 + 10px);
   }
 }
 
-#loading{
+#loading {
   margin: 50vh auto;
   font-size: 30px;
   font-weight: 200;
@@ -128,7 +128,7 @@ header{
   font-family: 'Open Sans', sans-serif;
 }
 
-.loadingIcon{
+.loadingIcon {
   height: 35px;
   width: 35px;
   position: relative;
@@ -137,7 +137,7 @@ header{
   margin: 0 10px;
 }
 
-.loadingIcon::after{
+.loadingIcon::after {
   position: absolute;
   top: 0;
   left: 0;
@@ -148,11 +148,11 @@ header{
   border-radius: 50%;
 }
 
-.loadingIcon > span{
+.loadingIcon > span {
   margin-left: 10px;
 }
 
-@keyframes revolve{
+@keyframes revolve {
   from{transform:rotate(0deg);}
   to{transform:rotate(360deg);}
 }

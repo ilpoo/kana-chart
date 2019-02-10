@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Menu from "./Menu";
 import Header from "./Header";
 import Content from "./Content";
@@ -13,7 +13,10 @@ export interface MainStates {
   options: Options;
 }
 
-export default class Main extends React.Component<{}, MainStates> {
+export default class Main extends React.Component<
+  {},
+  MainStates
+> {
   state: MainStates = {
     options: JSON.parse(localStorage.getItem("options") || JSON.stringify(defaultOptions)),
     kyoukashoLoaded: false,
@@ -43,29 +46,29 @@ export default class Main extends React.Component<{}, MainStates> {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Header />
         <Content
-          options={this.state.options}
-          kyoukashoLoaded={this.state.kyoukashoLoaded}
+          options = {this.state.options}
+          kyoukashoLoaded = {this.state.kyoukashoLoaded}
         />
         <Menu>
-          <div className="menuTitle">
+          <div className = "menuTitle">
             <h1>Options</h1>
           </div>
           {optionDescriptions.map(option => (
             <Checkbox
-              name={option.name}
-              label={option.label}
-              title={option.title}
-              separate={option.separate}
-              checked={this.state.options[option.name]}
-              changeOptions={this.changeOptions}
-              key={option.name}
+              name = {option.name}
+              label = {option.label}
+              title = {option.title}
+              separate = {option.separate}
+              checked = {this.state.options[option.name]}
+              changeOptions = {this.changeOptions}
+              key = {option.name}
             />
           ))}
         </Menu>
-      </React.Fragment>
+      </>
     );
   }
 }

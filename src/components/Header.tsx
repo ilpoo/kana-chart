@@ -1,7 +1,10 @@
-import * as React from "react";
+import React from "react";
 
-export default class Header extends React.Component<{}, {}> {
-  render(){
+export default class Header extends React.Component<
+  {},
+  {}
+> {
+  render() {
     return (
       <header>
         <div className="menuTitle">

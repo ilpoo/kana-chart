@@ -1,7 +1,9 @@
-const debug = process.env.NODE_ENV !== "production";
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const debug = process.env.NODE_ENV !== "production";
 const data = require("./data");
+
 const HtmlWebpack = new HtmlWebpackPlugin({
   template: 'src/template.ejs',
   filename: 'index.html',
@@ -18,7 +20,6 @@ const HtmlWebpack = new HtmlWebpackPlugin({
   hash: true,
   data,
 });
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const distributor = require("./distributor");
 
 
@@ -27,7 +28,7 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : false,
   mode: debug ? "development" : "production",
   entry: {
-    main: ["babel-polyfill", "./src/index.tsx"],
+    main: ["@babel/polyfill", "./src/index.tsx"],
     worker: "./src/worker.js",
   },
   output: {
@@ -41,56 +42,33 @@ module.exports = {
   module:{
     rules: [
       {
-        test: /\.js?$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.(?:j|t)sx?$/,
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           query: {
+            plugins: [
+              "@babel/proposal-class-properties",
+            ],
             presets: [
-              'react',
-              'es2015',
-              'es2016',
-              'es2017',
-              'stage-0',
+              [
+                "@babel/env",
+                {
+                  targets: {
+                    "browsers": ["last 2 versions"],
+                  },
+                },
+              ],
+              "@babel/react",
+              "@babel/typescript",
             ],
           }
         },
       },
-      {
-        test: /\.tsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            query: {
-              presets: [
-                'react',
-                'es2015',
-                'es2016',
-                'es2017',
-                'stage-0',
-              ],
-            },
-          },
-          "ts-loader",
-        ],
-      },
     ],
   },
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        parallel: true,
-        uglifyOptions: {
-          sourcemap: debug,
-          compress: {
-            drop_console: !debug,
-            keep_fargs: false,
-            passes: 2,
-          },
-        },
-      }),
-    ],
+    minimize: !debug,
   },
   plugins: debug ? [
     HtmlWebpack,

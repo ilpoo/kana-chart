@@ -1,8 +1,10 @@
-import * as React from "react";
-import Table from "./Table";
+import React from "react";
 
-export default class Content extends React.Component<{}, {}> {
-  render(){
+export default class Content extends React.Component<
+  {},
+  {}
+> {
+  render() {
     return (
       <div>
         <h1>About</h1>

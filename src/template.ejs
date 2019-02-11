@@ -51,6 +51,10 @@
     url(media/Kyoukasho.subset.kana.ttf) format('truetype');
 }
 
+:root {
+  --theme-color: #C70025;
+}
+
 * {
   box-sizing: border-box;
   position: relative;
@@ -75,7 +79,7 @@ header {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #C70025;
+  background: var(--theme-color);
   color: white;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -105,11 +109,11 @@ header {
 }
 
 @media (min-width: 800px) {
-  header .menuTitle{
+  header .menuTitle {
     margin-left: 10px;
   }
 
-  .menuTitle h1{
+  .menuTitle h1 {
     margin-left: 0;
   }
 }
@@ -167,9 +171,9 @@ header {
     </header>
     <div id="loading">
       <div class="loadingIcon"></div><span>ロード。。。</span>
+      <noscript><br />Sorry! This app requires Javascript.</noscript>
     </div>
     <label for="menuToggle" id="menuButton" style="cursor: auto;"></label>
-    <noscript>Sorry! This app requires Javascript.</noscript>
   </div>
 </body>
 </html>

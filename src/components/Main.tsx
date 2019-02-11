@@ -54,7 +54,9 @@ export default class Main extends React.Component<
         />
         <Menu>
           <div className = "menuTitle">
-            <h1>Options</h1>
+            <h1>Options   <ruby>設定<rt style = {{
+              fontSize: 8,
+            }}>せってい</rt></ruby></h1>
           </div>
           {optionDescriptions.map(option => (
             <Checkbox

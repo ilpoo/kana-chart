@@ -4,6 +4,24 @@ import { OptionDescription } from "../interfaces/OptionDescriptions";
 
 const Label = styled("label")`
   display: block;
+  padding-left: 10px;
+
+  transition: background-color .5s;
+  cursor: pointer;
+
+  & > * {
+    vertical-align: middle;
+  }
+
+  &:hover {
+    background-color: rgba(128, 128, 128, .5);
+  }
+`;
+
+const TextBlock = styled("div")`
+  display: inline-block;
+  max-width: calc(100% - 25px);
+  padding: 10px 0;
 `;
 
 export interface CheckboxProps extends OptionDescription {
@@ -15,9 +33,13 @@ export default class Checkbox extends React.Component<
   CheckboxProps,
   {}
 > {
-  onCheck() {
-    const { name, checked } = this.props;
-    this.props.changeOptions(name, !checked);
+  onCheck = () => {
+    const {
+      changeOptions,
+      name,
+      checked,
+    } = this.props;
+    changeOptions(name, !checked);
   }
 
   render() {
@@ -32,8 +54,8 @@ export default class Checkbox extends React.Component<
             id = {name}
             type = "checkbox"
             checked = {checked}
-            onChange = {this.onCheck.bind(this)}
-          /> {label}
+            onChange = {this.onCheck}
+          /> <TextBlock>{label}</TextBlock>
         </Label>
         {separate && <hr/>}
       </>

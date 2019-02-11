@@ -27,27 +27,28 @@ const Navigation = styled("div")`
   min-width: 300px;
   max-width: 350px;
   height: 100vh;
-  padding: 10px;
-  background: #C70025;
+  background: var(--theme-color);
   color: white;
   font-size: 16px;
   transform: translateX(-100%);
   padding-top: 60px;
   transition: transform .4s;
-  line-height: 40px;
   user-select: none;
   overflow-y: auto;
 
   @media (min-width: 800px) {
     position: absolute;
     top: 50px;
-    left: 10px;
+    left: 0;
     width: 300px;
     transform: translateX(0);
     background-color: transparent;
     color: black;
-    padding-top: 80px;
     height: calc(100vh - 50px);
+
+    & h1 {
+      margin-left: 10px;
+    }
   }
 
   @media (min-width: 1000px) {

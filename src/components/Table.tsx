@@ -12,6 +12,7 @@ const CellWrapper = styled("span")`
 
 export interface TdProps {
   highlight?: boolean,
+  highlightDim?: boolean,
   foreign?: boolean,
 }
 const Td = styled("td")<TdProps>`
@@ -24,8 +25,12 @@ const Td = styled("td")<TdProps>`
   user-select: none;
   position: relative;
 
+  ${props => props.highlightDim && `
+    background-color: hsl(120, 73%, 80%, .3) !important;
+    user-select: auto;
+  `}
   ${props => props.highlight && `
-    background-color: hsl(120,73%,80%) !important;
+    background-color: hsl(120,90%,80%) !important;
     user-select: auto;
   `}
 
@@ -293,6 +298,7 @@ export default class Table extends React.Component<
         onMouseEnter = {this.hoverOn.bind(this, syllable)}
         foreign = {!!syllable.foreign}
         highlight = {!!syllable.highlightCurrent}
+        highlightDim = {!!syllable.highlightRomanji}
         style = {{
           backgroundColor: `hsl(195,53%,${(options.frequency ? ((1 - (syllable.frequency || 0)) * 100) : 100)}%)`
         }}

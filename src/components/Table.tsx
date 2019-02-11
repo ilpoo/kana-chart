@@ -103,7 +103,7 @@ const Text = styled("div")<TextProps>`
 const Container = styled("table")`
   border-collapse: collapse;
   margin: 0 auto;
-  min-height: 100%;
+  height: 100%;
   width: 100%;
   table-layout: fixed;
   transform-origin: top;
@@ -112,7 +112,7 @@ const Container = styled("table")`
   @media (min-width: 800px) {
     margin: 0 10px;
     width: calc(100% - 10px);
-    min-height: calc(100% - 4px);
+    height: calc(100% - 2px);
     max-width: 700px;
   }
 `;
@@ -192,10 +192,18 @@ export default class Table extends React.Component<
     cell: HTMLTableDataCellElement,
   ): FrameRequestCallback {
     return () => {
+      // this.table.current!.style.minHeight = "100%";
       const cellSize = cell.getBoundingClientRect();
       const contentSize = cell.firstElementChild!.getBoundingClientRect();
       const proportion = Math.min((cellSize.height / contentSize.height), (cellSize.width / (contentSize.width * 1.3)));
       const fontSize = ~~Math.max(Table.originalFontSize, Table.originalFontSize * proportion * .9);
+      console.log(
+        this.table.current!.style.fontSize,
+        cellSize,
+        contentSize,
+        proportion,
+        `Default: ${Table.originalFontSize}, new: ${fontSize}`,
+      );
       this.setFontSize(fontSize);
     };
   }

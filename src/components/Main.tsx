@@ -56,6 +56,7 @@ export default class Main extends React.Component<
           <div className = "menuTitle">
             <h1>Options   <ruby>設定<rt style = {{
               fontSize: 8,
+              top: 4,
             }}>せってい</rt></ruby></h1>
           </div>
           {optionDescriptions.map(option => (

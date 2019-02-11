@@ -2,12 +2,16 @@ import React from "react";
 import styled from "@emotion/styled";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
 
-const Label = styled("label")`
+const Label = styled("label")<{
+  disabled: boolean;
+}>`
   display: block;
   padding-left: 10px;
 
   transition: background-color .5s;
   cursor: pointer;
+
+  ${props => props.disabled && "opacity: .5;"}
 
   & > * {
     vertical-align: middle;
@@ -27,6 +31,7 @@ const TextBlock = styled("div")`
 export interface CheckboxProps extends OptionDescription {
   changeOptions: Function;
   checked: boolean;
+  kyoukashoFailed: boolean;
 }
 
 export default class Checkbox extends React.Component<
@@ -44,17 +49,23 @@ export default class Checkbox extends React.Component<
 
   render() {
     const {name, label, title, checked, separate} = this.props;
+    const disabled = (name !== "handwritten"
+      ? false
+      : this.props.kyoukashoFailed
+    );
     return (
       <>
         <Label
           htmlFor = {name}
           title = {title}
+          disabled = {disabled}
         >
           <input
             id = {name}
             type = "checkbox"
-            checked = {checked}
+            checked = {disabled ? false : checked}
             onChange = {this.onCheck}
+            disabled = {disabled}
           /> <TextBlock>{label}</TextBlock>
         </Label>
         {separate && <hr/>}

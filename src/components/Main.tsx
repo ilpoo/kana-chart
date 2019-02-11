@@ -10,6 +10,7 @@ import Options from "../interfaces/Options";
 
 export interface MainStates {
   kyoukashoLoaded: boolean;
+  kyoukashoFailed: boolean;
   options: Options;
 }
 
@@ -20,6 +21,7 @@ export default class Main extends React.Component<
   state: MainStates = {
     options: JSON.parse(localStorage.getItem("options") || JSON.stringify(defaultOptions)),
     kyoukashoLoaded: false,
+    kyoukashoFailed: false,
   }
 
   componentDidMount() {
@@ -31,7 +33,9 @@ export default class Main extends React.Component<
           clearInterval(fontCheck);
         } else if (++fontChecks > 20) {
           clearInterval(fontCheck);
-          console.log("Failed to load Kyouka.");
+          this.setState({
+            kyoukashoFailed: true,
+          });
         }
       }
     })(), 200);
@@ -68,8 +72,10 @@ export default class Main extends React.Component<
               checked = {this.state.options[option.name]}
               changeOptions = {this.changeOptions}
               key = {option.name}
+              kyoukashoFailed = {this.state.kyoukashoFailed}
             />
           ))}
+          {this.state.kyoukashoFailed && <div style = {{margin: "0 10px"}}><i>Failed to load typeface for hand-written text. <code>ctrl+R</code> to try again.</i></div>}
         </Menu>
       </>
     );

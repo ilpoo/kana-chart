@@ -1,8 +1,14 @@
+// This file is no longer needed for the project
+// but contains otherwise useful code.
+// TODO: Split this file into a separate repo.
+
 export interface ClassNameObject {
   [className: string]: boolean | null | undefined;
 }
 
-export type ClassNamesInput = string | boolean | null | undefined | ClassNameObject | Array<any>;
+export type ClassNamesInput = string | boolean | null | undefined | ClassNameObject | ClassNamesArray;
+
+export interface ClassNamesArray extends Array<ClassNamesInput> {};
 
 export default function classNames(
   ...args: ClassNamesInput[]
@@ -12,7 +18,7 @@ export default function classNames(
     .filter(element => !!element)
     .forEach(element => {
       if(Array.isArray(element) && element.length) {
-        classes.push(classNames.apply(null, element));
+        classes.push(classNames(...element));
       }
       else if(typeof element === "string") {
         classes.push(element);
@@ -20,7 +26,7 @@ export default function classNames(
       else if(isClassNameObject(element)) {
         classes.push(
           ...Object.keys(element)
-          .filter(key => !!element[key])
+            .filter(key => !!element[key])
         )
       }
     });
@@ -28,10 +34,11 @@ export default function classNames(
 }
 
 function isClassNameObject(
-  obj: any,
+  obj: unknown,
 ): obj is ClassNameObject {
   return (
     typeof obj === "object"
-    && !Object.keys(obj).some(key => typeof key !== "string")
+    && !!obj
+    && Object.keys(obj).every(key => typeof key !== "string")
   );
 }

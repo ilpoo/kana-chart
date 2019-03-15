@@ -11,6 +11,5 @@ module.exports = {
   theme_color: "#c70025",
   background_color: "#ffffff",
   picture: "android-chrome-192x192.png",
-  twitter: "@ilpooksanen",
   url: "https://okku.site/japanese",
 }

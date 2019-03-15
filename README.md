@@ -4,6 +4,10 @@ A single page web app built using React. It's an interactive syllabary chart to 
 
 The app is live at [okku.site/japanese/](https://okku.site/japanese/).
 
+```diff
+- The current implementation of the Service Worker is buggy and should not be taken inspiration from. I'll work on it some time in the future.
+```
+
 ## Features
 
 * hiragana

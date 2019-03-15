@@ -1,0 +1,5 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "webworker", "es2018"],                             /* Specify library files to be included in the compilation. */
+  },
+}

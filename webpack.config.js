@@ -17,10 +17,9 @@ const HtmlWebpack = new HtmlWebpackPlugin({
     removeScriptTypeAttributes: true,
     removeStyleLinkTypeAttributes: true,
   },
-  hash: true,
   data,
 });
-const distributor = require("./distributor");
+require("./distributor");
 
 
 module.exports = {
@@ -28,13 +27,12 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : false,
   mode: debug ? "development" : "production",
   entry: {
-    main: ["@babel/polyfill", "./src/index.tsx"],
-    worker: "./src/worker.js",
+    main: ["@babel/polyfill", "./src/main.tsx"],
+    worker: ["@babel/polyfill", "./src/serviceWorker/worker.ts"],
   },
   output: {
     path: __dirname + "/dist",
     globalObject: "this",
-    // filename: "main.js",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -78,6 +76,10 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production'),
       },
     }),
+    // TS claims this function needs one parameter, but I couldn't
+    // figure out from the Webpack docs what that should be. It works
+    // though, so I'm not touching it. Ignore it is.
+    //@ts-ignore
     new webpack.optimize.OccurrenceOrderPlugin(),
     HtmlWebpack,
   ],

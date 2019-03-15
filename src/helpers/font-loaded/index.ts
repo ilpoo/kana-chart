@@ -1,3 +1,5 @@
+// TODO: Use the font-loaded repo instead
+
 export default (() => {
   const baseFonts = ["monospace", "sans-serif", "serif"];
   const measurements: {

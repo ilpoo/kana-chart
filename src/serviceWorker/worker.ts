@@ -2,9 +2,10 @@ import addFilesToBeCached from "./addFilesToBeCached";
 import clearOutdatedCaches from "./clearOutdatedCaches";
 import resourceFetcher from "./resourceFetcher";
 
+declare var self: ServiceWorkerGlobalScrope;
 const _self = self as unknown as ServiceWorkerGlobalScope;
 
-export const cacheName = "app-cache-v1.9.5";
+export const cacheName = "app-cache-v1.9.6";
 
 _self.addEventListener("install", event => {
   console.log("[ServiceWorker] installed");

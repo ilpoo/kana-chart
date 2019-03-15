@@ -1,6 +1,6 @@
 {
   "name": "kana-chart",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "An interactive syllable chart to help you learn the kanas in the two Japanese syllabaries, hiragana and katakana.",
   "main": "webpack.config.js",
   "dependencies": {
@@ -32,8 +32,9 @@
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "test": "start cmd /K call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd /K webpack --watch & start chrome.exe http://localhost:8001/dist/",
-    "start": "start cmd /k call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start chrome.exe http://localhost:8001/dist/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "start cmd /K call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start cmd /K ./node_modules/.bin/webpack --watch & start chrome.exe http://localhost:8001/dist/",
+    "start:prod": "start cmd /k call ./node_modules/.bin/webpack-dev-server --port 8001 --inline --hot & start chrome.exe http://localhost:8001/dist/",
     "build": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --progress --colors",
     "icons": "./node_modules/.bin/cross-env ./node_modules/cli-real-favicon/real-favicon.js generate dist/faviconDescription.json dist/faviconData.json dist"
   },

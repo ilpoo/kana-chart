@@ -48,7 +48,13 @@ export default class Checkbox extends React.Component<
   }
 
   render() {
-    const {name, label, title, checked, separate} = this.props;
+    const {
+      name,
+      label,
+      title,
+      checked,
+      separate,
+    } = this.props;
     const disabled = (name !== "handwritten"
       ? false
       : this.props.kyoukashoFailed

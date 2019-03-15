@@ -27,8 +27,8 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : false,
   mode: debug ? "development" : "production",
   entry: {
-    main: ["@babel/polyfill", "./src/main.tsx"],
-    worker: ["@babel/polyfill", "./src/serviceWorker/worker.ts"],
+    main: ["@babel/polyfill/noConflict", "./src/main.tsx"],
+    worker: ["@babel/polyfill/noConflict", "./src/serviceWorker/worker.ts"],
   },
   output: {
     path: __dirname + "/dist",

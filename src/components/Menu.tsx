@@ -1,6 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "@emotion/styled";
-
+import { isMobile } from "../helpers/isMobile";
+import { mobileMaxWidth, tabletMaxWidth } from "../breakpoints";
 
 const Container = styled("div")`
   width: 0;
@@ -36,7 +37,7 @@ const Navigation = styled("div")`
   user-select: none;
   overflow-y: auto;
 
-  @media (min-width: 800px) {
+  @media (min-width: ${mobileMaxWidth}px) {
     position: absolute;
     top: 50px;
     left: 0;
@@ -51,8 +52,8 @@ const Navigation = styled("div")`
     }
   }
 
-  @media (min-width: 1000px) {
-    left: calc(50vw - 1000px / 2 + 10px);
+  @media (min-width: ${tabletMaxWidth}px) {
+    left: calc(50vw - ${tabletMaxWidth}px / 2 + 10px);
   }
 `;
 
@@ -66,7 +67,7 @@ const Toggle = styled("div")`
   cursor: pointer;
   transition: all .4s;
 
-  @media (min-width: 800px) {
+  @media (min-width: ${mobileMaxWidth}px) {
     display: none;
   }
 `;
@@ -93,7 +94,7 @@ const Line = styled("div")`
 `;
 
 export interface MenuProps {
-  children: any;
+  children: ReactNode;
 }
 
 export default class Menu extends React.Component<
@@ -144,7 +145,9 @@ export default class Menu extends React.Component<
     e: TouchEvent,
   ) => {
     if (this.swiping) {
-      this.setNavPosition(Math.min(0, e.touches.item(0)!.clientX - this.navWidth));
+      this.setNavPosition(
+        Math.min(0, e.touches.item(0)!.clientX - this.navWidth),
+      );
     }
   }
 
@@ -223,12 +226,8 @@ export default class Menu extends React.Component<
     this.open ? this.closeMenu() : this.openMenu();
   }
 
-  private isMobile = () => {
-    return window.innerWidth < 800;
-  }
-
   private resizeHandler = () => {
-    const mobile = this.isMobile();
+    const mobile = isMobile();
     if (!mobile && this.mobile) {
       this.toggle.current!.style.transition =
       this.toggle.current!.style.transform =
@@ -246,7 +245,7 @@ export default class Menu extends React.Component<
   }
 
   componentDidMount() {
-    this.mobile = this.isMobile();
+    this.mobile = isMobile();
     this.navWidth = this.nav.current!.getBoundingClientRect().width;
     this.navPosition = -this.navWidth;
     this.minPosition = -this.navWidth;

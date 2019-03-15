@@ -1,3 +1,5 @@
+// This file is not yet included in the app
+
 import React from "react";
 
 export default class Content extends React.Component<

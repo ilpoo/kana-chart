@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Table from "./Table";
 import Options from "../interfaces/Options";
+import { mobileMaxWidth, tabletMaxWidth } from "../breakpoints";
 
 const Container = styled("div")`
   position: fixed;
@@ -11,14 +12,14 @@ const Container = styled("div")`
   height: calc(100% - 50px);
   overflow-x: auto;
 
-  @media (min-width: 800px) {
+  @media (min-width: ${mobileMaxWidth}px) {
     padding: 5px;
     position: absolute;
     width: calc(100vw - 300px);
   }
 
-  @media (min-width: 1000px) {
-    width: calc(100vw - (50vw - 1000px / 2 + 300px));
+  @media (min-width: ${tabletMaxWidth}px) {
+    width: calc(100vw - (50vw - ${tabletMaxWidth}px / 2 + 300px));
   }
 `;
 

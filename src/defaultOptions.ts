@@ -1,6 +1,6 @@
 import Options from "./interfaces/Options";
 
-const defaultOptions: Options = {
+const defaultOptions: Options = Object.freeze({
   "hiragana": true,
   "romanji": true,
   "katakana": false,
@@ -13,8 +13,8 @@ const defaultOptions: Options = {
   "frequency": true,
   "transcription": false,
   "handwritten": true
-};
+});
 
-Object.freeze(defaultOptions);
+// Object.freeze(defaultOptions);
 
 export default defaultOptions;

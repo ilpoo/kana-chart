@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 import syllabary from "../syllabary";
-
-import { ExtendedSyllabary, Syllable, ExtendedSyllable } from "../interfaces/Syllabary";
+import {
+  ExtendedSyllabary,
+  Syllable,
+  ExtendedSyllable,
+} from "../interfaces/Syllabary";
 import Options from "../interfaces/Options";
+import { transposeArray } from "../helpers/transposeArray";
+import { isLandscape } from "../helpers/isLandscape";
+import { mobileMaxWidth } from "../breakpoints";
 
 const CellWrapper = styled("span")`
   display: table;
@@ -114,7 +120,7 @@ const Container = styled("table")`
   transform-origin: top;
   font-size: 22px;
 
-  @media (min-width: 800px) {
+  @media (min-width: ${mobileMaxWidth}px) {
     margin: 0 10px;
     width: calc(100% - 10px);
     height: calc(100% - 2px);
@@ -136,7 +142,7 @@ export default class Table extends React.Component<
     transpose: boolean,
   } = {
     consonants: syllabary,
-    transpose: this.isLandscape(),
+    transpose: isLandscape(),
   };
   lastOptions = "";
   lastkyoukashoLoaded = false;
@@ -212,7 +218,7 @@ export default class Table extends React.Component<
   }
 
   private handleResize() {
-    const transpose = this.isLandscape();
+    const transpose = isLandscape();
     if (transpose !== this.state.transpose) {
       this.setState({
         transpose,
@@ -220,23 +226,6 @@ export default class Table extends React.Component<
     } else {
       this.updateFontSize(true);
     }
-  }
-
-  private transposeArray(array: any[]) {
-    const newArray = [...Array(array[0].length)].map(() => [...Array(array.length)]);
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < array[0].length; j++) {
-        newArray[j][array.length - 1 - i] = array[i][j];
-      }
-    }
-    return newArray;
-  }
-
-  private isLandscape() {
-    return (
-      window.innerWidth < 800
-      && window.innerWidth > window.innerHeight
-    );
   }
 
   private hoverOn(
@@ -410,7 +399,7 @@ export default class Table extends React.Component<
   ) {
     const { transpose } = this.state;
     return transpose ?
-      this.transposeArray(filteredConsonants) :
+      transposeArray(filteredConsonants) :
       filteredConsonants;
   }
 
@@ -418,15 +407,15 @@ export default class Table extends React.Component<
     columnCount: number,
   ) {
     return (
-        <colgroup>
-          <col
-            span = {columnCount - 1}
-            style = {{
-              width: `${100 / columnCount}%`
-            }}
-          />
-        </colgroup>
-      )
+      <colgroup>
+        <col
+          span = {columnCount - 1}
+          style = {{
+            width: `${100 / columnCount}%`
+          }}
+        />
+      </colgroup>
+    );
   }
 
   private renderColgroupTransposedWithoutRomanji(

@@ -2,7 +2,7 @@ import React from "react";
 import Menu from "./Menu";
 import Header from "./Header";
 import Content from "./Content";
-import fontLoaded from "../font-loaded";
+import fontLoaded from "../helpers/font-loaded";
 import Checkbox from "./Checkbox";
 import defaultOptions from "../defaultOptions";
 import optionDescriptions from "../optionDescriptions";
@@ -75,7 +75,13 @@ export default class Main extends React.Component<
               kyoukashoFailed = {this.state.kyoukashoFailed}
             />
           ))}
-          {this.state.kyoukashoFailed && <div style = {{margin: "0 10px"}}><i>Failed to load typeface for hand-written text. <code>ctrl+R</code> to try again.</i></div>}
+          {this.state.kyoukashoFailed &&
+            <div
+              style = {{margin: "0 10px"}}
+            >
+              <i>Failed to load typeface for hand-written text. <code>ctrl+R</code> to try again.</i>
+            </div>
+          }
         </Menu>
       </>
     );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, memo } from "react";
 import Menu from "./Menu";
 import Header from "./Header";
 import Content from "./Content";
@@ -14,76 +14,73 @@ export interface MainStates {
   options: Options;
 }
 
-export default class Main extends React.Component<
-  {},
-  MainStates
-> {
-  state: MainStates = {
-    options: JSON.parse(localStorage.getItem("options") || JSON.stringify(defaultOptions)),
-    kyoukashoLoaded: false,
-    kyoukashoFailed: false,
-  }
+const savedOptions: Options = JSON.parse(localStorage.getItem("options") || JSON.stringify(defaultOptions))
 
-  componentDidMount() {
-    const fontCheck = setInterval((() => {
+export default memo(function Main () {
+  const [options, setOptions] = useState(savedOptions);
+  const [kyoukashoLoaded, setKyoukashoLoaded] = useState(false);
+  const [kyoukashoFailed, setKyoukashoFailed] = useState(false);
+
+  useEffect(
+    () => {
       let fontChecks = 0;
-      return () => {
+      const fontCheck = setInterval(() => {
         if (fontLoaded("Kyoukasho")) {
-          this.setState({ kyoukashoLoaded: true });
           clearInterval(fontCheck);
+          setKyoukashoLoaded(true);
         } else if (++fontChecks > 20) {
           clearInterval(fontCheck);
-          this.setState({
-            kyoukashoFailed: true,
-          });
+          setKyoukashoFailed(true);
         }
-      }
-    })(), 200);
+      }, 200)
+    },
+    [],
+  );
+
+  const changeOptions = (
+    name: string,
+    bool: boolean,
+  ) => {
+    const optionsClone = JSON.parse(JSON.stringify(options));
+    optionsClone[name] = bool;
+    setOptions(optionsClone);
+    localStorage.setItem("options", JSON.stringify(optionsClone));
   }
 
-  changeOptions = (name: string, bool: boolean) => {
-    const options = JSON.parse(JSON.stringify(this.state.options));
-    options[name] = bool;
-    this.setState({ options: options });
-    localStorage.setItem("options", JSON.stringify(options));
-  }
-
-  render() {
-    return (
-      <>
-        <Header />
-        <Content
-          options = {this.state.options}
-          kyoukashoLoaded = {this.state.kyoukashoLoaded}
-        />
-        <Menu>
-          <div className = "menuTitle">
-            <h1>Options   <ruby>設定<rt style = {{
-              fontSize: 8,
-              top: 4,
-            }}>せってい</rt></ruby></h1>
+  return (
+    <>
+      <Header />
+      <Content
+        options = { options }
+        kyoukashoLoaded = { kyoukashoLoaded }
+      />
+      <Menu>
+        <div className = "menuTitle">
+          <h1>Options   <ruby>設定<rt style = {{
+            fontSize: 8,
+            top: 4,
+          }}>せってい</rt></ruby></h1>
+        </div>
+        { optionDescriptions.map(option => (
+          <Checkbox
+            name = { option.name }
+            label = { option.label }
+            title = { option.title }
+            separate = { option.separate }
+            checked = { options[option.name] }
+            changeOptions = { changeOptions }
+            key = { option.name }
+            kyoukashoFailed = { kyoukashoFailed }
+          />
+        )) }
+        { kyoukashoFailed &&
+          <div
+            style = {{margin: "0 10px"}}
+          >
+            <i>Failed to load typeface for hand-written text. <code>ctrl+R</code> to try again.</i>
           </div>
-          {optionDescriptions.map(option => (
-            <Checkbox
-              name = {option.name}
-              label = {option.label}
-              title = {option.title}
-              separate = {option.separate}
-              checked = {this.state.options[option.name]}
-              changeOptions = {this.changeOptions}
-              key = {option.name}
-              kyoukashoFailed = {this.state.kyoukashoFailed}
-            />
-          ))}
-          {this.state.kyoukashoFailed &&
-            <div
-              style = {{margin: "0 10px"}}
-            >
-              <i>Failed to load typeface for hand-written text. <code>ctrl+R</code> to try again.</i>
-            </div>
-          }
-        </Menu>
-      </>
-    );
-  }
-}
+        }
+      </Menu>
+    </>
+  );
+});

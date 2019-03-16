@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
 import { OptionDescription } from "../interfaces/OptionDescriptions";
 
@@ -34,48 +34,44 @@ export interface CheckboxProps extends OptionDescription {
   kyoukashoFailed: boolean;
 }
 
-export default class Checkbox extends React.Component<
-  CheckboxProps,
-  {}
-> {
-  onCheck = () => {
-    const {
-      changeOptions,
-      name,
-      checked,
-    } = this.props;
+
+
+export default memo(function Checkbox (
+  {
+    name,
+    label,
+    title,
+    checked,
+    separate,
+    changeOptions,
+    kyoukashoFailed,
+  }: CheckboxProps,
+) {
+  const disabled = (name !== "handwritten"
+    ? false
+    : kyoukashoFailed
+  );
+
+  function onCheck () {
     changeOptions(name, !checked);
   }
 
-  render() {
-    const {
-      name,
-      label,
-      title,
-      checked,
-      separate,
-    } = this.props;
-    const disabled = (name !== "handwritten"
-      ? false
-      : this.props.kyoukashoFailed
-    );
-    return (
-      <>
-        <Label
-          htmlFor = {name}
-          title = {title}
+  return (
+    <>
+      <Label
+        htmlFor = {name}
+        title = {title}
+        disabled = {disabled}
+      >
+        <input
+          id = {name}
+          type = "checkbox"
+          checked = {disabled ? false : checked}
+          onChange = {onCheck}
           disabled = {disabled}
-        >
-          <input
-            id = {name}
-            type = "checkbox"
-            checked = {disabled ? false : checked}
-            onChange = {this.onCheck}
-            disabled = {disabled}
-          /> <TextBlock>{label}</TextBlock>
-        </Label>
-        {separate && <hr/>}
-      </>
-    );
-  }
-}
+        /> <TextBlock>{label}</TextBlock>
+      </Label>
+      {separate && <hr/>}
+    </>
+  );
+});

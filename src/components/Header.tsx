@@ -1,16 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 
-export default class Header extends React.Component<
-  {},
-  {}
-> {
-  render() {
-    return (
-      <header>
-        <div className="menuTitle">
-          <h1>Kana Chart</h1>
-        </div>
-      </header>
-    );
-  }
-}
+export default memo(function Header () {
+  return (
+    <header>
+      <div className="menuTitle">
+        <h1>Kana Chart</h1>
+      </div>
+    </header>
+  );
+});

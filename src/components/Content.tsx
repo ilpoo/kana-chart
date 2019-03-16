@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
-import Table from "./Table";
+import Table from "./table/Table";
 import Options from "../interfaces/Options";
 import { mobileMaxWidth, tabletMaxWidth } from "../breakpoints";
 
@@ -23,20 +23,15 @@ const Container = styled("div")`
   }
 `;
 
-export interface ContentProps {
-  options: Options;
-  kyoukashoLoaded: boolean;
-}
-
-export default class Content extends React.Component<
-  ContentProps,
-  {}
-> {
-  render() {
-    return (
-      <Container>
-        <Table {...this.props}/>
-      </Container>
-    );
-  }
-}
+export default memo(function Content (
+  props: {
+    options: Options;
+    kyoukashoLoaded: boolean;
+  },
+) {
+  return (
+    <Container>
+      <Table {...props}/>
+    </Container>
+  );
+});
